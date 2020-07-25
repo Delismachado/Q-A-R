@@ -1,0 +1,24 @@
+{
+  "name": "qar",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": "https://github.com/Delismachado/Q-A-R.git",
+  "author": "Derli A Machado <dam.machado1@gmail.com>, Lucas Marcondes Pavelski <lmpavelski@yahoo.com.br>",
+  "license": "MIT",
+  "devDependencies": {
+    "@qar/eslint-config": "*",
+    "@types/jest": "^26.0.7",
+    "jest": "^26.1.0",
+    "ts-jest": "^26.1.3",
+    "typescript": "^3.9.7"
+  }
+}
