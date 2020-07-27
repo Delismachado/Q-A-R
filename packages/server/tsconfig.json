@@ -2,5 +2,12 @@
   "extends": "../../tsconfig.json",
   "include": [
     "./src/**/*"
-  ]
+  ],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./",
+    "esModuleInterop": true,
+    "strict": true,
+    "noEmit": false,
+  },
 }

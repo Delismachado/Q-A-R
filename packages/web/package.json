@@ -22,6 +22,7 @@
     "react-dom": "^16.13.1"
   },
   "scripts": {
-    "start": "webpack-dev-server --mode development"
+    "start": "webpack-dev-server --mode development",
+    "deploy-production": "NODE_ENV=production webpack -p && scp -r ./dist/* lucasmp@50.116.31.223:/home/lucasmp/qar/web"
   }
 }
