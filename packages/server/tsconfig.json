@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "src/database/**/*"
   ],
   "compilerOptions": {
     "outDir": "./dist",
@@ -9,5 +10,11 @@
     "esModuleInterop": true,
     "strict": true,
     "noEmit": false,
+    "target": "es5",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false
+
   },
 }
