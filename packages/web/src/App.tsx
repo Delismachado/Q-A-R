@@ -1,16 +1,17 @@
 import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
+
+import Routes from './routes'
 
 import GlobalStyle from './styles/Global'
-import SignIn from './pages/SignIn'
-
-import Header from './components/Header'
 
 const App: React.FC = () => {
   return (
     <>
-      <Header />
-      <SignIn />
       <GlobalStyle />
+      <Router>
+        <Routes />
+      </Router>
     </>
   )
 }

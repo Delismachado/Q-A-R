@@ -1,18 +1,16 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  height: 100vh;
   display: flex;
-  align-items: stretch;
-`
-export const Content = styled.div`
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  height: 100vh;
+`
+
+export const Content = styled.div`
   width: 100%;
-  max-width: 700px;
-  place-content: center;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 20px;
 
   form {
     margin: 80px 0;
@@ -21,10 +19,11 @@ export const Content = styled.div`
 
     h1 {
       margin-bottom: 24px;
+      font-size: 24px;
     }
 
     input {
-      background: #232129;
+      background: #fff;
       border-radius: 10px;
       border: 2px solid #232129;
       padding: 16px;
@@ -35,12 +34,12 @@ export const Content = styled.div`
       }
     }
     button {
-      background: #232129;
+      background: #fff;
       border-radius: 10px;
       border: 2px solid #232129;
       padding: 16px;
       width: 100%;
-
+      margin-top: 10px;
     }
   }
 `
