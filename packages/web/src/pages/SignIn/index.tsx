@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Container, Content, Background } from './style'
 
 import Header from '../../components/Header'
@@ -9,16 +10,16 @@ const SignIn: React.FC = () => (
     <Container>
       <Content>
         <form>
-          <h1> Faça seu login</h1>
+          <h1>Log in with e-mail and password:</h1>
           <input placeholder="E-mail" />
 
-          <input type="password" placeholder="Senha" />
+          <input type="password" placeholder="Password" />
 
-          <button type="submit">Entrar</button>
+          <button type="submit">Enter</button>
 
-          <a href="forgot">Esqueci minha senha</a>
+          <a href="#">Forgot my password</a>
         </form>
-        <a href="">Criar conta</a>
+        <Link to="/sign-up">Create new account</Link>
       </Content>
       <Background />
     </Container>
