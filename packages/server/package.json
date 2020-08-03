@@ -21,7 +21,7 @@
     },
     "scripts": {
         "start": "yarn build && node dist/src/index.js",
-        "dev": "nodemon src/index.ts",
+        "dev": "tsnd --transpile-only --respawn --ignore-watch node_modules src/index.ts",
         "build": "tsc --project ./",
         "typeorm": "ts-node-dev ../../node_modules/typeorm/cli.js"
     }
