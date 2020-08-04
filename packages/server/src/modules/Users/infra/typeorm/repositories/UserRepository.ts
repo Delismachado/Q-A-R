@@ -19,15 +19,24 @@ class UsersRepository implements IUsersRepository {
       email,
       role
     })
-    return await this.ormRepository.save(user)
+    await this.ormRepository.save(user)
+    return user
   }
 
   public async findById(id: string): Promise<User | undefined> {
-    return await this.ormRepository.findOne(id)
+    const findUser = await this.ormRepository.findOne(id)
+
+    return findUser
   }
 
   public async findByEmail(email: string): Promise<User | undefined> {
-    throw new Error('Method not implemented.')
+    const findUser = await this.ormRepository.findOne({
+      where: {
+        email
+      }
+    })
+
+    return findUser
   }
 }
 
