@@ -10,7 +10,7 @@ interface HeaderProps {
   size?: 'small' | 'large'
 }
 
-const Header: React.FC<HeaderProps> = ({ size = 'large' }: HeaderProps) => (
+const Header: React.FC<HeaderProps> = ({ size = 'small' }: HeaderProps) => (
   <Container size={size}>
     <header>
       <nav>
