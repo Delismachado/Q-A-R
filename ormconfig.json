@@ -5,10 +5,9 @@
     "username": "postgres",
     "password": "docker",
     "database": "qar",
-    "migrations": [
-        "database/migrations/*.ts"
-    ],
+    "entities": ["./src/modules/**/infra/typeorm/entities/*.ts"],
+    "migrations": ["./src/shared/infra/typeorm/migrations/*.ts"],
     "cli": {
-        "migrationsDir": "database/migrations"
+        "migrationsDir": "./src/shared/infra/typeorm/migrations"
     }
 }
