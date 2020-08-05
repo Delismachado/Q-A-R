@@ -7,6 +7,7 @@ import Home from '../pages/Home'
 import SignUp from '../pages/SignUp'
 import UserDashboard from '../pages/UserDashboard'
 import AdminDashboard from '../pages/AdminDashboard'
+import QuestionList from '../pages/QuestionList'
 
 const Routes: React.FC = () => (
   <Switch>
@@ -15,6 +16,7 @@ const Routes: React.FC = () => (
     <Route path="/sign-up" exact component={SignUp} />
     <Route path="/user-dashboard" exact component={UserDashboard} />
     <Route path="/admin-dashboard" exact component={AdminDashboard} />
+    <Route path="/question-list" exact component={QuestionList} />
   </Switch>
 )
 
