@@ -1,25 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 
 import { Container, Content } from './style'
 
+import api from '../../services/api'
+// import { response } from 'express'
 
-export default function NewQuestion() {
-  const [title, setTitle] = useState('')
+const NewQuestion: React.FC = () => {
+  const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-
+  const [type, setType] = useState('')
+  const [questions, setQuestion] = useState([])
   const history = useHistory()
 
-  async function handleNewQuestion(e) {
+  useEffect(() => {
+    api.get('/questions').then(response => {
+      setQuestion(response.data)
+    })
+  }, [])
+
+  function handleNewQuestion(e) {
     e.preventDefault()
 
     try {
       const data = {
-        title,
-        description
+        name,
+        description,
+        type
       }
+
+      api.post('/questions', data)
+
+      history.push('/question-list')
     } catch (err) {
       alert('Erro ao cadastrar o nova pergunta!')
+      return false
     }
   }
 
@@ -41,21 +56,33 @@ export default function NewQuestion() {
             <form onSubmit={handleNewQuestion}>
               <input
                 placeholder="Título da pergunta"
-                value={title}
-                onChange={e => setTitle(e.target.value)}
+                value={name}
+                onChange={e => setName(e.target.value)}
+              />
+              <input
+                placeholder="Type"
+                value={type}
+                onChange={e => setType(e.target.value)}
               />
               <textarea
                 placeholder="Descrição"
                 value={description}
                 onChange={e => setDescription(e.target.value)}
               />
-            </form>
-            <button className="button" type="submit">
+              <button className="button" type="submit">
                 Cadastrar
-            </button>
+              </button>
+              <ul>
+                {questions.map(question => (
+                  <li key={question.id}>{question.name}</li>
+                ))}
+              </ul>
+            </form>
           </div>
         </div>
       </Content>
     </Container>
   )
 }
+
+export default NewQuestion
