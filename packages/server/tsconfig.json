@@ -1,8 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "include": [
-    "./src/**/*",
-    "src/database/**/*"
+    "./src/**/*"
   ],
   "compilerOptions": {
     "outDir": "./dist",
@@ -14,7 +13,12 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "strictPropertyInitialization": false
-
+    "strictPropertyInitialization": false,
+    "baseUrl": "./src",
+    "paths": {
+      "@modules/*": ["modules/*"],
+      "@shared/*": ["shared/*"],
+      "@config/*": ["shared/config/*"]
+    },
   },
 }

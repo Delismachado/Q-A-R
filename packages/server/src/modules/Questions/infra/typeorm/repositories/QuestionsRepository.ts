@@ -1,12 +1,12 @@
 import { getRepository, Repository } from 'typeorm'
 
-import IQuestionRepository from '../../../repositories/IQuestionsRepository'
+import IQuestionsRepository from '../../../repositories/IQuestionsRepository'
 import ICreateQuestionDTO from '../../../dtos/ICreateQuestionDTO'
 import Question from '../entities/Question'
 import { injectable } from 'tsyringe'
 
 @injectable()
-class QuestionRepository implements IQuestionRepository {
+class QuestionsRepository implements IQuestionsRepository {
   private ormRepository: Repository<Question>
 
   constructor() {
@@ -27,10 +27,15 @@ class QuestionRepository implements IQuestionRepository {
     return question
   }
 
+  public async findById(question_id: string): Promise<Question | undefined> {
+    const question = await this.ormRepository.findOne(question_id)
+    return question
+  }
+
   public async all(): Promise<Question[]> {
     const questions = await this.ormRepository.find()
     return questions
   }
 }
 
-export default QuestionRepository
+export default QuestionsRepository

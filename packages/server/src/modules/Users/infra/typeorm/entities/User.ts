@@ -13,10 +13,10 @@ class User {
   id: string
 
   @Column()
-  name: string
+  email: string
 
   @Column()
-  email: string
+  password: string
 
   @Column()
   role: string

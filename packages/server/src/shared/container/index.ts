@@ -1,10 +1,15 @@
 import { container } from 'tsyringe'
 
-import IUsersRepository from '../../modules/Users/repositories/IUsersRepository'
-import UsersRepository from '../../modules/Users/infra/typeorm/repositories/UserRepository'
+import '@modules/Users/providers'
 
-import QuestionsRepository from '../../modules/Questions/infra/typeorm/repositories/QuestionsRepository'
-import IQuestionsRepository from '../../modules/Questions/repositories/IQuestionsRepository'
+import IUsersRepository from '@modules/Users/repositories/IUsersRepository'
+import UsersRepository from '@modules/Users/infra/typeorm/repositories/UserRepository'
+
+import IQuestionsRepository from '@modules/Questions/repositories/IQuestionsRepository'
+import QuestionsRepository from '@modules/Questions/infra/typeorm/repositories/QuestionsRepository'
+
+import IAnswersRepository from '@modules/Answers/repositories/IAnswersRepository'
+import AnswersRepository from '@modules/Answers/infra/typeorm/repositories/AnswersRepository'
 
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
@@ -14,4 +19,9 @@ container.registerSingleton<IUsersRepository>(
 container.registerSingleton<IQuestionsRepository>(
   'QuestionsRepository',
   QuestionsRepository
+)
+
+container.registerSingleton<IAnswersRepository>(
+  'AnswersRepository',
+  AnswersRepository
 )
