@@ -7,7 +7,6 @@ export const Container = styled.div`
 `
 
 export const Content = styled.div`
-  width: 100%;
   max-width: 1120px;
   margin: 0 auto;
   padding: 40px 20px;
@@ -27,18 +26,17 @@ export const Content = styled.div`
       border: 2px solid #232129;
       padding: 16px;
       width: 100%;
-
-      & + input {
-        margin-top: 8px;
-      }
+      margin-top: 8px;
+      margin-bottom: 8px;
     }
     button {
-      background: #fff;
+      background: #a1aabc;
       border-radius: 10px;
       border: 2px solid #232129;
       padding: 16px;
       width: 100%;
       margin-top: 10px;
+      margin-bottom: 10px;
     }
   }
 `

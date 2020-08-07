@@ -13,10 +13,10 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   width: 100%;
-  padding: 96px;
+  padding: 100px;
   background: #f0f0f5;
   box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  border-radius: 16px;
 
   display: flex;
   justify-content: space-between;
@@ -24,7 +24,7 @@ export const Content = styled.div`
 
   div {
     width: 100%;
-    max-width: 380px;
+    max-width: 500px;
 
     section {
       width: 100%;
@@ -56,6 +56,20 @@ export const Content = styled.div`
         margin-top: 8px;
         width: 500px;
       }
+      button {
+        padding: 8px;
+        margin-top: 8px;
+        width: 500px;
+        background: #a1aabc;
+      }
+    }
+    h1 {
+      margin: 64px 0 32px;
+      font-size: 26px;
+    }
+    ul {
+      margin: 64px 0 32px;
+      font-size: 26px;
     }
   }
 `

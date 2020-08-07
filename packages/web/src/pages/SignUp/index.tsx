@@ -5,7 +5,7 @@ import { Form } from '@unform/web'
 import { Container, Content, Background } from './style'
 import Input from '../../components/Input'
 import Select from '../../components/Select'
-// import Header from '../../components/Header'
+
 import api from '../../services/api'
 
 const SignUp: React.FC = () => {
@@ -22,7 +22,6 @@ const SignUp: React.FC = () => {
   return (
     <Container>
       <Content>
-
         <Form onSubmit={handleSubmit}>
           <h1>Create your account</h1>
           <Input name="name" type="text" placeholder="Nome" />

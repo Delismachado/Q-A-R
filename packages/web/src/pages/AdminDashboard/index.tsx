@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
-// import { Container, Content, Background } from './style'
+import { Container, Content } from './style'
 
 import Header from '../../components/Header'
 import { useAuth } from '../../hooks/auth'
@@ -17,16 +17,18 @@ const AdminDashboard: React.FC = () => {
   }, [user])
 
   return (
-    <>
+    <Container>
       <Header />
-      <h1>Admin Dashboard</h1>
-      <p>Logged in as {user.email}</p>
-      <ul>
-        {questions.map(question => (
-          <li key={question.id}>{question.name}</li>
-        ))}
-      </ul>
-    </>
+      <Content>
+        <h1>Admin Dashboard</h1>
+        <p>Logged in as {user.email}</p>
+        <ul>
+          {questions.map(question => (
+            <li key={question.id}>{question.name}</li>
+          ))}
+        </ul>
+      </Content>
+    </Container>
   )
 }
 
