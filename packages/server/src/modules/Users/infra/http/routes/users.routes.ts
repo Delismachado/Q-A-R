@@ -6,5 +6,6 @@ const usersRouter = Router()
 const usersController = new UsersControllers()
 
 usersRouter.post('/', usersController.create)
+usersRouter.get('/', usersController.index)
 
 export default usersRouter

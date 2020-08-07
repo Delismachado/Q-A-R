@@ -14,12 +14,19 @@ import Select from '../../components/Select'
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth()
   const [questions, setQuestions] = useState([])
+  const [users, setUsers] = useState([])
 
   const options = [{ value: 'boolean', label: 'Yes/No' }]
 
   useEffect(() => {
     api.get('/questions').then(response => {
       setQuestions(response.data)
+    })
+  }, [user])
+
+  useEffect(() => {
+    api.get('/users').then(response => {
+      setUsers(response.data)
     })
   }, [user])
 
@@ -48,6 +55,15 @@ const AdminDashboard: React.FC = () => {
               <li key={question.id}>
                 {question.name}-
                 <Link to={`/answers/${question.id}`}>View answers</Link>
+              </li>
+            ))}
+          </ul>
+          <h2>Users:</h2>
+          <ul>
+            {users.map(user => (
+              <li key={user.id}>
+                {user.email}-
+                <Link to={`/users/${user.id}/answers`}>View answers</Link>
               </li>
             ))}
           </ul>

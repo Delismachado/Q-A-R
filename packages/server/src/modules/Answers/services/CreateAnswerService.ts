@@ -29,7 +29,6 @@ class CreateQuestionService {
     question_id,
     value
   }: IRequest): Promise<Answer> {
-    console.log(user_id)
     const user = await this.usersRepository.findById(user_id)
     const question = await this.questionsRepository.findById(question_id)
 

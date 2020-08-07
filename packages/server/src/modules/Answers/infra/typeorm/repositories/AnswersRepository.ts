@@ -5,6 +5,7 @@ import IAnswersRepository from '@modules/Answers/repositories/IAnswersRepository
 import Answer from '../entities/Answer'
 import ICreateAnswerDTO from '@modules/Answers/dtos/ICreateAnswerDTO'
 import IListAnswersDTO from '@modules/Answers/dtos/IListAnswersDTO'
+import IListByUserDTO from '@modules/Answers/dtos/IListByUserDTO'
 
 @injectable()
 class AnswersRepository implements IAnswersRepository {
@@ -37,6 +38,15 @@ class AnswersRepository implements IAnswersRepository {
     const answers = await this.ormRepository.find({
       where: {
         question: data.question
+      }
+    })
+    return answers
+  }
+
+  public async findByUser(data: IListByUserDTO): Promise<Answer[]> {
+    const answers = await this.ormRepository.find({
+      where: {
+        user: data.user
       }
     })
     return answers
