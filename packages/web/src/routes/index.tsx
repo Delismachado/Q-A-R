@@ -11,6 +11,7 @@ import AdminDashboard from '../pages/AdminDashboard'
 import QuestionList from '../pages/QuestionList'
 import AnswerQuestion from '../pages/AnswerQuestion'
 import UserAnswers from '../pages/UserAnswers'
+import QuestionAnswers from '../pages/QuestionAnswers'
 
 const Routes: React.FC = () => (
   <Switch>
@@ -18,10 +19,15 @@ const Routes: React.FC = () => (
     <Route path="/sign-in" exact component={SignIn} />
     <Route path="/sign-up" exact component={SignUp} />
     <Route path="/user-dashboard" exact component={UserDashboard} isPrivate />
-    <Route path="/questions/:questionId" component={AnswerQuestion} isPrivate />
+    <Route
+      path="/questions/:question_id"
+      component={AnswerQuestion}
+      isPrivate
+    />
     <Route path="/admin-dashboard" exact component={AdminDashboard} isPrivate />
     <Route path="/users/:userId" component={UserAnswers} isPrivate />
     <Route path="/question-list" exact component={QuestionList} isPrivate />
+    <Route path="/answers/:question_id" component={QuestionAnswers} isPrivate />
   </Switch>
 )
 

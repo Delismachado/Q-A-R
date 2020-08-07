@@ -5,6 +5,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import Header from '../../components/Header'
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
+import { Link } from 'react-router-dom'
 
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth()
@@ -23,7 +24,10 @@ const AdminDashboard: React.FC = () => {
       <p>Logged in as {user.email}</p>
       <ul>
         {questions.map(question => (
-          <li key={question.id}>{question.name}</li>
+          <li key={question.id}>
+            {question.name}-
+            <Link to={`/answers/${question.id}`}>View answers</Link>
+          </li>
         ))}
       </ul>
     </>
