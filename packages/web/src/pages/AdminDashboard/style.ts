@@ -17,9 +17,6 @@ export const Content = styled.div`
   background: #f0f0f5;
   box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
   border-radius: 16px;
-
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   div {
     width: 100%;

@@ -6,11 +6,16 @@ import Header from '../../components/Header'
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import { Link } from 'react-router-dom'
+import { Form } from '@unform/web'
+import Input from '../../components/Input'
+import Select from '../../components/Select'
 // import { Content } from '../../components/Input/style'
 
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth()
   const [questions, setQuestions] = useState([])
+
+  const options = [{ value: 'boolean', label: 'Yes/No' }]
 
   useEffect(() => {
     api.get('/questions').then(response => {
@@ -18,13 +23,26 @@ const AdminDashboard: React.FC = () => {
     })
   }, [user])
 
+  const handleNewQuestion = (data: object): void => {
+    api.post('/questions', data)
+  }
+
   return (
     <>
       <Header />
-      <h1>Admin Dashboard</h1>
-      <p>Logged in as {user.email}</p>
       <Container>
         <Content>
+          <h1>Admin Dashboard</h1>
+          <h2>Create new question:</h2>
+          <Form onSubmit={handleNewQuestion}>
+            <Input placeholder="Question title" name="name" />
+            <Select name="type" options={options} />
+            <Input placeholder="Description" name="description" />
+            <button className="button" type="submit">
+              Register
+            </button>
+          </Form>
+          <h2>Questions:</h2>
           <ul>
             {questions.map(question => (
               <li key={question.id}>

@@ -24,14 +24,10 @@ const SignUp: React.FC = () => {
       <Content>
         <Form onSubmit={handleSubmit}>
           <h1>Create your account</h1>
-          <Input name="name" type="text" placeholder="Nome" />
           <Input name="email" type="text" placeholder="E-mail" />
-
-          <Input name="password" type="text" placeholder="Senha" />
-
-          <label htmlFor="acount">who are you:</label>
+          <Input name="password" type="text" placeholder="Password" />
+          <label htmlFor="acount">Who are you:</label>
           <Select name="role" options={options} />
-
           <button type="submit">Register</button>
           <Link to="/sign-in">back to login</Link>
         </Form>

@@ -4,7 +4,7 @@ import { container } from 'tsyringe'
 import CreateAnswerService from '../../../services/CreateAnswerService'
 import ListAnswersService from '@modules/Answers/services/ListAnswersService'
 
-export default class QuestionsController {
+export default class AnswersController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { question_id, value } = request.body
     const user_id = request.user.id

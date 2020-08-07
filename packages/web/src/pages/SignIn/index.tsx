@@ -21,7 +21,7 @@ interface SignInFormData {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null)
 
-  const { signIn } = useAuth()
+  const { signIn, user } = useAuth()
   const history = useHistory()
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
@@ -30,7 +30,8 @@ const SignIn: React.FC = () => {
           email: data.email,
           password: data.password
         })
-        history.push('/admin-dashboard')
+
+        history.push(`/${user.role}-dashboard`)
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err)
