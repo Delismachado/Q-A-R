@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
-// import {  } from './style'
+import { Container, Content } from './style'
 
 import Header from '../../components/Header'
 import { Form } from '@unform/web'
@@ -19,11 +19,15 @@ const AnswerQuestion: React.FC = () => {
   return (
     <>
       <Header />
-      <h1>Answer Question X</h1>
-      <Form onSubmit={handleSubmit}>
-        <label htmlFor="questionTitle">Question title</label>
-        <Input name="answer"></Input>
-      </Form>
+      <Container>
+        <Content>
+          <h1>Answer Question X</h1>
+          <Form onSubmit={handleSubmit}>
+            <label htmlFor="questionTitle">Question title</label>
+            <Input name="answer"></Input>
+          </Form>
+        </Content>
+      </Container>
     </>
   )
 }
