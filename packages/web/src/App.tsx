@@ -3,16 +3,18 @@ import { BrowserRouter as Router } from 'react-router-dom'
 
 import Routes from './routes'
 
+import AppProvider from './hooks/index'
+
 import GlobalStyle from './styles/Global'
 
 const App: React.FC = () => {
   return (
-    <>
-      <GlobalStyle />
-      <Router>
+    <Router>
+      <AppProvider>
         <Routes />
-      </Router>
-    </>
+      </AppProvider>
+      <GlobalStyle />
+    </Router>
   )
 }
 

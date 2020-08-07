@@ -7,7 +7,6 @@ import ListQuestionsService from '../../../services/ListQuestionsService'
 export default class QuestionsController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { name, description, type } = request.body
-
     const createQuestion = container.resolve(CreateQuestionService)
 
     const question = await createQuestion.execute({ name, description, type })

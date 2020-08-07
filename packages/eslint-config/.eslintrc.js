@@ -25,7 +25,8 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     "space-before-function-paren": 'off',
-    'camelcase': 'off'
+    'camelcase': 'off',
+    "react-prop-types": "off"
   },
   settings: {
     'import/resolver': {

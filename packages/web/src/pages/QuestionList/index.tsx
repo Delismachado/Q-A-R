@@ -11,6 +11,7 @@ const NewQuestion: React.FC = () => {
   const [description, setDescription] = useState('')
   const [type, setType] = useState('')
   const [questions, setQuestion] = useState([])
+  const [users, setUsers] = useState([])
   const history = useHistory()
 
   useEffect(() => {
@@ -46,7 +47,8 @@ const NewQuestion: React.FC = () => {
             <section>
               <h1>Cadastrar nova pergunta</h1>
               <p>
-                Descreva a pergunta detalhadamente para encontrar uma boa resposta.
+                Descreva a pergunta detalhadamente para encontrar uma boa
+                resposta.
               </p>
 
               <Link className="back-link" to="/admin-dashboard">
@@ -78,6 +80,12 @@ const NewQuestion: React.FC = () => {
                 ))}
               </ul>
             </form>
+            <h1>Users</h1>
+            <ul>
+              {users.map(user => (
+                <li key={user.id}>{user.name}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </Content>
