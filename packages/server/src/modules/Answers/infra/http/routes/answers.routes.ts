@@ -8,5 +8,6 @@ answersRouter.use(ensureAuthenticated)
 const answersController = new AnswersController()
 
 answersRouter.post('/', answersController.create)
+answersRouter.get('/', answersController.index)
 
 export default answersRouter
