@@ -1,7 +1,6 @@
 /* eslint-disable no-useless-constructor */
 import { inject, injectable } from 'tsyringe'
 
-import Question from '../infra/typeorm/entities/Question'
 import IQuestionsRepository from '../repositories/IQuestionsRepository'
 import IAnswersRepository from '@modules/Answers/repositories/IAnswersRepository'
 import Answer from '@modules/Answers/infra/typeorm/entities/Answer'

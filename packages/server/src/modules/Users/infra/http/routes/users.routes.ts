@@ -5,14 +5,13 @@ import UsersAnswersController from '../controller/UsersAnswersController'
 import ensureAuthenticated from '../middlewares/ensureAuthenticated'
 
 const usersRouter = Router()
+usersRouter.use(ensureAuthenticated)
 const usersController = new UsersControllers()
 
 usersRouter.post('/', usersController.create)
 usersRouter.get('/', usersController.index)
 
-const usersAnswersRouter = Router()
-
-usersAnswersRouter.use(ensureAuthenticated)
+const usersAnswersRouter = Router({ mergeParams: true })
 
 const usersAnswersController = new UsersAnswersController()
 usersAnswersRouter.post('/', usersAnswersController.create)

@@ -18,8 +18,9 @@ export default class UsersAnswersController {
   }
 
   public async index(request: Request, response: Response): Promise<Response> {
+    const { user_id } = request.params
     const listAnswers = container.resolve(ListAnswersService)
-    const answers = await listAnswers.execute(request.user.id)
-    return response.status(201).json(answers)
+    const answers = await listAnswers.execute(user_id)
+    return response.status(200).json(answers)
   }
 }

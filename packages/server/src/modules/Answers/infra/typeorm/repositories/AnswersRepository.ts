@@ -4,9 +4,8 @@ import { injectable } from 'tsyringe'
 import IAnswersRepository from '@modules/Answers/repositories/IAnswersRepository'
 import Answer from '../entities/Answer'
 import ICreateAnswerDTO from '@modules/Answers/dtos/ICreateAnswerDTO'
-import IListAnswersDTO from '@modules/Answers/dtos/IListAnswersDTO'
-import IListByUserDTO from '@modules/Answers/dtos/IListByUserDTO'
 import Question from '@modules/Questions/infra/typeorm/entities/Question'
+import User from '@modules/Users/infra/typeorm/entities/User'
 
 @injectable()
 class AnswersRepository implements IAnswersRepository {
@@ -42,11 +41,9 @@ class AnswersRepository implements IAnswersRepository {
     return answers
   }
 
-  public async findByUser(data: IListByUserDTO): Promise<Answer[]> {
+  public async findByUser(user: User): Promise<Answer[]> {
     const answers = await this.ormRepository.find({
-      where: {
-        user: data.user
-      }
+      where: { user }
     })
     return answers
   }

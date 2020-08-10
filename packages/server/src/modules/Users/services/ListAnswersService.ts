@@ -20,7 +20,7 @@ class ListAnswersService {
     if (!user) {
       throw new AppError('User not found')
     }
-    const answers = await this.answersRepository.findByUser({ user })
+    const answers = await this.answersRepository.findByUser(user)
     return answers
   }
 }
