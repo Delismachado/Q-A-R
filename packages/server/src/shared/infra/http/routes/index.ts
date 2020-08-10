@@ -8,9 +8,7 @@ const routes = express.Router()
 
 routes.use('/users', usersRouter)
 routes.use('/sessions', sessionsRouter)
-
 routes.use('/questions', questionsRouter)
-
 routes.use('/answers', answersRouter)
 
 export default routes
