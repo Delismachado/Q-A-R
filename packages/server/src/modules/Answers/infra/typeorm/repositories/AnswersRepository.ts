@@ -6,6 +6,7 @@ import Answer from '../entities/Answer'
 import ICreateAnswerDTO from '@modules/Answers/dtos/ICreateAnswerDTO'
 import IListAnswersDTO from '@modules/Answers/dtos/IListAnswersDTO'
 import IListByUserDTO from '@modules/Answers/dtos/IListByUserDTO'
+import Question from '@modules/Questions/infra/typeorm/entities/Question'
 
 @injectable()
 class AnswersRepository implements IAnswersRepository {
@@ -34,11 +35,9 @@ class AnswersRepository implements IAnswersRepository {
     return answers
   }
 
-  public async list(data: IListAnswersDTO): Promise<Answer[]> {
+  public async findByQuestion(question: Question): Promise<Answer[]> {
     const answers = await this.ormRepository.find({
-      where: {
-        question: data.question
-      }
+      where: { question }
     })
     return answers
   }
