@@ -8,30 +8,52 @@ import api from '../../services/api'
 import { Link } from 'react-router-dom'
 import { Form } from '@unform/web'
 import Input from '../../components/Input'
-import Select from '../../components/Select'
+import Select, {OptionType} from '../../components/Select'
 // import { Content } from '../../components/Input/style'
 
+interface CreateQuestionData {
+  name: string
+  type: string
+  description: string
+}
+
 const AdminDashboard: React.FC = () => {
-  const { user } = useAuth()
+  const { user, token } = useAuth()
   const [questions, setQuestions] = useState([])
   const [users, setUsers] = useState([])
 
-  const options = [{ value: 'boolean', label: 'Yes/No' }]
+  const options: OptionType = [{ value: 'boolean', label: 'Yes/No' }]
 
   useEffect(() => {
-    api.get('/questions').then(response => {
-      setQuestions(response.data)
-    })
+    api
+      .get('/questions', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        setQuestions(response.data)
+      })
   }, [user])
 
   useEffect(() => {
-    api.get('/users').then(response => {
-      setUsers(response.data)
-    })
+    api
+      .get('/users', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        setUsers(response.data)
+      })
   }, [user])
 
-  const handleNewQuestion = (data: object): void => {
-    api.post('/questions', data)
+  const handleNewQuestion = (data: CreateQuestionData): void => {
+    api.post('/questions', data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
   }
 
   return (

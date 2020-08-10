@@ -2,11 +2,14 @@ import React, { useRef, useEffect } from 'react'
 import ReactSelect, { OptionTypeBase, Props as SelectProps } from 'react-select'
 import { useField } from '@unform/core'
 
-interface Props extends SelectProps<OptionTypeBase> {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface OptionType extends OptionTypeBase {}
+
+export interface Props extends SelectProps<OptionType> {
   name: string
 }
 
-const Select: React.FC<Props> = ({ name, ...rest }) => {
+const Select: React.FC<Props> = ({ name, ...rest }: Props) => {
   const selectRef = useRef(null)
   const { fieldName, defaultValue, registerField, error } = useField(name)
 

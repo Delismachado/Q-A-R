@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 
 import { container } from 'tsyringe'
-import ListUsersService from '@modules/Users/services/ListUsersService'
 import CreateUserAnswerService from '@modules/Users/services/CreateUserAnswerService'
 import ListAnswersService from '@modules/Users/services/ListAnswersService'
 

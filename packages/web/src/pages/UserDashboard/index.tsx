@@ -8,13 +8,19 @@ import api from '../../services/api'
 import { Link } from 'react-router-dom'
 
 const UserDashboard: React.FC = () => {
-  const { user } = useAuth()
+  const { user, token } = useAuth()
   const [questions, setQuestions] = useState([])
 
   useEffect(() => {
-    api.get('/questions').then(response => {
-      setQuestions(response.data)
-    })
+    api
+      .get('/questions', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        setQuestions(response.data)
+      })
   }, [user])
 
   return (

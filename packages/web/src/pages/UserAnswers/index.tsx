@@ -24,7 +24,7 @@ const UserAnswers: React.FC = () => {
 
   useEffect(() => {
     api
-      .get(`/answers/user/${user_id}`, {
+      .get(`/users/${user_id}/answers`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

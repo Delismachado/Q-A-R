@@ -20,7 +20,7 @@ const AnswerQuestion: React.FC = () => {
       Authorization: `Bearer ${token}`
     }
     api.post(
-      '/answers',
+      `/users/${user.id}/answers`,
       {
         value: data.value,
         question_id: question_id

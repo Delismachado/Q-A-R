@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { Container, Content  } from './style'
+import { Container, Content } from './style'
 
 import Header from '../../components/Header'
 import api from '../../services/api'
@@ -24,10 +24,7 @@ const QuestionAnswers: React.FC = () => {
 
   useEffect(() => {
     api
-      .get('/answers', {
-        params: {
-          question_id: question_id
-        },
+      .get(`/questions/${question_id}/answers`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
