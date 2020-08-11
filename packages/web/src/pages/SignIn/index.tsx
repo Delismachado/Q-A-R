@@ -12,6 +12,7 @@ import Input from '../../components/Input'
 import Button from '../../components/Button'
 
 import { Container, Content, Background } from './style'
+import Header from '../../components/Header'
 
 interface SignInFormData {
   email: string
@@ -44,23 +45,26 @@ const SignIn: React.FC = () => {
     [signIn, history]
   )
   return (
-    <Container>
-      <Content>
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <h1>Faça seu login</h1>
+    <>
+      <Header />
+      <Container>
+        <Content>
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <h1>Faça seu login</h1>
 
-          <Input name="email" placeholder="E-mail" />
+            <Input name="email" placeholder="E-mail" />
 
-          <Input name="password" type="Password" placeholder="Senha" />
+            <Input name="password" type="Password" placeholder="Senha" />
 
-          <Button type="submit">Entrar</Button>
+            <Button type="submit">Entrar</Button>
 
-          <a href="forgot">Esqueci minha senha</a>
-        </Form>
-        <Link to="/sign-up">Criar conta</Link>
-      </Content>
-      <Background />
-    </Container>
+            <a href="forgot">Esqueci minha senha</a>
+          </Form>
+          <Link to="/sign-up">Criar conta</Link>
+        </Content>
+        <Background />
+      </Container>
+    </>
   )
 }
 

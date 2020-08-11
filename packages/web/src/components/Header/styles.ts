@@ -1,30 +1,50 @@
 import styled from 'styled-components'
 
-interface ContainerProps {
-  size?: 'small' | 'large'
-}
-
-export const Container = styled.div<ContainerProps>`
-  background: #6177a4;
+export const Container = styled.div`
+  background: #80495e;
   header {
-    width: 1120px;
+    width: 100%;
+    padding: 50px;
     margin: 0 auto;
-    padding: ${({ size }) => (size === 'small' ? '0 20px ' : '0 20px 150px')};
     display: flex;
     align-items: center;
-    nav {
-      margin: 0 auto;
+    justify-content: space-between;
+    background: #80495e;
+    font-family: Roboto, sans-serif;
+    
       h1 {
-        padding: 50px;
+        margin-right: 16px;
+        display: flex;
         color: #fff;
-        text-decoration: none;
-        font-size: 35px;
-        font-style: bold;
-        transition: opacity 0.2s;
-        &:hover {
-          opacity: 0.6;
-        }
+        font-weight: 700;
+        font-style: none;
+        height: 20px;
       }
     }
+
+    p {
+      font-size: 16px;
+      color: #fff;
+      margin-left: 950px;
+      margin-top: 10px;
+    }
+
+    button {
+    background: #fff;
+    height: 56px;
+    border-radius: 10px;
+    border: 0;
+    padding: 0 16px;
+    color: #312e38;
+    width: 5%;
+    font-weight: 500;
+    text-decoration-color: #fff;
+    margin-top: 16px;
+    transition: background-color 0.2s;
+  }
+  button:hover {
+    background-color: #62102f;
+  }
+    
   }
 `

@@ -1,76 +1,72 @@
 import styled from 'styled-components'
 
-export const Container = styled.div`
+export const Header = styled.header`
   width: 100%;
-  max-width: 1120px;
-  height: 50vh;
+  padding: 50px;
   margin: 0 auto;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
-
-export const Content = styled.div`
-  width: 100%;
-  padding: 100px;
-  background: #f0f0f5;
-  box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
-  border-radius: 16px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  div {
-    width: 100%;
-    max-width: 500px;
-
-    section {
-      width: 100%;
-      max-width: 380px;
-
-      a {
-        padding: 16px;
-      }
-
-      h1 {
-        margin: 64px 0 32px;
-        font-size: 26px;
-      }
-
-      p {
-        font-size: 18px;
-        color: #737380;
-        line-height: 32px;
-        margin: 16px;
-      }
-    }
-
-    form {
-      width: 100%;
-      max-width: 450px;
-
-      input,
-      textarea {
-        margin-top: 8px;
-        width: 500px;
-      }
-      button {
-        padding: 8px;
-        margin-top: 8px;
-        width: 500px;
-        background: #a1aabc;
-      }
-    }
-    h1 {
-      margin: 64px 0 32px;
-      font-size: 26px;
-    }
-    ul {
-      margin: 64px 0 32px;
-      font-size: 26px;
-    }
+  background: #80495e;
+  text-decoration: none;
+  a {
+    display: flex;
+    color: #fff;
+    font-weight: 700;
+    font-style: none;
+  }
+  h1 {
+    margin-right: 16px;
+    display: flex;
+    color: #fff;
+    font-weight: 700;
+    font-style: none;
+    height: 20px;
   }
 `
 
+export const Container = styled.div`
+  width: 90%;
+  max-width: 1990px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`
+
+export const Content = styled.div`
+  max-width: 860px;
+  flex: 1;
+  margin-top: 190px;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  h1 {
+    font-size: 54px;
+    text-decoration: none;
+  }
+  p {
+    font-size: 24px;
+    line-height: 38px;
+    margin-top: 24px;
+    text-decoration: none;
+  }
+  a {
+    background: #80495e;
+    height: 56px;
+    border-radius: 10px;
+    padding: 0 16px;
+    color: #fff;
+    width: 50%;
+    font-weight: 500;
+    text-decoration: none;
+    margin-top: 100px;
+    transition: background-color 0.2s;
+    text-align: center;
+    text-justify: center;
+  }
+  a:hover {
+    background-color: #62102f;
+  }
+`

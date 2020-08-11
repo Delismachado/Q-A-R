@@ -62,8 +62,8 @@ const AdminDashboard: React.FC = () => {
       <Container>
         <Content>
           <h1>Admin Dashboard</h1>
-          <h2>Create new question:</h2>
           <Form onSubmit={handleNewQuestion}>
+            <h2>Create new question</h2>
             <Input placeholder="Question title" name="name" />
             <Select name="type" options={options} />
             <Input placeholder="Description" name="description" />
@@ -71,24 +71,26 @@ const AdminDashboard: React.FC = () => {
               Register
             </button>
           </Form>
-          <h2>Questions:</h2>
-          <ul>
-            {questions.map(question => (
-              <li key={question.id}>
-                {question.name}-
-                <Link to={`/answers/${question.id}`}>View answers</Link>
-              </li>
-            ))}
-          </ul>
-          <h2>Users:</h2>
-          <ul>
-            {users.map(user => (
-              <li key={user.id}>
-                {user.email}-
-                <Link to={`/users/${user.id}/answers`}>View answers</Link>
-              </li>
-            ))}
-          </ul>
+          <div>
+            <h2>Questions:</h2>
+            <ul>
+              {questions.map(question => (
+                <li key={question.id}>
+                  {question.name}-
+                  <Link to={`/answers/${question.id}`}>View answers</Link>
+                </li>
+              ))}
+            </ul>
+            <h2>Users:</h2>
+            <ul>
+              {users.map(user => (
+                <li key={user.id}>
+                  {user.email}-
+                  <Link to={`/users/${user.id}/answers`}>View answers</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </Content>
       </Container>
     </>

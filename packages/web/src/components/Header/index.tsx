@@ -19,16 +19,14 @@ const Header: React.FC<HeaderProps> = ({ size = 'small' }: HeaderProps) => {
   }, [user])
 
   return (
-    <Container size={size}>
+    <Container>
       <header>
-        <nav>
-          <h1>Welcome to Expert System</h1>
-        </nav>
+        <h1>Welcome to Expert System</h1>
         {!!user && (
           <>
             <p>Logged in as {user.email}</p>
             <button type="button" onClick={handleLogOut}>
-              Log out
+              Go out
             </button>
           </>
         )}
