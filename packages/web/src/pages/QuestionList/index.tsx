@@ -3,7 +3,9 @@ import { Link, useHistory } from 'react-router-dom'
 
 import { Container, Content } from './style'
 
+
 import api from '../../services/api'
+import { Header } from '../Home/style'
 // import { response } from 'express'
 
 const NewQuestion: React.FC = () => {
@@ -40,56 +42,59 @@ const NewQuestion: React.FC = () => {
   }
 
   return (
-    <Container>
-      <Content>
-        <div className="new-incident-container">
-          <div className="content">
-            <section>
-              <h1>Cadastrar nova pergunta</h1>
-              <p>
-                Descreva a pergunta detalhadamente para encontrar uma boa
-                resposta.
-              </p>
+    <>
+      <Header />
+      <Container>
+        <Content>
+          <div className="new-incident-container">
+            <div className="content">
+              <section>
+                <h1>Cadastrar nova pergunta</h1>
+                <p>
+                  Descreva a pergunta detalhadamente para encontrar uma boa
+                  resposta.
+                </p>
 
-              <Link className="back-link" to="/admin-dashboard">
-                Voltar para home
-              </Link>
-            </section>
-            <form onSubmit={handleNewQuestion}>
-              <input
-                placeholder="Título da pergunta"
-                value={name}
-                onChange={e => setName(e.target.value)}
-              />
-              <input
-                placeholder="Type"
-                value={type}
-                onChange={e => setType(e.target.value)}
-              />
-              <textarea
-                placeholder="Descrição"
-                value={description}
-                onChange={e => setDescription(e.target.value)}
-              />
-              <button className="button" type="submit">
-                Cadastrar
-              </button>
+                <Link className="back-link" to="/admin-dashboard">
+                  Voltar para home
+                </Link>
+              </section>
+              <form onSubmit={handleNewQuestion}>
+                <input
+                  placeholder="Título da pergunta"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                />
+                <input
+                  placeholder="Type"
+                  value={type}
+                  onChange={e => setType(e.target.value)}
+                />
+                <textarea
+                  placeholder="Descrição"
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
+                />
+                <button className="button" type="submit">
+                  Cadastrar
+                </button>
+                <ul>
+                  {questions.map(question => (
+                    <li key={question.id}>{question.name}</li>
+                  ))}
+                </ul>
+              </form>
+              <h1>Users</h1>
               <ul>
-                {questions.map(question => (
-                  <li key={question.id}>{question.name}</li>
+                {users.map(user => (
+                  <li key={user.id}>{user.name}</li>
                 ))}
               </ul>
-            </form>
-            <h1>Users</h1>
-            <ul>
-              {users.map(user => (
-                <li key={user.id}>{user.name}</li>
-              ))}
-            </ul>
+            </div>
           </div>
-        </div>
-      </Content>
-    </Container>
+        </Content>
+      </Container>
+    </>
   )
 }
 

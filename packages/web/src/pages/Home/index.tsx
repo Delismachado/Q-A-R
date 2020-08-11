@@ -1,18 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { Container, Content } from './style'
-
-import Header from '../../components/Header'
+import { Container, Content, Header } from './style'
 
 const Home: React.FC = () => (
   <>
-    <Header />
+    <Header>
+      <h1>Logo aqui</h1>
+      <Link to="/sign-up">Faça seu cadastro</Link>
+    </Header>
     <Container>
       <Content>
-        <h1>Home</h1>
-        <Link to="/sign-in">Sign-in</Link><br/>
-        <Link to="/sign-up">Sign-up</Link>
+        <h1>Welcome to your smart platform</h1>
+        <p>Lorem ipsum is placeholder text commonly used in the graphic</p>
+        <Link to="/sign-in">SignIn</Link>
       </Content>
     </Container>
   </>
