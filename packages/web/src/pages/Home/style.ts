@@ -49,27 +49,23 @@ export const Content = styled.div`
     font-size: 1.8rem;
     line-height: 38px;
   }
-`
-
-/**
- * 
- * 
 
   a {
     background: #80495e;
-    height: 56px;
+    height: 45px;
     border-radius: 10px;
     padding: 0 16px;
     color: #fff;
     width: 50%;
     font-weight: 500;
+    font-size: 28px;
+    line-height: 40px;
     text-decoration: none;
-    margin-top: 100px;
     transition: background-color 0.2s;
     text-align: center;
     text-justify: center;
+    a:hover {
+      background-color: #62102f;
+    }
   }
-  a:hover {
-    background-color: #62102f;
-  }
- */
+`

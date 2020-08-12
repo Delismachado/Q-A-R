@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react'
 
-import { Container, Content } from './style'
+import { Container, Content, StyledForm, Table } from './style'
 
 import Header from '../../components/Header'
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import { Link } from 'react-router-dom'
-import { Form } from '@unform/web'
 import Input from '../../components/Input'
-import Select, {OptionType} from '../../components/Select'
+import Select, { OptionType } from '../../components/Select'
 // import { Content } from '../../components/Input/style'
 
 interface CreateQuestionData {
@@ -60,37 +59,40 @@ const AdminDashboard: React.FC = () => {
     <>
       <Header />
       <Container>
+        <h1>Admin Dashboard</h1>
         <Content>
-          <h1>Admin Dashboard</h1>
-          <Form onSubmit={handleNewQuestion}>
-            <h2>Create new question</h2>
+          <h2>Create new question</h2>
+          <StyledForm onSubmit={handleNewQuestion}>
             <Input placeholder="Question title" name="name" />
             <Select name="type" options={options} />
             <Input placeholder="Description" name="description" />
             <button className="button" type="submit">
               Register
             </button>
-          </Form>
-          <div>
-            <h2>Questions:</h2>
-            <ul>
-              {questions.map(question => (
-                <li key={question.id}>
-                  {question.name}-
-                  <Link to={`/answers/${question.id}`}>View answers</Link>
-                </li>
+          </StyledForm>
+        </Content>
+        <Content>
+          <h2>Questions</h2>
+          <Table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Question</th>
+                <th>View Answers</th>
+              </tr>
+            </thead>
+            <tbody>
+              {questions.map((question, idx) => (
+                <tr key={question.id}>
+                  <td>{idx}</td>
+                  <td>{question.name}</td>
+                  <td>
+                    <Link to={`/answers/${question.id}`}>View answers</Link>
+                  </td>
+                </tr>
               ))}
-            </ul>
-            <h2>Users:</h2>
-            <ul>
-              {users.map(user => (
-                <li key={user.id}>
-                  {user.email}-
-                  <Link to={`/users/${user.id}/answers`}>View answers</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+            </tbody>
+          </Table>
         </Content>
       </Container>
     </>

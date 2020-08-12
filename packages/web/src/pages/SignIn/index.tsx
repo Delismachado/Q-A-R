@@ -11,7 +11,7 @@ import getValidationErrors from '../../utils/getValidationErrors'
 import Input from '../../components/Input'
 import Button from '../../components/Button'
 
-import { Container, Content, Background } from './style'
+import { Container, Content, StyledForm } from './style'
 import Header from '../../components/Header'
 
 interface SignInFormData {
@@ -49,20 +49,17 @@ const SignIn: React.FC = () => {
       <Header />
       <Container>
         <Content>
-          <Form ref={formRef} onSubmit={handleSubmit}>
-            <h1>Faça seu login</h1>
-
+          <h1>Faça seu login</h1>
+          <StyledForm ref={formRef} onSubmit={handleSubmit}>
             <Input name="email" placeholder="E-mail" />
 
             <Input name="password" type="Password" placeholder="Senha" />
 
             <Button type="submit">Entrar</Button>
-
-            <a href="forgot">Esqueci minha senha</a>
-          </Form>
+          </StyledForm>
           <Link to="/sign-up">Criar conta</Link>
+          <a href="forgot">Esqueci minha senha</a>
         </Content>
-        <Background />
       </Container>
     </>
   )

@@ -7,8 +7,8 @@ import { Container, Content, Header } from './style'
 
 const Home: React.FC = () => (
   <>
-    <Header>
-      <img src={logoImg} alt="Logo"/>
+    <Header> 
+      <img src={logoImg} alt="Logo" />
       <Link to="/sign-up">Sign up</Link>
     </Header>
     <Container>

@@ -5,7 +5,7 @@ import React, { useCallback } from 'react'
 import { Container } from './styles'
 import { useAuth } from '../../hooks/auth'
 
-// import Logo from '../../assets/logo.jpeg'
+// import logoImg from '../../assets/logo.png'
 
 interface HeaderProps {
   size?: 'small' | 'large'

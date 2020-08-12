@@ -1,50 +1,28 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
+  width: 100%;
+  height: 20vh;
+  padding: 3em;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background: #80495e;
-  header {
-    width: 100%;
-    padding: 50px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #80495e;
-    font-family: Roboto, sans-serif;
-    
-      h1 {
-        margin-right: 16px;
-        display: flex;
-        color: #fff;
-        font-weight: 700;
-        font-style: none;
-        height: 20px;
-      }
-    }
-
-    p {
-      font-size: 16px;
-      color: #fff;
-      margin-left: 950px;
-      margin-top: 10px;
-    }
-
-    button {
-    background: #fff;
-    height: 56px;
+  a {
+    font-family: Roboto;
+    font-weight: 100;
+    font-size: 18px;
+    line-height: 21px;
+    color: #fff;
+    text-decoration: none;
     border-radius: 10px;
-    border: 0;
-    padding: 0 16px;
-    color: #312e38;
-    width: 5%;
-    font-weight: 500;
-    text-decoration-color: #fff;
-    margin-top: 16px;
-    transition: background-color 0.2s;
+    border: 1px solid;
+    padding: 10px;
   }
-  button:hover {
-    background-color: #62102f;
+  img {
+    height: 5em;
   }
-    
+  @media (min-width: 700px) {
   }
 `
