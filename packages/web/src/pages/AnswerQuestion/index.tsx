@@ -5,7 +5,6 @@ import { Container, Content } from './style'
 
 import Header from '../../components/Header'
 import { Form } from '@unform/web'
-import Input from '../../components/Input'
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import Select from '../../components/Select'
