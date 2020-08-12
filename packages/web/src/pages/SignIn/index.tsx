@@ -11,8 +11,11 @@ import getValidationErrors from '../../utils/getValidationErrors'
 import Input from '../../components/Input'
 import Button from '../../components/Button'
 
-import { Container, Content, StyledForm } from './style'
+import { StyledForm } from './style'
+
 import Header from '../../components/Header'
+import Container from '../../components/Container'
+import Content from '../../components/Content'
 
 interface SignInFormData {
   email: string

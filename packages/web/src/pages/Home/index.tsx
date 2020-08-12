@@ -1,16 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import logoImg from '../../assets/logo.png'
 
-import { Container, Content, Header } from './style'
+import { Container, Content } from './style'
+
+import Header from '../../components/Header'
 
 const Home: React.FC = () => (
   <>
-    <Header> 
-      <img src={logoImg} alt="Logo" />
-      <Link to="/sign-up">Sign up</Link>
-    </Header>
+    <Header />
     <Container>
       <Content>
         <h1>Welcome to your smart platform</h1>

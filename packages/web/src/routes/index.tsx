@@ -26,7 +26,6 @@ const Routes: React.FC = () => (
     />
     <Route path="/admin-dashboard" exact component={AdminDashboard} isPrivate />
     <Route path="/users/:user_id/answers" component={UserAnswers} isPrivate />
-    <Route path="/question-list" exact component={QuestionList} isPrivate />
     <Route path="/answers/:question_id" component={QuestionAnswers} isPrivate />
   </Switch>
 )

@@ -1,14 +1,18 @@
-import React, { useCallback } from 'react'
-import { Link, useParams } from 'react-router-dom'
-
-import { Container, Content } from './style'
-
-import Header from '../../components/Header'
+import React from 'react'
+import { useParams } from 'react-router-dom'
 import { Form } from '@unform/web'
-import { useAuth } from '../../hooks/auth'
+
 import api from '../../services/api'
+
+import { useAuth } from '../../hooks/auth'
+
 import Select from '../../components/Select'
 import Button from '../../components/Button'
+import Header from '../../components/Header'
+import Container from '../../components/Container'
+import Content from '../../components/Content'
+
+// import { Container, Content } from './style'
 
 const AnswerQuestion: React.FC = () => {
   const { user, token } = useAuth()

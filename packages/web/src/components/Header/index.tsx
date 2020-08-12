@@ -1,37 +1,39 @@
 import React, { useCallback } from 'react'
 
-// import { Link } from 'react-router-dom'
-
-import { Container } from './styles'
+import { HeaderStyle } from './styles'
 import { useAuth } from '../../hooks/auth'
+import { Link } from 'react-router-dom'
 
-// import logoImg from '../../assets/logo.png'
+import logoImg from '../../assets/logo.png'
 
-interface HeaderProps {
-  size?: 'small' | 'large'
-}
-
-const Header: React.FC<HeaderProps> = ({ size = 'small' }: HeaderProps) => {
+const Header: React.FC = () => {
   const { user, signOut } = useAuth()
 
   const handleLogOut = useCallback(() => {
     signOut()
   }, [user])
 
+  let userPanel
+  if (user) {
+    userPanel = (
+      <>
+        <p>Logged in as {user.email}</p>
+        <button type="button" onClick={handleLogOut}>
+          Go out
+        </button>
+      </>
+    )
+  } else {
+    userPanel = <Link to="/sign-up">Sign up</Link>
+  }
+
   return (
-    <Container>
-      <header>
-        <h1>Welcome to Expert System</h1>
-        {!!user && (
-          <>
-            <p>Logged in as {user.email}</p>
-            <button type="button" onClick={handleLogOut}>
-              Go out
-            </button>
-          </>
-        )}
-      </header>
-    </Container>
+    <HeaderStyle>
+      <Link to="/">
+        <img src={logoImg} alt="Logo" />
+      </Link>
+      {userPanel}
+    </HeaderStyle>
   )
 }
 
