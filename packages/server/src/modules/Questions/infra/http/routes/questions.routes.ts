@@ -11,6 +11,7 @@ const questionsController = new QuestionsController()
 
 questionsRouter.post('/', questionsController.create)
 questionsRouter.get('/', questionsController.index)
+questionsRouter.get('/:question_id', questionsController.get)
 
 const questionsAnswersRouter = Router({ mergeParams: true })
 const questionsAnswersController = new QuestionsAnswersController()

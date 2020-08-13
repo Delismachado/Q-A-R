@@ -20,7 +20,7 @@ export default class QuestionsController {
   }
 
   public async get(request: Request, response: Response): Promise<Response> {
-    const { question_id } = request.body
+    const { question_id } = request.params
     const getQuestion = container.resolve(GetQuestionService)
     const question = await getQuestion.execute(question_id)
     return response.status(201).json(question)

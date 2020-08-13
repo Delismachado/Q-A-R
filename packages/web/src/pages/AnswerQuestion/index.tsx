@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Form } from '@unform/web'
 
@@ -14,14 +14,28 @@ import Content from '../../components/Content'
 
 // import { Container, Content } from './style'
 
+interface QuestionData {
+  name: string
+}
+
 const AnswerQuestion: React.FC = () => {
   const { user, token } = useAuth()
   const { question_id } = useParams()
+  const [question, setQuestion] = useState<QuestionData>({
+    name: 'Loading...'
+  })
+
+  const headers = {
+    Authorization: `Bearer ${token}`
+  }
+
+  useEffect(() => {
+    api
+      .get(`/questions/${question_id}`, { headers: headers })
+      .then(response => setQuestion(response.data as QuestionData))
+  }, [question_id])
 
   const handleSubmit = data => {
-    const headers = {
-      Authorization: `Bearer ${token}`
-    }
     api.post(
       `/users/${user.id}/answers`,
       {
@@ -45,9 +59,8 @@ const AnswerQuestion: React.FC = () => {
       <Header />
       <Container>
         <Content>
-          <h1>Answer Question X</h1>
+          <h1>{question.name}</h1>
           <Form onSubmit={handleSubmit}>
-            <label htmlFor="questionTitle">Question title</label>
             <Select name="value" options={options}></Select>
             <Button type="submit">Register</Button>
           </Form>
