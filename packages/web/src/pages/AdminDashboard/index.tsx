@@ -94,6 +94,30 @@ const AdminDashboard: React.FC = () => {
             </tbody>
           </Table>
         </Content>
+        <Content>
+          <h2>Users</h2>
+          <Table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>User name</th>
+                <th>User email</th>
+                <th>User role</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user, idx) => (
+                <tr key={user.id}>
+                  {user.name}
+                  <td>{idx}</td>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.role}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Content>
       </Container>
     </>
   )

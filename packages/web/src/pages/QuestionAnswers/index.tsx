@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 
-import { Container, Content } from './style'
+import { Container, Content, Table } from './style'
 
 import Header from '../../components/Header'
 import api from '../../services/api'
@@ -39,14 +39,27 @@ const QuestionAnswers: React.FC = () => {
       <Header />
       <Container>
         <Content>
-          <h1>QuestionAnswers X</h1>
-          <ul>
-            {answers.map(answer => (
-              <li key={answer.id}>
-                {answer.user.email} - {answer.value ? 'Yes' : 'No'}
-              </li>
-            ))}
-          </ul>
+          <h2>List of answer</h2>
+          <Table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Answer</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {answers.map((answer, idx) => (
+                <tr key={answer.id}>
+                  <td>{idx + 1}</td>
+                  <td>{answer.user.email}</td>
+                  <td>{answer.value ? 'Yes' : 'No'}</td>
+                  <td></td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </Content>
       </Container>
     </>

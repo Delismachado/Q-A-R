@@ -12,7 +12,7 @@ import Header from '../../components/Header'
 import Container from '../../components/Container'
 import Content from '../../components/Content'
 
-// import { Container, Content } from './style'
+import { StyledForm } from './style'
 
 interface QuestionData {
   name: string
@@ -60,10 +60,10 @@ const AnswerQuestion: React.FC = () => {
       <Container>
         <Content>
           <h1>{question.name}</h1>
-          <Form onSubmit={handleSubmit}>
+          <StyledForm onSubmit={handleSubmit}>
             <Select name="value" options={options}></Select>
             <Button type="submit">Register</Button>
-          </Form>
+          </StyledForm>
         </Content>
       </Container>
     </>

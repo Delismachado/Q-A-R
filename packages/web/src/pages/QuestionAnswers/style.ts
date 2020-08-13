@@ -18,3 +18,26 @@ export const Content = styled.div`
   border-radius: 16px;
   align-items: center;
 `
+export const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  tr:nth-child(even) {
+    background-color: #c39999;
+  }
+
+  tr:hover {
+    background-color: #fff;
+  }
+  th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #80495e;
+    color: white;
+  }
+`
