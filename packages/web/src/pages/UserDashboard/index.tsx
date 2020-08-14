@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-froimport { Table } from './style'
+import { Table } from './style'
 
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
