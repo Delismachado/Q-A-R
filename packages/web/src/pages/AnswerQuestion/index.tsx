@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Form } from '@unform/web'
 
 import api from '../../services/api'
@@ -63,6 +63,7 @@ const AnswerQuestion: React.FC = () => {
           <StyledForm onSubmit={handleSubmit}>
             <Select name="value" options={options}></Select>
             <Button type="submit">Register</Button>
+            <Link to="/user-dashboard">Go back</Link>
           </StyledForm>
         </Content>
       </Container>

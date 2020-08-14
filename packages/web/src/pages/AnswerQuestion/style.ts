@@ -50,6 +50,9 @@ export const StyledForm = styled(Form)`
   button:hover {
     background-color: #62102f;
   }
+  a {
+    align-items: center;
+  }
 `
 
 
