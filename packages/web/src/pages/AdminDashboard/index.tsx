@@ -102,7 +102,7 @@ const AdminDashboard: React.FC = () => {
                 <th>#</th>
                 <th>User name</th>
                 <th>User email</th>
-                <th>User role</th>
+                <th>View questions</th>
               </tr>
             </thead>
             <tbody>
@@ -110,9 +110,11 @@ const AdminDashboard: React.FC = () => {
                 <tr key={user.id}>
                   {user.name}
                   <td>{idx}</td>
-                  <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>{user.role}</td>
+                  <td>
+                    <Link to={`/users/${user.id}/answers`}>View questions</Link>
+                  </td>
                 </tr>
               ))}
             </tbody>
