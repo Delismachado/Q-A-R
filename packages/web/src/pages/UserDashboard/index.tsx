@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-// import { Container, Content } from './style'
+froimport { Table } from './style'
 
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
@@ -32,15 +32,28 @@ const UserDashboard: React.FC = () => {
       <Container>
         <Content>
           <h2>User Dashboard</h2>
-          <p>Logged in as {user.email}</p>
-          <ul>
-            {questions.map(question => (
-              <li key={question.id}>
-                {question.name} -{' '}
-                <Link to={`/questions/${question.id}`}>Answer</Link>
-              </li>
-            ))}
-          </ul>
+          <Table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Question</th>
+                <th>Answers</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {questions.map((question, idx) => (
+                <tr key={question.id}>
+                  <td>{idx + 1}</td>
+                  <td>{question.name}</td>
+                  <td>
+                    <Link to={`/questions/${question.id}`}>Answer</Link>
+                  </td>
+                  <td></td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </Content>
       </Container>
     </>
