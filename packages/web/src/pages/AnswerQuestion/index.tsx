@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Form } from '@unform/web'
 
 import api from '../../services/api'
@@ -12,7 +12,7 @@ import Header from '../../components/Header'
 import Container from '../../components/Container'
 import Content from '../../components/Content'
 
-// import { Container, Content } from './style'
+import { StyledForm } from './style'
 
 interface QuestionData {
   name: string
@@ -60,10 +60,11 @@ const AnswerQuestion: React.FC = () => {
       <Container>
         <Content>
           <h1>{question.name}</h1>
-          <Form onSubmit={handleSubmit}>
+          <StyledForm onSubmit={handleSubmit}>
             <Select name="value" options={options}></Select>
             <Button type="submit">Register</Button>
-          </Form>
+            <Link to="/user-dashboard">Go back</Link>
+          </StyledForm>
         </Content>
       </Container>
     </>

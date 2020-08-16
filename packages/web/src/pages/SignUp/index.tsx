@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Form } from '@unform/web'
 
 import api from '../../services/api'
@@ -13,9 +13,11 @@ import Select from '../../components/Select'
 import { SignUpForm } from './style'
 
 const SignUp: React.FC = () => {
+  const history = useHistory()
   // eslint-disable-next-line @typescript-eslint/ban-types
   const handleSubmit = (data: object): void => {
     api.post('/users', data)
+    history.push('/')
   }
 
   const options = [

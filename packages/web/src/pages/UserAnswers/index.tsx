@@ -1,13 +1,14 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
-// import {  } from './style'
+import { Container, Table } from './style'
 
 import Header from '../../components/Header'
 import { Form } from '@unform/web'
 import Input from '../../components/Input'
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
+import Content from '../../components/Content'
 
 interface UserAnswersResponse {
   id: string
@@ -37,14 +38,28 @@ const UserAnswers: React.FC = () => {
   return (
     <>
       <Header />
-      <h1>User answers</h1>
-      <ul>
-        {answers.map(answer => (
-          <li key={answer.id}>
-            {answer.question.name} - {answer.value ? 'Yes' : 'No'}
-          </li>
-        ))}
-      </ul>
+      <Container>
+        <Content>
+          <Table>
+            <h2>User answers</h2>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Question</th>
+                <th>Answers</th>
+              </tr>
+            </thead>
+            {answers.map((answer, idx) => (
+              <tr key={answer.id}>
+                <td>{idx + 1}</td>
+                <td>{answer.question.name}</td>
+                <td>{answer.value ? 'Yes' : 'No'}</td>
+              </tr>
+            ))}
+          </Table>
+        </Content>
+        <Link to="/admin-dashboard">Go back</Link>
+      </Container>
     </>
   )
 }

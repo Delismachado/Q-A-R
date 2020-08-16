@@ -12,6 +12,8 @@ usersRouter.get('/', ensureAuthenticated, usersController.index)
 
 const usersAnswersRouter = Router({ mergeParams: true })
 
+usersAnswersRouter.use(ensureAuthenticated)
+
 const usersAnswersController = new UsersAnswersController()
 usersAnswersRouter.post('/', usersAnswersController.create)
 usersAnswersRouter.get('/', usersAnswersController.index)
