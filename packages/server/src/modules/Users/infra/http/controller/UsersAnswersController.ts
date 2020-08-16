@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { container } from 'tsyringe'
 import CreateUserAnswerService from '@modules/Users/services/CreateUserAnswerService'
 import ListAnswersService from '@modules/Users/services/ListAnswersService'
+import { classToClass } from 'class-transformer'
 
 export default class UsersAnswersController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -20,6 +21,6 @@ export default class UsersAnswersController {
     const { user_id } = request.params
     const listAnswers = container.resolve(ListAnswersService)
     const answers = await listAnswers.execute(user_id)
-    return response.status(200).json(answers)
+    return response.status(200).json(classToClass(answers))
   }
 }

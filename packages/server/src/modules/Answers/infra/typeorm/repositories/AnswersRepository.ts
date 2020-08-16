@@ -36,14 +36,16 @@ class AnswersRepository implements IAnswersRepository {
 
   public async findByQuestion(question: Question): Promise<Answer[]> {
     const answers = await this.ormRepository.find({
-      where: { question }
+      where: { question },
+      relations: ['user']
     })
     return answers
   }
 
   public async findByUser(user: User): Promise<Answer[]> {
     const answers = await this.ormRepository.find({
-      where: { user }
+      where: { user },
+      relations: ['question']
     })
     return answers
   }

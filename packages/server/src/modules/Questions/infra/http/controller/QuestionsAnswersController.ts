@@ -2,12 +2,13 @@ import { Request, Response } from 'express'
 
 import { container } from 'tsyringe'
 import ListQuestionAnswersService from '@modules/Questions/services/ListQuestionAnswersService'
+import { classToClass } from 'class-transformer'
 
-export default class QuestionsController {
+export default class QuestionsAnswersController {
   public async index(request: Request, response: Response): Promise<Response> {
     const { question_id } = request.params
-    const listQuestion = container.resolve(ListQuestionAnswersService)
-    const questions = await listQuestion.execute(question_id)
-    return response.status(201).json(questions)
+    const listQuestionAnswer = container.resolve(ListQuestionAnswersService)
+    const answers = await listQuestionAnswer.execute(question_id)
+    return response.status(201).json(classToClass(answers))
   }
 }

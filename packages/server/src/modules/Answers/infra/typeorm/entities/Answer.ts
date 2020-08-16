@@ -16,11 +16,11 @@ class Answer {
   @PrimaryGeneratedColumn()
   id: string
 
-  @ManyToOne(() => User, { eager: true })
+  @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user: User
 
-  @ManyToOne(() => Question, { eager: true })
+  @ManyToOne(() => Question)
   @JoinColumn({ name: 'question_id' })
   question: Question
 
