@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 
 import { Container, Content, StyledForm, Table } from './style'
 
@@ -8,6 +8,7 @@ import api from '../../services/api'
 import { Link } from 'react-router-dom'
 import Input from '../../components/Input'
 import Select, { OptionType } from '../../components/Select'
+import { FormHandles } from '@unform/core'
 // import { Content } from '../../components/Input/style'
 
 interface CreateQuestionData {
@@ -21,7 +22,11 @@ const AdminDashboard: React.FC = () => {
   const [questions, setQuestions] = useState([])
   const [users, setUsers] = useState([])
 
-  const options: OptionType = [{ value: 'boolean', label: 'Yes/No' }]
+  const options: OptionType = [
+    { value: 'true or false', label: 'True or false' },
+    { value: 'choices', label: 'Choices' },
+    { value: 'multiple choices', label: 'Multiple choices' }
+  ]
 
   useEffect(() => {
     api
@@ -55,6 +60,81 @@ const AdminDashboard: React.FC = () => {
     })
   }
 
+  const formRef = useRef<FormHandles>(null)
+  const [type, setType] = useState<string>('')
+
+  interface OptionsFieldsProps {
+    type: string
+  }
+
+  const [trueValueLabel, setTrueValueLabel] = useState('')
+  const [falseValueLabel, setFalseValueLabel] = useState('')
+  const TrueFalseFields: React.FC = () => {
+    return (
+      <fieldset>
+        <input
+          placeholder="True value label"
+          value={trueValueLabel}
+          onChange={e => setTrueValueLabel(e.target.value)}
+        />
+        <input
+          placeholder="False value label"
+          value={falseValueLabel}
+          onChange={e => setFalseValueLabel(e.target.value)}
+        />
+      </fieldset>
+    )
+  }
+
+  const [choices, setChoices] = useState([])
+  const ChoicesFields: React.FC = () => {
+    const [choiceLabel, setChoiceLabel] = useState('')
+
+    function addChoice() {
+      setChoices([...choices, choiceLabel])
+    }
+
+    function removeChoice(idx) {
+      const currentChoices = [...choices]
+      currentChoices.splice(idx, 1)
+      setChoices(currentChoices)
+    }
+
+    return (
+      <fieldset>
+        <ul>
+          {choices.map((choice, idx) => (
+            <li key={idx}>
+              {choice}
+              <a onClick={e => removeChoice(idx)}>Delete</a>
+            </li>
+          ))}
+        </ul>
+        <input
+          placeholder="Choice label"
+          value={choiceLabel}
+          onChange={e => setChoiceLabel(e.target.value)}
+        />
+        <button onClick={addChoice}>Add choice</button>
+      </fieldset>
+    )
+  }
+
+  const OptionFields: React.FC<OptionsFieldsProps> = ({
+    type
+  }: OptionsFieldsProps) => {
+    switch (type) {
+      case 'true or false':
+        return <TrueFalseFields />
+      case 'choices':
+        return <ChoicesFields />
+      case 'multiple choices':
+        return <ChoicesFields />
+      default:
+        return <p>Choose a question type</p>
+    }
+  }
+
   return (
     <>
       <Header />
@@ -62,10 +142,15 @@ const AdminDashboard: React.FC = () => {
         <h1>Admin Dashboard</h1>
         <Content>
           <h2>Create new question</h2>
-          <StyledForm onSubmit={handleNewQuestion}>
+          <StyledForm onSubmit={handleNewQuestion} ref={formRef}>
             <Input placeholder="Question title" name="name" />
-            <Select name="type" options={options} />
             <Input placeholder="Description" name="description" />
+            <Select
+              name="type"
+              options={options}
+              onChange={e => setType(e.value)}
+            />
+            <OptionFields type={type} />
             <button className="button" type="submit">
               Register
             </button>
