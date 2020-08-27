@@ -16,12 +16,14 @@ class QuestionsRepository implements IQuestionsRepository {
   public async create({
     name,
     description,
-    type
+    type,
+    options
   }: ICreateQuestionDTO): Promise<Question> {
     const question = this.ormRepository.create({
       name,
       description,
-      type
+      type,
+      options
     })
     await this.ormRepository.save(question)
     return question

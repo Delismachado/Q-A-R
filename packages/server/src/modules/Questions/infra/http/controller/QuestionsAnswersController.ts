@@ -8,7 +8,7 @@ export default class QuestionsAnswersController {
   public async index(request: Request, response: Response): Promise<Response> {
     const { question_id } = request.params
     const listQuestionAnswer = container.resolve(ListQuestionAnswersService)
-    const answers = await listQuestionAnswer.execute(question_id)
-    return response.status(201).json(classToClass(answers))
+    const questions = await listQuestionAnswer.execute(question_id)
+    return response.status(201).json(classToClass(questions))
   }
 }

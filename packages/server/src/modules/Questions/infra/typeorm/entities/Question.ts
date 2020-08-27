@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn
 } from 'typeorm'
+import { type } from 'os'
 
 @Entity('questions')
 class Question {
@@ -26,6 +27,9 @@ class Question {
 
   @UpdateDateColumn()
   updated_at: Date
+
+  @Column({ type: 'json' })
+  options: any
 }
 
 export default Question

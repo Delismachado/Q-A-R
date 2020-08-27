@@ -10,6 +10,7 @@ interface IRequest {
   name: string
   description: string
   type: string
+  options: any
 }
 
 @injectable()
@@ -22,12 +23,14 @@ class CreateQuestionService {
   public async execute({
     name,
     description,
-    type
+    type,
+    options
   }: IRequest): Promise<Question> {
     const question = await this.questionsRepository.create({
       name,
       description,
-      type
+      type,
+      options
     })
 
     return question
