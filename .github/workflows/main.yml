@@ -50,7 +50,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd git/Q-A-R/
-            yarn workspace "@qar/server" install"
+            yarn workspace "@qar/server" install
       
       - name: Run server database migration
         uses: appleboy/ssh-action@master
