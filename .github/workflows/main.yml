@@ -1,7 +1,9 @@
-name: CI
+name: Server Deploy
 on:
   push:
     branches: [ master ]
+  paths:
+    - 'packages/server/**'
 jobs:
   build:
     runs-on: ubuntu-latest
