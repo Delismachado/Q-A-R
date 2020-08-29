@@ -1,9 +1,9 @@
-name: Web Deploy
+name: Server Deploy
 on:
   push:
     branches: [ master ]
-  paths:
-    - 'packages/web/**'
+    paths:
+      - 'packages/server/**'
 on:
   push:
     branches: [ master ]
