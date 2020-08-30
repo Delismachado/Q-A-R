@@ -29,6 +29,7 @@ const SignIn: React.FC = () => {
   const history = useHistory()
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
+      console.log(user)
       try {
         await signIn({
           email: data.email,

@@ -15,16 +15,16 @@ import QuestionAnswers from '../pages/QuestionAnswers'
 
 const Routes: React.FC = () => (
   <Switch>
-    <Route path="/" exact component={Home} />
-    <Route path="/sign-in" exact component={SignIn} />
-    <Route path="/sign-up" exact component={SignUp} />
-    <Route path="/user-dashboard" exact component={UserDashboard} isPrivate />
+    <Route exact path="/" component={Home} />
+    <Route exact path="/sign-in" component={SignIn} />
+    <Route exact path="/sign-up" component={SignUp} />
+    <Route exact path="/user-dashboard" component={UserDashboard} isPrivate />
     <Route
       path="/questions/:question_id"
-      component={AnswerQuestion}
+      component={() => <AnswerQuestion />}
       isPrivate
     />
-    <Route path="/admin-dashboard" exact component={AdminDashboard} isPrivate />
+    <Route exact path="/admin-dashboard" component={AdminDashboard} isPrivate />
     <Route path="/users/:user_id/answers" component={UserAnswers} isPrivate />
     <Route path="/answers/:question_id" component={QuestionAnswers} isPrivate />
   </Switch>

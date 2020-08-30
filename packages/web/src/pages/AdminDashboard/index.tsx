@@ -15,6 +15,116 @@ interface CreateQuestionData {
   name: string
   type: string
   description: string
+  options: any
+}
+
+interface OnOptionsChangeFunc {
+  (options: any): void
+}
+
+interface OptionsFieldsetProps {
+  onOptionsChange: OnOptionsChangeFunc
+}
+
+interface TrueFalseOptions {
+  trueLabel: string
+  falseLabel: string
+}
+
+const TrueFalseFields: React.FC<OptionsFieldsetProps> = (
+  props: OptionsFieldsetProps
+) => {
+  const [options, setOptions] = useState<TrueFalseOptions>({
+    trueLabel: '',
+    falseLabel: ''
+  })
+  function changeOptions(options) {
+    setOptions(options)
+    props.onOptionsChange(options)
+  }
+
+  return (
+    <fieldset>
+      <input
+        placeholder="True value label"
+        value={options.trueLabel}
+        onChange={e =>
+          changeOptions({
+            trueLabel: e.target.value,
+            falseLabel: options.falseLabel
+          })
+        }
+      />
+      <input
+        placeholder="False value label"
+        value={options.falseLabel}
+        onChange={e =>
+          changeOptions({
+            trueLabel: options.trueLabel,
+            falseLabel: e.target.value
+          })
+        }
+      />
+    </fieldset>
+  )
+}
+
+const ChoicesFields: React.FC<OptionsFieldsetProps> = (
+  props: OptionsFieldsetProps
+) => {
+  const [choices, setChoices] = useState([])
+  const [choiceLabel, setChoiceLabel] = useState('')
+
+  function addChoice() {
+    props.onOptionsChange({ choices: [...choices, choiceLabel] })
+    setChoices([...choices, choiceLabel])
+  }
+
+  function removeChoice(idx) {
+    const currentChoices = [...choices]
+    currentChoices.splice(idx, 1)
+    props.onOptionsChange({ choices: currentChoices })
+    setChoices(currentChoices)
+  }
+
+  return (
+    <fieldset>
+      <ul>
+        {choices.map((choice, idx) => (
+          <li key={idx}>
+            {choice}
+            <a onClick={e => removeChoice(idx)}>Delete</a>
+          </li>
+        ))}
+      </ul>
+      <input
+        placeholder="Choice label"
+        value={choiceLabel}
+        onChange={e => setChoiceLabel(e.target.value)}
+      />
+      <button type="button" onClick={addChoice}>Add choice</button>
+    </fieldset>
+  )
+}
+
+interface OptionsFieldsProps {
+  type: string
+  onOptionsChange: OnOptionsChangeFunc
+}
+
+const OptionFields: React.FC<OptionsFieldsProps> = ({
+  type,
+  onOptionsChange
+}: OptionsFieldsProps) => {
+  switch (type) {
+    case 'true or false':
+      return <TrueFalseFields onOptionsChange={e => onOptionsChange(e)} />
+    case 'choices':
+    case 'multiple choices':
+      return <ChoicesFields onOptionsChange={e => onOptionsChange(e)} />
+    default:
+      return <p>Choose a question type</p>
+  }
 }
 
 const AdminDashboard: React.FC = () => {
@@ -22,7 +132,7 @@ const AdminDashboard: React.FC = () => {
   const [questions, setQuestions] = useState([])
   const [users, setUsers] = useState([])
 
-  const options: OptionType = [
+  const optionsTypes: OptionType = [
     { value: 'true or false', label: 'True or false' },
     { value: 'choices', label: 'Choices' },
     { value: 'multiple choices', label: 'Multiple choices' }
@@ -53,6 +163,7 @@ const AdminDashboard: React.FC = () => {
   }, [user])
 
   const handleNewQuestion = (data: CreateQuestionData): void => {
+    data.options = options
     api.post('/questions', data, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -62,78 +173,7 @@ const AdminDashboard: React.FC = () => {
 
   const formRef = useRef<FormHandles>(null)
   const [type, setType] = useState<string>('')
-
-  interface OptionsFieldsProps {
-    type: string
-  }
-
-  const [trueValueLabel, setTrueValueLabel] = useState('')
-  const [falseValueLabel, setFalseValueLabel] = useState('')
-  const TrueFalseFields: React.FC = () => {
-    return (
-      <fieldset>
-        <input
-          placeholder="True value label"
-          value={trueValueLabel}
-          onChange={e => setTrueValueLabel(e.target.value)}
-        />
-        <input
-          placeholder="False value label"
-          value={falseValueLabel}
-          onChange={e => setFalseValueLabel(e.target.value)}
-        />
-      </fieldset>
-    )
-  }
-
-  const [choices, setChoices] = useState([])
-  const ChoicesFields: React.FC = () => {
-    const [choiceLabel, setChoiceLabel] = useState('')
-
-    function addChoice() {
-      setChoices([...choices, choiceLabel])
-    }
-
-    function removeChoice(idx) {
-      const currentChoices = [...choices]
-      currentChoices.splice(idx, 1)
-      setChoices(currentChoices)
-    }
-
-    return (
-      <fieldset>
-        <ul>
-          {choices.map((choice, idx) => (
-            <li key={idx}>
-              {choice}
-              <a onClick={e => removeChoice(idx)}>Delete</a>
-            </li>
-          ))}
-        </ul>
-        <input
-          placeholder="Choice label"
-          value={choiceLabel}
-          onChange={e => setChoiceLabel(e.target.value)}
-        />
-        <button onClick={addChoice}>Add choice</button>
-      </fieldset>
-    )
-  }
-
-  const OptionFields: React.FC<OptionsFieldsProps> = ({
-    type
-  }: OptionsFieldsProps) => {
-    switch (type) {
-      case 'true or false':
-        return <TrueFalseFields />
-      case 'choices':
-        return <ChoicesFields />
-      case 'multiple choices':
-        return <ChoicesFields />
-      default:
-        return <p>Choose a question type</p>
-    }
-  }
+  const [options, setOptions] = useState({})
 
   return (
     <>
@@ -147,10 +187,10 @@ const AdminDashboard: React.FC = () => {
             <Input placeholder="Description" name="description" />
             <Select
               name="type"
-              options={options}
+              options={optionsTypes}
               onChange={e => setType(e.value)}
             />
-            <OptionFields type={type} />
+            <OptionFields type={type} onOptionsChange={e => setOptions(e)} />
             <button className="button" type="submit">
               Register
             </button>

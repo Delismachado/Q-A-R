@@ -63,7 +63,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd git/Q-A-R/
-            ./packages/server/node_modules/.bin/typeorm migrations:run
+            ./node_modules/.bin/typeorm migration:run
       
       - name: Run server database migration
         uses: appleboy/ssh-action@master

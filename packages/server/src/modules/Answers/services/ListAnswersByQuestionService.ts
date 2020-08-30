@@ -8,46 +8,29 @@ import IQuestionsRepository from '@modules/Questions/repositories/IQuestionsRepo
 import AppError from '@shared/errors/AppError'
 
 interface IRequest {
-  user_id: string
   question_id: string
-  value: boolean
 }
 
 @injectable()
-class CreateQuestionService {
+class ListAnswersByQuestionService {
   constructor(
     @inject('AnswersRepository')
     private answersRepository: IAnswersRepository,
     @inject('QuestionsRepository')
-    private questionsRepository: IQuestionsRepository,
-    @inject('UsersRepository')
-    private usersRepository: IUsersRepository
+    private questionsRepository: IQuestionsRepository
   ) {}
 
-  public async execute({
-    user_id,
-    question_id,
-    value
-  }: IRequest): Promise<Answer> {
-    const user = await this.usersRepository.findById(user_id)
+  public async execute({ question_id }: IRequest): Promise<Answer[]> {
     const question = await this.questionsRepository.findById(question_id)
-
-    if (!user) {
-      throw new AppError('User does not exist')
-    }
 
     if (!question) {
       throw new AppError('Question does not exist')
     }
 
-    const answer = await this.answersRepository.create({
-      user,
-      question,
-      value
-    })
+    const answers = await this.answersRepository.findByQuestion(question)
 
-    return answer
+    return answers
   }
 }
 
-export default CreateQuestionService
+export default ListAnswersByQuestionService

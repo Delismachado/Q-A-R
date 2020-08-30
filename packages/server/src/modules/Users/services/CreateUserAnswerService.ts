@@ -11,7 +11,7 @@ import Answer from '@modules/Answers/infra/typeorm/entities/Answer'
 interface IRequest {
   user_id: string
   question_id: string
-  value: string
+  values: any
 }
 
 @injectable()
@@ -28,7 +28,7 @@ class CreateUserService {
   public async execute({
     user_id,
     question_id,
-    value
+    values
   }: IRequest): Promise<Answer> {
     const user = await this.usersRepository.findById(user_id)
     if (!user) {
@@ -40,12 +40,11 @@ class CreateUserService {
       throw new AppError('Question not found', 401)
     }
 
-    const boolValue = value === 'true'
 
     const answer = this.answersRepository.create({
       question,
       user,
-      value: boolValue
+      values
     })
 
     return answer

@@ -7,7 +7,6 @@ const answersRouter = Router()
 answersRouter.use(ensureAuthenticated)
 const answersController = new AnswersController()
 
-answersRouter.post('/', answersController.create)
 answersRouter.get('/', answersController.index)
 answersRouter.get('/user/:user_id', answersController.indexByUser)
 

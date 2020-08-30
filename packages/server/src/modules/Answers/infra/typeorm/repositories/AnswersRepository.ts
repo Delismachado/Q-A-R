@@ -18,12 +18,12 @@ class AnswersRepository implements IAnswersRepository {
   public async create({
     user,
     question,
-    value
+    values
   }: ICreateAnswerDTO): Promise<Answer> {
     const answer = this.ormRepository.create({
       user,
       question,
-      value
+      values
     })
     await this.ormRepository.save(answer)
     return answer

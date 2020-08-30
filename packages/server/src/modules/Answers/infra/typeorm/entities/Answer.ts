@@ -24,8 +24,8 @@ class Answer {
   @JoinColumn({ name: 'question_id' })
   question: Question
 
-  @Column()
-  value: boolean
+  @Column({ type: 'json' })
+  values: any
 
   @CreateDateColumn()
   created_at: Date

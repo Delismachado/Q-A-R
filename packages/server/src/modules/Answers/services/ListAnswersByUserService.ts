@@ -20,7 +20,7 @@ class ListQuestionsService {
     if (!user) {
       throw new AppError('User not found')
     }
-    const question = await this.answersRepository.findByUser({ user })
+    const question = await this.answersRepository.findByUser(user)
     if (!question) {
       throw new AppError('Question not found')
     }
