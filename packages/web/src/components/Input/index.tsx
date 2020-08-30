@@ -1,16 +1,26 @@
-import React, { InputHTMLAttributes, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
+import {
+  Input as ChakraInput,
+  InputProps,
+  FormControl,
+  FormLabel,
+  FormErrorMessage
+} from '@chakra-ui/core'
 
 import { useField } from '@unform/core'
-import { Container } from './style'
 
-interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface IInputProps extends InputProps<HTMLInputElement> {
   name: string
+  label?: string
 }
 
-// eslint-disable-next-line react/prop-types
-const Input: React.FC<IInputProps> = ({ name, ...rest }) => {
+const Input: React.FC<IInputProps> = ({
+  name,
+  label,
+  ...rest
+}: IInputProps) => {
   const inputRef = useRef(null)
-  const { fieldName, registerField } = useField(name)
+  const { fieldName, defaultValue, error, registerField } = useField(name)
 
   useEffect(() => {
     registerField({
@@ -21,9 +31,17 @@ const Input: React.FC<IInputProps> = ({ name, ...rest }) => {
   }, [fieldName, registerField])
 
   return (
-    <Container>
-      <input ref={inputRef} {...rest} />
-    </Container>
+    <FormControl isInvalid={!!error}>
+      {label && <FormLabel htmlFor={fieldName}>{label}</FormLabel>}
+      <ChakraInput
+        name={fieldName}
+        id={fieldName}
+        defaultValue={defaultValue}
+        ref={inputRef}
+        {...rest}
+      />
+      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+    </FormControl>
   )
 }
 

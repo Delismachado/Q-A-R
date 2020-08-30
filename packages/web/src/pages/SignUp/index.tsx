@@ -2,20 +2,18 @@ import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { Form } from '@unform/web'
 
-import api from '../../services/api'
-
-import Header from '../../components/Header'
-import Container from '../../components/Container'
-import Content from '../../components/Content'
 import Input from '../../components/Input'
 import Select from '../../components/Select'
 
-import { SignUpForm } from './style'
+import api from '../../services/api'
+
+import { Box, Heading, Button, FormControl } from '@chakra-ui/core'
+import { SubmitHandler } from '@unform/core'
 
 const SignUp: React.FC = () => {
   const history = useHistory()
   // eslint-disable-next-line @typescript-eslint/ban-types
-  const handleSubmit = (data: object): void => {
+  const handleSubmit: SubmitHandler<any> = (data: object): void => {
     api.post('/users', data)
     history.push('/')
   }
@@ -26,22 +24,36 @@ const SignUp: React.FC = () => {
   ]
 
   return (
-    <>
-      <Header />
-      <Container>
-        <Content>
-          <h2>Create your account</h2>
-          <SignUpForm onSubmit={handleSubmit}>
-            <Input name="email" type="text" placeholder="E-mail" />
-            <Input name="password" type="password" placeholder="Password" />
-            <label htmlFor="acount">Who are you:</label>
-            <Select name="role" options={options} />
-            <button type="submit">Register</button>
-            <Link to="/sign-in">back to login</Link>
-          </SignUpForm>
-        </Content>
-      </Container>
-    </>
+    <Box d="flex" flexDir="column" alignItems="center">
+      <Box border="1px" borderRadius="10px" p="6" m="6">
+        <Heading>Create your account</Heading>
+        <Form onSubmit={handleSubmit}>
+          <Input label="E-mail" name="email" type="text" placeholder="E-mail" />
+          <Input label="Password" name="password" type="password" />
+          <Select label="Who are you" name="role" options={options} />
+          <Link to="/sign-in">
+            <Button
+              mt={4}
+              leftIcon="arrow-back"
+              variantColor="orange"
+              isLoading={false}
+              type="submit"
+            >
+              Back to Login
+            </Button>
+          </Link>
+          <Button
+            mt={4}
+            rightIcon="check"
+            variantColor="teal"
+            isLoading={false}
+            type="submit"
+          >
+            Submit
+          </Button>
+        </Form>
+      </Box>
+    </Box>
   )
 }
 

@@ -1,12 +1,25 @@
 import React, { useRef, useEffect } from 'react'
-import ReactSelect, { OptionTypeBase, Props as SelectProps } from 'react-select'
 import { useField } from '@unform/core'
+import {
+  FormControl,
+  FormLabel,
+  Select as ChakraSelect,
+  FormErrorMessage,
+  SelectProps
+} from '@chakra-ui/core'
 
-interface Props extends SelectProps<OptionTypeBase> {
-  name: string
+export interface OptionType {
+  label: string
+  value: string
 }
 
-const Select: React.FC<Props> = ({ name, ...rest }: Props) => {
+interface Props extends SelectProps {
+  name: string
+  label?: string
+  options: OptionType[]
+}
+
+const Select: React.FC<Props> = ({ name, label, options, ...rest }: Props) => {
   const selectRef = useRef(null)
   const { fieldName, defaultValue, registerField, error } = useField(name)
 
@@ -14,30 +27,39 @@ const Select: React.FC<Props> = ({ name, ...rest }: Props) => {
     registerField({
       name: fieldName,
       ref: selectRef.current,
-      getValue: (ref: any) => {
-        if (rest.isMulti) {
-          if (!ref.state.value) {
-            return []
-          }
-          return ref.state.value.map((option: OptionTypeBase) => option.value)
-        }
-        if (!ref.state.value) {
-          return ''
-        }
-        return ref.state.value.value
-      }
+      path: 'value'
     })
-  }, [fieldName, registerField, rest.isMulti])
+  }, [fieldName, registerField])
 
   return (
+    <FormControl>
+      {label && <FormLabel htmlFor={fieldName}>{label}</FormLabel>}
+      <ChakraSelect
+        name={fieldName}
+        id={fieldName}
+        ref={selectRef}
+        defaultValue={defaultValue}
+        {...rest}
+      >
+        {options.map(op => (
+          <option key={op.value} value={op.value}>
+            {op.label}
+          </option>
+        ))}
+      </ChakraSelect>
+      {error && <FormErrorMessage>{error} </FormErrorMessage>}
+    </FormControl>
+  )
+}
+
+/**
+ *
     <ReactSelect
       defaultValue={defaultValue}
       ref={selectRef}
       classNamePrefix="react-select"
       {...rest}
     />
-  )
-}
+ */
 
 export default Select
-export type OptionType = OptionTypeBase

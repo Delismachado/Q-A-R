@@ -1,22 +1,33 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-
-import { Container, Content } from './style'
-
-import Header from '../../components/Header'
+import { Flex, Box, Text, Heading, Button } from '@chakra-ui/core'
 
 const Home: React.FC = () => (
-  <>
-    <Header />
-    <Container>
-      <Content>
-        <h1>Welcome to your smart platform</h1>
-        <p>Lorem ipsum is placeholder text commonly used in the graphic</p>
-        <Link to="/sign-in">SignIn</Link>
-      </Content>
-    </Container>
-  </>
+  <Flex align="center">
+    <Flex size="50%" align="center" justify="center">
+      <Text textAlign="center">
+        <Flex
+          direction="column"
+          justifyContent="space-around"
+          flex="1"
+          alignContent="stretch"
+          height="80vh"
+        >
+          <Heading>Welcome to your smart platform</Heading>
+          <p>Lorem ipsum is placeholder text commonly used in the graphic</p>
+          <Link to="/sign-in">
+            <Button rightIcon="arrow-forward" variantColor="teal" size="lg">
+              Sign Up
+            </Button>
+          </Link>
+        </Flex>
+      </Text>
+    </Flex>
+    <Box>
+      <Text bg="tomato" color="white"></Text>
+    </Box>
+  </Flex>
 )
 
 export default Home
