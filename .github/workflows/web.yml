@@ -3,7 +3,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'packages/server/**'
+    - 'packages/server/**'
 on:
   push:
     branches: [ master ]
