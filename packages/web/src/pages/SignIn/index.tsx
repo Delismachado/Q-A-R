@@ -16,6 +16,7 @@ import { StyledForm } from './style'
 import Header from '../../components/Header'
 import Container from '../../components/Container'
 import Content from '../../components/Content'
+import { Box, Heading } from '@chakra-ui/core'
 
 interface SignInFormData {
   email: string
@@ -49,23 +50,22 @@ const SignIn: React.FC = () => {
     [signIn, history]
   )
   return (
-    <>
-      <Header />
-      <Container>
-        <Content>
-          <h1>Faça seu login</h1>
-          <StyledForm ref={formRef} onSubmit={handleSubmit}>
-            <Input name="email" placeholder="E-mail" />
-
-            <Input name="password" type="Password" placeholder="Senha" />
-
-            <Button type="submit">Entrar</Button>
-          </StyledForm>
-          <Link to="/sign-up">Criar conta</Link>
-          <a href="forgot">Esqueci minha senha</a>
-        </Content>
-      </Container>
-    </>
+    <Box d="flex" flexDir="column" alignItems="center">
+      <Box border="1px" borderRadius="10px" p="6" m="6">
+        <Heading>Sign in</Heading>
+        <Form ref={formRef} onSubmit={handleSubmit}>
+          <Input label="E-mail" name="email" placeholder="your@email.com" />
+          <Input
+            name="password"
+            type="Password"
+            label="Password"
+            placeholder="***"
+          />
+          <Button type="submit">Login</Button>
+        </Form>
+        <Link to="/forgot">Forgot your password</Link>
+      </Box>
+    </Box>
   )
 }
 

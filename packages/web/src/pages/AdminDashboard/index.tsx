@@ -8,7 +8,18 @@ import api from '../../services/api'
 import { Link } from 'react-router-dom'
 import Input from '../../components/Input'
 import Select, { OptionType } from '../../components/Select'
-import { FormHandles } from '@unform/core'
+import { FormHandles, useField } from '@unform/core'
+import {
+  Box,
+  Heading,
+  Flex,
+  Button,
+  FormControl,
+  List,
+  ListItem,
+  IconButton
+} from '@chakra-ui/core'
+import { Form } from '@unform/web'
 // import { Content } from '../../components/Input/style'
 
 interface CreateQuestionData {
@@ -42,30 +53,19 @@ const TrueFalseFields: React.FC<OptionsFieldsetProps> = (
     setOptions(options)
     props.onOptionsChange(options)
   }
-
   return (
-    <fieldset>
-      <input
-        placeholder="True value label"
-        value={options.trueLabel}
-        onChange={e =>
-          changeOptions({
-            trueLabel: e.target.value,
-            falseLabel: options.falseLabel
-          })
-        }
+    <FormControl as="fieldset">
+      <Input
+        label="True value label"
+        placeholder="Yes!"
+        name="options.trueLabel"
       />
-      <input
-        placeholder="False value label"
-        value={options.falseLabel}
-        onChange={e =>
-          changeOptions({
-            trueLabel: options.trueLabel,
-            falseLabel: e.target.value
-          })
-        }
+      <Input
+        label="False value label"
+        placeholder="No."
+        name="options.falseLabel"
       />
-    </fieldset>
+    </FormControl>
   )
 }
 
@@ -87,23 +87,42 @@ const ChoicesFields: React.FC<OptionsFieldsetProps> = (
     setChoices(currentChoices)
   }
 
+  const { fieldName, defaultValue, error, registerField } = useField(
+    'options.choices'
+  )
+
+  useEffect(() => {
+    registerField({
+      name: fieldName,
+      getValue: () => choices
+    })
+  }, [fieldName, registerField, choices])
+
   return (
-    <fieldset>
-      <ul>
+    <FormControl as="fieldset">
+      <List styleType="disc">
         {choices.map((choice, idx) => (
-          <li key={idx}>
+          <ListItem key={idx}>
             {choice}
-            <a onClick={e => removeChoice(idx)}>Delete</a>
-          </li>
+            <IconButton
+              title="Remove choice"
+              aria-label="delete"
+              icon="small-close"
+              onClick={e => removeChoice(idx)}
+            />
+          </ListItem>
         ))}
-      </ul>
-      <input
-        placeholder="Choice label"
-        value={choiceLabel}
+      </List>
+      <Input
+        label="Choice label"
+        placeholder="Another option"
+        name="choiceLabel"
         onChange={e => setChoiceLabel(e.target.value)}
       />
-      <button type="button" onClick={addChoice}>Add choice</button>
-    </fieldset>
+      <Button type="button" onClick={addChoice}>
+        Add choice
+      </Button>
+    </FormControl>
   )
 }
 
@@ -132,7 +151,7 @@ const AdminDashboard: React.FC = () => {
   const [questions, setQuestions] = useState([])
   const [users, setUsers] = useState([])
 
-  const optionsTypes: OptionType = [
+  const optionsTypes: OptionType[] = [
     { value: 'true or false', label: 'True or false' },
     { value: 'choices', label: 'Choices' },
     { value: 'multiple choices', label: 'Multiple choices' }
@@ -162,13 +181,17 @@ const AdminDashboard: React.FC = () => {
       })
   }, [user])
 
-  const handleNewQuestion = (data: CreateQuestionData): void => {
+  const handleNewQuestion = (data: CreateQuestionData, helper, event): void => {
+    event.preventDefault()
+    console.log(data)
+    /*
+
     data.options = options
     api.post('/questions', data, {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    })
+    }) */
   }
 
   const formRef = useRef<FormHandles>(null)
@@ -176,27 +199,36 @@ const AdminDashboard: React.FC = () => {
   const [options, setOptions] = useState({})
 
   return (
-    <>
-      <Header />
-      <Container>
-        <h1>Admin Dashboard</h1>
-        <Content>
-          <h2>Create new question</h2>
-          <StyledForm onSubmit={handleNewQuestion} ref={formRef}>
-            <Input placeholder="Question title" name="name" />
-            <Input placeholder="Description" name="description" />
-            <Select
-              name="type"
-              options={optionsTypes}
-              onChange={e => setType(e.value)}
-            />
-            <OptionFields type={type} onOptionsChange={e => setOptions(e)} />
-            <button className="button" type="submit">
-              Register
-            </button>
-          </StyledForm>
-        </Content>
-        <Content>
+    <Flex direction="column" alignItems="center">
+      <Box>
+        <Heading as="h3" size="lg">
+          Create new question
+        </Heading>
+        <Form onSubmit={handleNewQuestion} ref={formRef}>
+          <Input
+            label="Question title"
+            placeholder="How are you?"
+            name="name"
+          />
+          <Input
+            label="Description"
+            placeholder="Describe your day"
+            name="description"
+          />
+          <Select
+            label="Question type"
+            name="type"
+            options={optionsTypes}
+            onChange={e => setType(e.target.value)}
+          />
+          <OptionFields type={type} onOptionsChange={e => console.log(e)} />
+          <Button className="button" type="submit" variantColor="green">
+            Create question
+          </Button>
+        </Form>
+      </Box>
+      <Flex direction="row">
+        <Box>
           <h2>Questions</h2>
           <Table>
             <thead>
@@ -218,8 +250,8 @@ const AdminDashboard: React.FC = () => {
               ))}
             </tbody>
           </Table>
-        </Content>
-        <Content>
+        </Box>
+        <Box>
           <h2>Users</h2>
           <Table>
             <thead>
@@ -244,9 +276,9 @@ const AdminDashboard: React.FC = () => {
               ))}
             </tbody>
           </Table>
-        </Content>
-      </Container>
-    </>
+        </Box>
+      </Flex>
+    </Flex>
   )
 }
 

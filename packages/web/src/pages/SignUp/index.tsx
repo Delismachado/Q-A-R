@@ -7,7 +7,7 @@ import Select from '../../components/Select'
 
 import api from '../../services/api'
 
-import { Box, Heading, Button, FormControl } from '@chakra-ui/core'
+import { Box, Heading, Button, FormControl, ButtonGroup } from '@chakra-ui/core'
 import { SubmitHandler } from '@unform/core'
 
 const SignUp: React.FC = () => {
@@ -31,26 +31,28 @@ const SignUp: React.FC = () => {
           <Input label="E-mail" name="email" type="text" placeholder="E-mail" />
           <Input label="Password" name="password" type="password" />
           <Select label="Who are you" name="role" options={options} />
-          <Link to="/sign-in">
+          <ButtonGroup spacing={2}>
+            <Link to="/sign-in">
+              <Button
+                m={4}
+                leftIcon="arrow-back"
+                variantColor="orange"
+                isLoading={false}
+                type="submit"
+              >
+                Back to Login
+              </Button>
+            </Link>
             <Button
-              mt={4}
-              leftIcon="arrow-back"
-              variantColor="orange"
+              m={4}
+              rightIcon="check"
+              variantColor="teal"
               isLoading={false}
               type="submit"
             >
-              Back to Login
+              Submit
             </Button>
-          </Link>
-          <Button
-            mt={4}
-            rightIcon="check"
-            variantColor="teal"
-            isLoading={false}
-            type="submit"
-          >
-            Submit
-          </Button>
+          </ButtonGroup>
         </Form>
       </Box>
     </Box>
