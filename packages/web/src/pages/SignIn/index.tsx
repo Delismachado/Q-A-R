@@ -51,19 +51,28 @@ const SignIn: React.FC = () => {
   )
   return (
     <Box d="flex" flexDir="column" alignItems="center">
-      <Box border="1px" borderRadius="10px" p="6" m="6">
+      <Box
+        border="1px"
+        borderRadius="10px"
+        p="6"
+        m="10"
+        width="25%"
+        background="#f0f0f5"
+      >
         <Heading>Sign in</Heading>
         <Form ref={formRef} onSubmit={handleSubmit}>
-          <Input label="E-mail" name="email" placeholder="your@email.com" />
+          <Input name="email" placeholder="your@email.com" />
           <Input
             name="password"
             type="Password"
-            label="Password"
             placeholder="***"
+            marginTop={2}
           />
           <Button type="submit">Login</Button>
         </Form>
-        <Link to="/forgot">Forgot your password</Link>
+        <Button>
+          <Link to="/forgot">Forgot your password</Link>
+        </Button>
       </Box>
     </Box>
   )

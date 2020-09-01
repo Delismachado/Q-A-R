@@ -17,7 +17,8 @@ import {
   FormControl,
   List,
   ListItem,
-  IconButton
+  IconButton,
+  Textarea
 } from '@chakra-ui/core'
 import { Form } from '@unform/web'
 // import { Content } from '../../components/Input/style'
@@ -206,15 +207,12 @@ const AdminDashboard: React.FC = () => {
         </Heading>
         <Form onSubmit={handleNewQuestion} ref={formRef}>
           <Input
+            size="lg"
             label="Question title"
             placeholder="How are you?"
             name="name"
           />
-          <Input
-            label="Description"
-            placeholder="Describe your day"
-            name="description"
-          />
+          <Textarea size="sm" placeholder="Describe your question here" />
           <Select
             label="Question type"
             name="type"
@@ -228,7 +226,7 @@ const AdminDashboard: React.FC = () => {
         </Form>
       </Box>
       <Flex direction="row">
-        <Box>
+        <Box as="span" color="black" fontSize="sm">
           <h2>Questions</h2>
           <Table>
             <thead>
@@ -251,7 +249,7 @@ const AdminDashboard: React.FC = () => {
             </tbody>
           </Table>
         </Box>
-        <Box>
+        <Box d="row" mt="1" alignItems="center">
           <h2>Users</h2>
           <Table>
             <thead>
