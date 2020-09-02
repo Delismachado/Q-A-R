@@ -32,7 +32,7 @@ const Select: React.FC<Props> = ({ name, label, options, ...rest }: Props) => {
   }, [fieldName, registerField])
 
   return (
-    <FormControl>
+    <FormControl paddingTop="2rem">
       {label && <FormLabel htmlFor={fieldName}>{label}</FormLabel>}
       <ChakraSelect
         name={fieldName}

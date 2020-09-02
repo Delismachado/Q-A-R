@@ -1,24 +1,15 @@
 import React, { useEffect, useRef } from 'react'
-import {
-  Input as ChakraInput,
-  InputProps,
-  FormControl,
-  FormLabel,
-  FormErrorMessage
-} from '@chakra-ui/core'
+import { Input as ChakraInput, InputProps } from '@chakra-ui/core'
 
 import { useField } from '@unform/core'
+import { Form } from '@unform/web'
 
 interface IInputProps extends InputProps<HTMLInputElement> {
   name: string
   label?: string
 }
 
-const Input: React.FC<IInputProps> = ({
-  name,
-  label,
-  ...rest
-}: IInputProps) => {
+const Input: React.FC<IInputProps> = ({ name, ...rest }: IInputProps) => {
   const inputRef = useRef(null)
   const { fieldName, defaultValue, error, registerField } = useField(name)
 
@@ -31,17 +22,13 @@ const Input: React.FC<IInputProps> = ({
   }, [fieldName, registerField])
 
   return (
-    <FormControl isInvalid={!!error}>
-      {label && <FormLabel htmlFor={fieldName}>{label}</FormLabel>}
-      <ChakraInput
-        name={fieldName}
-        id={fieldName}
-        defaultValue={defaultValue}
-        ref={inputRef}
-        {...rest}
-      />
-      {error && <FormErrorMessage>{error}</FormErrorMessage>}
-    </FormControl>
+    <ChakraInput
+      name={fieldName}
+      id={fieldName}
+      defaultValue={defaultValue}
+      ref={inputRef}
+      {...rest}
+    />
   )
 }
 

@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 
 import { Container, Content, StyledForm, Table } from './style'
 
-import Header from '../../components/Header'
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import { Link } from 'react-router-dom'
 import Input from '../../components/Input'
+import LabeledInput from '../../components/LabeledInput'
 import Select, { OptionType } from '../../components/Select'
+import Textarea from '../../components/Textarea'
 import { FormHandles, useField } from '@unform/core'
 import {
   Box,
@@ -18,7 +19,11 @@ import {
   List,
   ListItem,
   IconButton,
-  Textarea
+  SimpleGrid,
+  FormLabel,
+  InputGroup,
+  InputRightElement,
+  Stack
 } from '@chakra-ui/core'
 import { Form } from '@unform/web'
 // import { Content } from '../../components/Input/style'
@@ -100,29 +105,46 @@ const ChoicesFields: React.FC<OptionsFieldsetProps> = (
   }, [fieldName, registerField, choices])
 
   return (
-    <FormControl as="fieldset">
-      <List styleType="disc">
+    <FormControl paddingTop="2rem" as="fieldset">
+      <Stack>
         {choices.map((choice, idx) => (
-          <ListItem key={idx}>
+          <Flex
+            key={idx}
+            width="100%"
+            borderWidth="1px"
+            borderRadius="lg"
+            borderColor="gray.500"
+          >
             {choice}
             <IconButton
+              marginLeft="auto"
               title="Remove choice"
               aria-label="delete"
               icon="small-close"
               onClick={e => removeChoice(idx)}
             />
-          </ListItem>
+          </Flex>
         ))}
-      </List>
-      <Input
-        label="Choice label"
-        placeholder="Another option"
-        name="choiceLabel"
-        onChange={e => setChoiceLabel(e.target.value)}
-      />
-      <Button type="button" onClick={addChoice}>
-        Add choice
-      </Button>
+      </Stack>
+      <FormControl>
+        <FormLabel>Choice label</FormLabel>
+        <InputGroup>
+          <Input
+            placeholder="Another option"
+            name="choiceLabel"
+            onChange={e => setChoiceLabel(e.target.value)}
+          />
+          <InputRightElement>
+            <IconButton
+              title="Add choice"
+              aria-label="Add choice"
+              icon="plus-square"
+              type="button"
+              onClick={addChoice}
+            />
+          </InputRightElement>
+        </InputGroup>
+      </FormControl>
     </FormControl>
   )
 }
@@ -159,27 +181,15 @@ const AdminDashboard: React.FC = () => {
   ]
 
   useEffect(() => {
-    api
-      .get('/questions', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(response => {
-        setQuestions(response.data)
-      })
+    api.get('/questions').then(response => {
+      setQuestions(response.data)
+    })
   }, [user])
 
   useEffect(() => {
-    api
-      .get('/users', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(response => {
-        setUsers(response.data)
-      })
+    api.get('/users').then(response => {
+      setUsers(response.data)
+    })
   }, [user])
 
   const handleNewQuestion = (data: CreateQuestionData, helper, event): void => {
@@ -200,56 +210,60 @@ const AdminDashboard: React.FC = () => {
   const [options, setOptions] = useState({})
 
   return (
-    <Flex direction="column" alignItems="center">
-      <Box>
-        <Heading as="h3" size="lg">
-          Create new question
-        </Heading>
-        <Form onSubmit={handleNewQuestion} ref={formRef}>
-          <Input
-            size="lg"
-            label="Question title"
-            placeholder="How are you?"
-            name="name"
-          />
-          <Textarea size="sm" placeholder="Describe your question here" />
-          <Select
-            label="Question type"
-            name="type"
-            options={optionsTypes}
-            onChange={e => setType(e.target.value)}
-          />
-          <OptionFields type={type} onOptionsChange={e => console.log(e)} />
-          <Button className="button" type="submit" variantColor="green">
-            Create question
-          </Button>
-        </Form>
-      </Box>
-      <Flex direction="row">
-        <Box as="span" color="black" fontSize="sm">
-          <h2>Questions</h2>
-          <Table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Question</th>
-                <th>View Answers</th>
-              </tr>
-            </thead>
-            <tbody>
-              {questions.map((question, idx) => (
-                <tr key={question.id}>
-                  <td>{idx}</td>
-                  <td>{question.name}</td>
-                  <td>
-                    <Link to={`/answers/${question.id}`}>View answers</Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+    <Box maxWidth="6xl" margin="auto">
+      <SimpleGrid columns={[1, 1, 1, 2]}>
+        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.700">
+          <Heading as="h3" size="lg">
+            Create new question
+          </Heading>
+          <Form onSubmit={handleNewQuestion} ref={formRef}>
+            <LabeledInput
+              label="Question title"
+              placeholder="How are you?"
+              name="name"
+            />
+            <Textarea
+              label="Question Description"
+              placeholder="Describe your question here"
+              name="description"
+            />
+            <Select
+              label="Question type"
+              name="type"
+              options={optionsTypes}
+              onChange={e => setType(e.target.value)}
+            />
+            <OptionFields type={type} onOptionsChange={e => console.log(e)} />
+            <Button className="button" type="submit" variantColor="green">
+              Create question
+            </Button>
+          </Form>
         </Box>
-        <Box d="row" mt="1" alignItems="center">
+        <Flex direction="row">
+          <Box as="span" fontSize="sm">
+            <h2>Questions</h2>
+            <Table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Question</th>
+                  <th>View Answers</th>
+                </tr>
+              </thead>
+              <tbody>
+                {questions.map((question, idx) => (
+                  <tr key={question.id}>
+                    <td>{idx}</td>
+                    <td>{question.name}</td>
+                    <td>
+                      <Link to={`/answers/${question.id}`}>View answers</Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Box>
+          {/* <Box d="row" mt="1" alignItems="center">
           <h2>Users</h2>
           <Table>
             <thead>
@@ -274,9 +288,10 @@ const AdminDashboard: React.FC = () => {
               ))}
             </tbody>
           </Table>
-        </Box>
-      </Flex>
-    </Flex>
+        </Box> */}
+        </Flex>
+      </SimpleGrid>
+    </Box>
   )
 }
 
