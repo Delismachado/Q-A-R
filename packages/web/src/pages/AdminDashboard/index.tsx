@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
-import { Container, Content, StyledForm, Table } from './style'
+import { Table } from './style'
 
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import { Link } from 'react-router-dom'
 import Input from '../../components/Input'
+import Button from '../../components/Button'
 import LabeledInput from '../../components/LabeledInput'
 import Select, { OptionType } from '../../components/Select'
 import Textarea from '../../components/Textarea'
@@ -14,10 +15,7 @@ import {
   Box,
   Heading,
   Flex,
-  Button,
   FormControl,
-  List,
-  ListItem,
   IconButton,
   SimpleGrid,
   FormLabel,
@@ -26,7 +24,6 @@ import {
   Stack
 } from '@chakra-ui/core'
 import { Form } from '@unform/web'
-// import { Content } from '../../components/Input/style'
 
 interface CreateQuestionData {
   name: string
@@ -93,9 +90,7 @@ const ChoicesFields: React.FC<OptionsFieldsetProps> = (
     setChoices(currentChoices)
   }
 
-  const { fieldName, defaultValue, error, registerField } = useField(
-    'options.choices'
-  )
+  const { fieldName, registerField } = useField('options.choices')
 
   useEffect(() => {
     registerField({
@@ -239,57 +234,55 @@ const AdminDashboard: React.FC = () => {
             </Button>
           </Form>
         </Box>
-        <Flex direction="row">
-          <Box as="span" fontSize="sm">
-            <h2>Questions</h2>
-            <Table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Question</th>
-                  <th>View Answers</th>
-                </tr>
-              </thead>
-              <tbody>
-                {questions.map((question, idx) => (
-                  <tr key={question.id}>
-                    <td>{idx}</td>
-                    <td>{question.name}</td>
-                    <td>
-                      <Link to={`/answers/${question.id}`}>View answers</Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Box>
-          {/* <Box d="row" mt="1" alignItems="center">
-          <h2>Users</h2>
+
+        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.700">
           <Table>
             <thead>
               <tr>
                 <th>#</th>
-                <th>User name</th>
-                <th>User email</th>
-                <th>View questions</th>
+                <th>List of questions</th>
+                <th>View Answers</th>
               </tr>
             </thead>
             <tbody>
-              {users.map((user, idx) => (
-                <tr key={user.id}>
-                  {user.name}
+              {questions.map((question, idx) => (
+                <tr key={question.id}>
                   <td>{idx}</td>
-                  <td>{user.email}</td>
-                  <td>{user.role}</td>
+                  <td>{question.name}</td>
                   <td>
-                    <Link to={`/users/${user.id}/answers`}>View questions</Link>
+                    <Link to={`/answers/${question.id}`}>View answers</Link>
                   </td>
                 </tr>
               ))}
             </tbody>
           </Table>
-        </Box> */}
-        </Flex>
+        </Box>
+        {/* <Box d="row" mt="1" alignItems="center">
+            <h2>Users</h2>
+            <Table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>User name</th>
+                  <th>User email</th>
+                  <th>View questions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user, idx) => (
+                  <tr key={user.id}>
+                    {user.name}
+                    <td>{idx}</td>
+                    <td>{user.email}</td>
+                    <td>{user.role}</td>
+                    <td>
+                      <Link to={`/users/${user.id}/answers`}>View questions</Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Box> */}
       </SimpleGrid>
     </Box>
   )

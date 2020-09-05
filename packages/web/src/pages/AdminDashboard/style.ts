@@ -84,7 +84,7 @@ export const Table = styled.table`
   }
 
   tr:hover {
-    background-color: #fff;
+    background-color: gray;
   }
   th {
     padding-top: 12px;
