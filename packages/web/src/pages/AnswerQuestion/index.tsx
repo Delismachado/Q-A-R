@@ -168,31 +168,23 @@ const AnswerQuestion: React.FC = () => {
   const { question_id } = useParams()
   useEffect(() => {
     api
-      .get(`/questions/${question_id}`, { headers: headers })
+      .get(`/questions/${question_id}`)
       .then(response => setQuestion(response.data as QuestionData))
   }, [question_id])
 
-  const { user, token } = useAuth()
-  const headers = {
-    Authorization: `Bearer ${token}`
-  }
+  const { user } = useAuth()
 
   const [values, setValues] = useState({})
 
   const handleSubmit = () => {
-    api.post(
-      `/users/${user.id}/answers`,
-      {
-        values: values,
-        question_id: question_id
-      },
-      { headers: headers }
-    )
+    api.post(`/users/${user.id}/answers`, {
+      values: values,
+      question_id: question_id
+    })
   }
 
   return (
     <>
-      <Header />
       <Container>
         <Content>
           <h1>{question.name}</h1>
