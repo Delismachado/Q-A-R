@@ -6,7 +6,6 @@ import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import { Link } from 'react-router-dom'
 import Input from '../../components/Input'
-import Button from '../../components/Button'
 import LabeledInput from '../../components/LabeledInput'
 import Select, { OptionType } from '../../components/Select'
 import Textarea from '../../components/Textarea'
@@ -21,7 +20,10 @@ import {
   FormLabel,
   InputGroup,
   InputRightElement,
-  Stack
+  Stack,
+  ButtonGroup,
+  Button,
+  Text
 } from '@chakra-ui/core'
 import { Form } from '@unform/web'
 
@@ -34,7 +36,7 @@ interface CreateQuestionData {
 
 const TrueFalseFields: React.FC = () => {
   return (
-    <FormControl>
+    <>
       <LabeledInput
         label="True value label"
         placeholder="Yes!"
@@ -45,7 +47,7 @@ const TrueFalseFields: React.FC = () => {
         placeholder="No."
         name="options.falseLabel"
       />
-    </FormControl>
+    </>
   )
 }
 
@@ -63,7 +65,6 @@ const ChoicesFields: React.FC = () => {
   const [choiceLabel, setChoiceLabel] = useState('')
 
   function addChoice() {
-    props.onOptionsChange({ choices: [...choices, choiceLabel] })
     setChoices([...choices, choiceLabel])
   }
 
@@ -74,15 +75,16 @@ const ChoicesFields: React.FC = () => {
   }
 
   return (
-    <FormControl paddingTop="2rem" as="fieldset">
+    <>
       <Stack>
         {choices.map((choice, idx) => (
           <Flex
             key={idx}
             width="100%"
             borderWidth="1px"
-            borderRadius="lg"
+            borderRadius="md"
             borderColor="gray.500"
+            padding=".5rem"
           >
             {choice}
             <IconButton
@@ -95,7 +97,7 @@ const ChoicesFields: React.FC = () => {
           </Flex>
         ))}
       </Stack>
-      <FormControl>
+      <FormControl paddingTop=".5rem">
         <FormLabel>Choice label</FormLabel>
         <InputGroup>
           <Input
@@ -114,7 +116,7 @@ const ChoicesFields: React.FC = () => {
           </InputRightElement>
         </InputGroup>
       </FormControl>
-    </FormControl>
+    </>
   )
 }
 
@@ -154,33 +156,23 @@ const OptionFields: React.FC<OptionsFieldsProps> = ({
   )
 }
 
+const optionsTypes: OptionType[] = [
+  { value: 'true or false', label: 'True or false' },
+  { value: 'choices', label: 'Choices' },
+  { value: 'multiple choices', label: 'Multiple choices' }
+]
+
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth()
   const [questions, setQuestions] = useState([])
-
-  const optionsTypes: OptionType[] = [
-    { value: 'true or false', label: 'True or false' },
-    { value: 'choices', label: 'Choices' },
-    { value: 'multiple choices', label: 'Multiple choices' }
-  ]
-
   useEffect(() => {
     api.get('/questions').then(response => {
       setQuestions(response.data)
     })
   }, [user])
 
-  const handleNewQuestion = (data: CreateQuestionData, helper, event): void => {
-    event.preventDefault()
-    console.log(data)
-    /*
-
-    data.options = options
-    api.post('/questions', data, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }) */
+  const handleNewQuestion = (data: CreateQuestionData) => {
+    api.post('/questions', data)
   }
 
   const formRef = useRef<FormHandles>(null)
@@ -208,63 +200,65 @@ const AdminDashboard: React.FC = () => {
               label="Question type"
               name="type"
               options={optionsTypes}
+              placeholder="True/false, multiple choices, ..."
               onChange={e => setType(e.target.value)}
             />
             <OptionFields type={type} />
-            <Button className="button" type="submit" variantColor="green">
-              Create question
-            </Button>
+            <ButtonGroup mt="1rem">
+              <Button
+                className="button"
+                type="reset"
+                onClick={() => setType('')}
+              >
+                Reset
+              </Button>
+              <Button className="button" type="submit" variantColor="green">
+                Create question
+              </Button>
+            </ButtonGroup>
           </Form>
         </Box>
-
-        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.700">
-          <Table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>List of questions</th>
-                <th>View Answers</th>
-              </tr>
-            </thead>
-            <tbody>
-              {questions.map((question, idx) => (
-                <tr key={question.id}>
-                  <td>{idx}</td>
-                  <td>{question.name}</td>
-                  <td>
-                    <Link to={`/answers/${question.id}`}>View answers</Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
+          <Heading as="h3" size="lg">
+            Questions list
+          </Heading>
+          {questions.map(question => (
+            <Flex
+              key={question.id}
+              border="1px"
+              borderColor="gray.500"
+              borderRadius="lg"
+              padding=".5rem"
+              marginY=".5rem"
+              verticalAlign="middle"
+            >
+              <Text>
+                <strong>{question.name}</strong>: {question.type}
+              </Text>
+              <ButtonGroup marginLeft="auto">
+                <IconButton
+                  isDisabled={true}
+                  aria-label="Remove question"
+                  title="Remove question"
+                  icon="delete"
+                />
+                <IconButton
+                  isDisabled={true}
+                  aria-label="Edit question"
+                  title="Edit question"
+                  icon="edit"
+                />
+                <Link to={`/answers/${question.id}`}>
+                  <IconButton
+                    aria-label="View answers"
+                    title="View answers"
+                    icon="info"
+                  />
+                </Link>
+              </ButtonGroup>
+            </Flex>
+          ))}
         </Box>
-        {/* <Box d="row" mt="1" alignItems="center">
-            <h2>Users</h2>
-            <Table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>User name</th>
-                  <th>User email</th>
-                  <th>View questions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user, idx) => (
-                  <tr key={user.id}>
-                    {user.name}
-                    <td>{idx}</td>
-                    <td>{user.email}</td>
-                    <td>{user.role}</td>
-                    <td>
-                      <Link to={`/users/${user.id}/answers`}>View questions</Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Box> */}
       </SimpleGrid>
     </Box>
   )

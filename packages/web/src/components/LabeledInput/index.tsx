@@ -4,12 +4,10 @@ import {
   InputProps,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  Flex
+  FormErrorMessage
 } from '@chakra-ui/core'
 
 import { useField } from '@unform/core'
-import { Form } from '@unform/web'
 
 interface IInputProps extends InputProps<HTMLInputElement> {
   name: string
@@ -35,7 +33,6 @@ const LabeledInput: React.FC<IInputProps> = ({
   return (
     <FormControl paddingTop="1rem" isInvalid={!!error}>
       {label && <FormLabel htmlFor={fieldName}>{label}</FormLabel>}
-
       <ChakraInput
         name={fieldName}
         id={fieldName}
@@ -43,7 +40,6 @@ const LabeledInput: React.FC<IInputProps> = ({
         ref={inputRef}
         {...rest}
       />
-
       {error && <FormErrorMessage>{error}</FormErrorMessage>}
     </FormControl>
   )
