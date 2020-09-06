@@ -1,22 +1,12 @@
-import React, { useCallback, useRef } from 'react'
-import { Form } from '@unform/web'
+import { Box, Button, ButtonGroup, Heading } from '@chakra-ui/core'
 import { FormHandles } from '@unform/core'
-import * as Yup from 'yup'
+import { Form } from '@unform/web'
+import React, { useCallback, useRef } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-
+import * as Yup from 'yup'
+import LabeledInput from '../../components/LabeledInput'
 import { useAuth } from '../../hooks/auth'
-
 import getValidationErrors from '../../utils/getValidationErrors'
-
-import Input from '../../components/Input'
-import Button from '../../components/Button'
-
-import { StyledForm } from './style'
-
-import Header from '../../components/Header'
-import Container from '../../components/Container'
-import Content from '../../components/Content'
-import { Box, Heading } from '@chakra-ui/core'
 
 interface SignInFormData {
   email: string
@@ -57,22 +47,38 @@ const SignIn: React.FC = () => {
         p="6"
         m="10"
         width="25%"
-        background="#f0f0f5"
+        backgroundColor="gray.200"
       >
-        <Heading>Sign in</Heading>
+        <Heading size="lg" textAlign="center" paddingBottom="1rem">
+          Sign in
+        </Heading>
         <Form ref={formRef} onSubmit={handleSubmit}>
-          <Input name="email" placeholder="your@email.com" />
-          <Input
+          <LabeledInput
+            label="E-mail"
+            name="email"
+            placeholder="your@email.com"
+          />
+          <LabeledInput
+            label="Password:"
             name="password"
-            type="Password"
+            type="password"
             placeholder="***"
             marginTop={2}
           />
-          <Button type="submit">Login</Button>
+          <ButtonGroup width="100%" spacing="10%" paddingTop="2rem">
+            <Button width="45%">
+              <Link to="/forgot">Forgot your password</Link>
+            </Button>
+            <Button
+              type="submit"
+              width="45%"
+              marginRight="auto"
+              variantColor="teal"
+            >
+              Login
+            </Button>
+          </ButtonGroup>
         </Form>
-        <Button>
-          <Link to="/forgot">Forgot your password</Link>
-        </Button>
       </Box>
     </Box>
   )
