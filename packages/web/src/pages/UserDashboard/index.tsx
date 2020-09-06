@@ -1,62 +1,66 @@
 import React, { useEffect, useState } from 'react'
 
-import { Table } from './style'
-
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import { Link } from 'react-router-dom'
 
-import Header from '../../components/Header'
-import Container from '../../components/Container'
-import Content from '../../components/Content'
+import {
+  Box,
+  Heading,
+  List,
+  ListItem,
+  Text,
+  ButtonGroup,
+  Button
+} from '@chakra-ui/core'
 
 const UserDashboard: React.FC = () => {
   const { user, token } = useAuth()
   const [questions, setQuestions] = useState([])
 
   useEffect(() => {
-    api
-      .get('/questions', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(response => {
-        setQuestions(response.data)
-      })
+    api.get('/questions').then(response => {
+      setQuestions(response.data)
+    })
   }, [user])
 
   return (
-    <>
-      <Header />
-      <Container>
-        <Content>
-          <h2>User Dashboard</h2>
-          <Table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Question</th>
-                <th>Answers</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {questions.map((question, idx) => (
-                <tr key={question.id}>
-                  <td>{idx + 1}</td>
-                  <td>{question.name}</td>
-                  <td>
-                    <Link to={`/questions/${question.id}`}>Answer</Link>
-                  </td>
-                  <td></td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Content>
-      </Container>
-    </>
+    <Box maxWidth="6xl" margin="auto">
+      <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
+        <Heading as="h2" size="lg" paddingBottom="1rem">
+          Questions list
+        </Heading>
+        <List>
+          {questions.map((question, idx) => (
+            <ListItem
+              display="flex"
+              border="1px"
+              borderColor="gray.700"
+              borderRadius="lg"
+              padding=".5rem"
+              marginY=".5rem"
+              key={question.id}
+            >
+              <Box>
+                <Text as="strong">
+                  {idx + 1}. {question.name}
+                </Text>
+                <Text as="p" color="gray.500">
+                  {question.description}
+                </Text>
+              </Box>
+              <ButtonGroup marginLeft="auto">
+                <Link to={`/questions/${question.id}`}>
+                  <Button variantColor="teal" leftIcon="plus-square">
+                    Add answer
+                  </Button>
+                </Link>
+              </ButtonGroup>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </Box>
   )
 }
 
