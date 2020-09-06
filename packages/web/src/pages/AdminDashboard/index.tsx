@@ -32,38 +32,15 @@ interface CreateQuestionData {
   options: any
 }
 
-interface OnOptionsChangeFunc {
-  (options: any): void
-}
-
-interface OptionsFieldsetProps {
-  onOptionsChange: OnOptionsChangeFunc
-}
-
-interface TrueFalseOptions {
-  trueLabel: string
-  falseLabel: string
-}
-
-const TrueFalseFields: React.FC<OptionsFieldsetProps> = (
-  props: OptionsFieldsetProps
-) => {
-  const [options, setOptions] = useState<TrueFalseOptions>({
-    trueLabel: '',
-    falseLabel: ''
-  })
-  function changeOptions(options) {
-    setOptions(options)
-    props.onOptionsChange(options)
-  }
+const TrueFalseFields: React.FC = () => {
   return (
-    <FormControl as="fieldset">
-      <Input
+    <FormControl>
+      <LabeledInput
         label="True value label"
         placeholder="Yes!"
         name="options.trueLabel"
       />
-      <Input
+      <LabeledInput
         label="False value label"
         placeholder="No."
         name="options.falseLabel"
@@ -72,10 +49,17 @@ const TrueFalseFields: React.FC<OptionsFieldsetProps> = (
   )
 }
 
-const ChoicesFields: React.FC<OptionsFieldsetProps> = (
-  props: OptionsFieldsetProps
-) => {
+const ChoicesFields: React.FC = () => {
   const [choices, setChoices] = useState([])
+
+  const { fieldName, registerField } = useField('options.choices')
+  useEffect(() => {
+    registerField({
+      name: fieldName,
+      getValue: () => choices
+    })
+  }, [fieldName, registerField, choices])
+
   const [choiceLabel, setChoiceLabel] = useState('')
 
   function addChoice() {
@@ -86,18 +70,8 @@ const ChoicesFields: React.FC<OptionsFieldsetProps> = (
   function removeChoice(idx) {
     const currentChoices = [...choices]
     currentChoices.splice(idx, 1)
-    props.onOptionsChange({ choices: currentChoices })
     setChoices(currentChoices)
   }
-
-  const { fieldName, registerField } = useField('options.choices')
-
-  useEffect(() => {
-    registerField({
-      name: fieldName,
-      getValue: () => choices
-    })
-  }, [fieldName, registerField, choices])
 
   return (
     <FormControl paddingTop="2rem" as="fieldset">
@@ -146,28 +120,43 @@ const ChoicesFields: React.FC<OptionsFieldsetProps> = (
 
 interface OptionsFieldsProps {
   type: string
-  onOptionsChange: OnOptionsChangeFunc
 }
 
-const OptionFields: React.FC<OptionsFieldsProps> = ({
-  type,
-  onOptionsChange
+const OptionsFieldsByType: React.FC<OptionsFieldsProps> = ({
+  type
 }: OptionsFieldsProps) => {
   switch (type) {
     case 'true or false':
-      return <TrueFalseFields onOptionsChange={e => onOptionsChange(e)} />
+      return <TrueFalseFields />
     case 'choices':
     case 'multiple choices':
-      return <ChoicesFields onOptionsChange={e => onOptionsChange(e)} />
+      return <ChoicesFields />
     default:
       return <p>Choose a question type</p>
   }
 }
 
+const OptionFields: React.FC<OptionsFieldsProps> = ({
+  type
+}: OptionsFieldsProps) => {
+  return (
+    <Box
+      as="fieldset"
+      borderWidth="1px"
+      borderRadius="lg"
+      borderColor="gray.800"
+      mt="1rem"
+      p="1rem"
+    >
+      <legend>Question options:</legend>
+      <OptionsFieldsByType type={type} />
+    </Box>
+  )
+}
+
 const AdminDashboard: React.FC = () => {
-  const { user, token } = useAuth()
+  const { user } = useAuth()
   const [questions, setQuestions] = useState([])
-  const [users, setUsers] = useState([])
 
   const optionsTypes: OptionType[] = [
     { value: 'true or false', label: 'True or false' },
@@ -178,12 +167,6 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
     api.get('/questions').then(response => {
       setQuestions(response.data)
-    })
-  }, [user])
-
-  useEffect(() => {
-    api.get('/users').then(response => {
-      setUsers(response.data)
     })
   }, [user])
 
@@ -202,12 +185,11 @@ const AdminDashboard: React.FC = () => {
 
   const formRef = useRef<FormHandles>(null)
   const [type, setType] = useState<string>('')
-  const [options, setOptions] = useState({})
 
   return (
     <Box maxWidth="6xl" margin="auto">
       <SimpleGrid columns={[1, 1, 1, 2]}>
-        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.700">
+        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
           <Heading as="h3" size="lg">
             Create new question
           </Heading>
@@ -228,7 +210,7 @@ const AdminDashboard: React.FC = () => {
               options={optionsTypes}
               onChange={e => setType(e.target.value)}
             />
-            <OptionFields type={type} onOptionsChange={e => console.log(e)} />
+            <OptionFields type={type} />
             <Button className="button" type="submit" variantColor="green">
               Create question
             </Button>

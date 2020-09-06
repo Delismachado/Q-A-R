@@ -6,7 +6,7 @@ import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming'
 const CustomThemeProvider: React.FC = props => {
   return (
     <ThemeProvider theme={customTheme}>
-      <ColorModeProvider value="dark">
+      <ColorModeProvider value="light">
         <EmotionThemeProvider theme={customTheme}>
           <CSSReset />
           {props.children}

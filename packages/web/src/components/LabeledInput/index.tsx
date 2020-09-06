@@ -33,7 +33,7 @@ const LabeledInput: React.FC<IInputProps> = ({
   }, [fieldName, registerField])
 
   return (
-    <FormControl paddingTop="2rem" isInvalid={!!error}>
+    <FormControl paddingTop="1rem" isInvalid={!!error}>
       {label && <FormLabel htmlFor={fieldName}>{label}</FormLabel>}
 
       <ChakraInput
