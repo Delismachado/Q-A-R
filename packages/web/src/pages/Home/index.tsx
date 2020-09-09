@@ -25,7 +25,7 @@ const Home: React.FC = () => (
       </Text>
     </Flex>
     <Box>
-      <Text bg="tomato" color="white"></Text>
+      <Text bg="tomato" color="black"></Text>
     </Box>
   </Flex>
 )

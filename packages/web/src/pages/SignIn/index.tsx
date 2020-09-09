@@ -9,14 +9,14 @@ import { useAuth } from '../../hooks/auth'
 import getValidationErrors from '../../utils/getValidationErrors'
 
 import Input from '../../components/Input'
-import Button from '../../components/Button'
+// import Button from '../../components/Button'
 
 import { StyledForm } from './style'
 
 import Header from '../../components/Header'
 import Container from '../../components/Container'
 import Content from '../../components/Content'
-import { Box, Heading } from '@chakra-ui/core'
+import { Box, Heading, Button, ButtonGroup } from '@chakra-ui/core'
 
 interface SignInFormData {
   email: string
@@ -68,11 +68,30 @@ const SignIn: React.FC = () => {
             placeholder="***"
             marginTop={2}
           />
-          <Button type="submit">Login</Button>
+
+          <ButtonGroup spacing={2}>
+            <Button
+              m={4}
+              rightIcon="check"
+              variantColor="pink"
+              marginTop={6}
+              isLoading={false}
+              type="submit"
+            >
+              Login
+            </Button>
+
+            <Button
+              m={4}
+              leftIcon="arrow-back"
+              variantColor="pink"
+              marginTop={6}
+              isLoading={false}
+            >
+              <Link to="/forgot">Forgot your password</Link>
+            </Button>
+          </ButtonGroup>
         </Form>
-        <Button>
-          <Link to="/forgot">Forgot your password</Link>
-        </Button>
       </Box>
     </Box>
   )

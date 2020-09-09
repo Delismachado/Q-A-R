@@ -25,18 +25,36 @@ const SignUp: React.FC = () => {
 
   return (
     <Box d="flex" flexDir="column" alignItems="center">
-      <Box border="1px" borderRadius="10px" p="6" m="6">
+      <Box
+        border="1px"
+        borderRadius="10px"
+        p="6"
+        m="10"
+        width="25%"
+        background="#f0f0f5"
+      >
         <Heading>Create your account</Heading>
         <Form onSubmit={handleSubmit}>
-          <Input label="E-mail" name="email" type="text" placeholder="E-mail" />
-          <Input label="Password" name="password" type="password" />
+          <Input
+            label="E-mail"
+            name="email"
+            type="text"
+            placeholder="E-mail"
+            marginTop={2}
+          />
+          <Input
+            label="Password"
+            name="password"
+            type="password"
+            marginTop={3}
+          />
           <Select label="Who are you" name="role" options={options} />
           <ButtonGroup spacing={2}>
             <Link to="/sign-in">
               <Button
                 m={4}
                 leftIcon="arrow-back"
-                variantColor="orange"
+                variantColor="pink"
                 isLoading={false}
                 type="submit"
               >

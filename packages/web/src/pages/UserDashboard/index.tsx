@@ -6,7 +6,6 @@ import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import { Link } from 'react-router-dom'
 
-import Header from '../../components/Header'
 import Container from '../../components/Container'
 import Content from '../../components/Content'
 
@@ -28,7 +27,6 @@ const UserDashboard: React.FC = () => {
 
   return (
     <>
-      <Header />
       <Container>
         <Content>
           <h2>User Dashboard</h2>
