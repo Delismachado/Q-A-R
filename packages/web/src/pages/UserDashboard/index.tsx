@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-
 import { Table } from './style'
-
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import { Link } from 'react-router-dom'

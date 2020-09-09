@@ -11,11 +11,11 @@ import getValidationErrors from '../../utils/getValidationErrors'
 import Input from '../../components/Input'
 // import Button from '../../components/Button'
 
-import { StyledForm } from './style'
+// import { StyledForm } from './style'
 
-import Header from '../../components/Header'
-import Container from '../../components/Container'
-import Content from '../../components/Content'
+// import Header from '../../components/Header'
+// import Container from '../../components/Container'
+// import Content from '../../components/Content'
 import { Box, Heading, Button, ButtonGroup } from '@chakra-ui/core'
 
 interface SignInFormData {

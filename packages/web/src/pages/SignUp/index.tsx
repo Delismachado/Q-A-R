@@ -1,14 +1,13 @@
 import React from 'react'
+import api from '../../services/api'
+
 import { Link, useHistory } from 'react-router-dom'
 import { Form } from '@unform/web'
+import { Box, Heading, Button, ButtonGroup } from '@chakra-ui/core'
+import { SubmitHandler } from '@unform/core'
 
 import Input from '../../components/Input'
 import Select from '../../components/Select'
-
-import api from '../../services/api'
-
-import { Box, Heading, Button, FormControl, ButtonGroup } from '@chakra-ui/core'
-import { SubmitHandler } from '@unform/core'
 
 const SignUp: React.FC = () => {
   const history = useHistory()
