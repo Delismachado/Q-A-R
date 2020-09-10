@@ -1,7 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-
-import { Table } from './style'
-
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import { Link } from 'react-router-dom'
@@ -26,7 +23,6 @@ import {
   Text
 } from '@chakra-ui/core'
 import { Form } from '@unform/web'
-import { response } from 'express'
 
 interface CreateQuestionData {
   name: string
@@ -165,8 +161,6 @@ const optionsTypes: OptionType[] = [
 
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth()
-  const [newQuestion, setNewQuestion] = useState('')
-  const [inputError, setInputError] = useState('')
   const [questions, setQuestions] = useState([])
   useEffect(() => {
     api.get('/questions').then(response => {
@@ -225,7 +219,7 @@ const AdminDashboard: React.FC = () => {
                 Reset
               </Button>
               <Button className="button" type="submit" variantColor="green">
-                Create question
+                Create new question
               </Button>
             </ButtonGroup>
           </Form>
