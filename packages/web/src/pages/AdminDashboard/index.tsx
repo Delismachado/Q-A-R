@@ -26,6 +26,7 @@ import {
   Text
 } from '@chakra-ui/core'
 import { Form } from '@unform/web'
+import { response } from 'express'
 
 interface CreateQuestionData {
   name: string
@@ -164,6 +165,8 @@ const optionsTypes: OptionType[] = [
 
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth()
+  const [newQuestion, setNewQuestion] = useState('')
+  const [inputError, setInputError] = useState('')
   const [questions, setQuestions] = useState([])
   useEffect(() => {
     api.get('/questions').then(response => {
@@ -172,6 +175,15 @@ const AdminDashboard: React.FC = () => {
   }, [user])
 
   const handleNewQuestion = (data: CreateQuestionData) => {
+    // if (!newQuestion) {
+    //   setInputError('Digite uma questão')
+    //   return
+    // } else {
+    //   api.post(`/questions/${newQuestion}`)
+    //   const question = []
+    //   setQuestions([...questions, question])
+    //   setNewQuestion('')
+    // }
     api.post('/questions', data)
   }
 

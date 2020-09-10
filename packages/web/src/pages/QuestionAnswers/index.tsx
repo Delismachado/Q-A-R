@@ -36,7 +36,6 @@ const QuestionAnswers: React.FC = () => {
 
   return (
     <>
-      <Header />
       <Container>
         <Content>
           <h2>List of answer</h2>
