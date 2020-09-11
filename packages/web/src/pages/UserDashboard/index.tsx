@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react'
-
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import { Link } from 'react-router-dom'
-
 import {
   Box,
   Heading,
-  List,
-  ListItem,
-  Text,
   ButtonGroup,
-  Button
+  Button,
+  Text,
+  List,
+  ListItem
 } from '@chakra-ui/core'
 
 const UserDashboard: React.FC = () => {
-  const { user, token } = useAuth()
+  const { user } = useAuth()
   const [questions, setQuestions] = useState([])
 
   useEffect(() => {

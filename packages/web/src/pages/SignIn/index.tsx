@@ -65,17 +65,27 @@ const SignIn: React.FC = () => {
             placeholder="***"
             marginTop={2}
           />
-          <ButtonGroup width="100%" spacing="10%" paddingTop="2rem">
-            <Button width="45%">
-              <Link to="/forgot">Forgot your password</Link>
-            </Button>
+
+          <ButtonGroup spacing={2}>
             <Button
+              m={4}
+              rightIcon="check"
+              variantColor="pink"
+              marginTop={6}
+              isLoading={false}
               type="submit"
-              width="45%"
-              marginRight="auto"
-              variantColor="teal"
             >
               Login
+            </Button>
+
+            <Button
+              m={4}
+              leftIcon="arrow-back"
+              variantColor="pink"
+              marginTop={6}
+              isLoading={false}
+            >
+              <Link to="/forgot">Forgot your password</Link>
             </Button>
           </ButtonGroup>
         </Form>

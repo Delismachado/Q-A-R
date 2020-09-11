@@ -1,7 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-
-import { Table } from './style'
-
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import { Link } from 'react-router-dom'
@@ -172,6 +169,15 @@ const AdminDashboard: React.FC = () => {
   }, [user])
 
   const handleNewQuestion = (data: CreateQuestionData) => {
+    // if (!newQuestion) {
+    //   setInputError('Digite uma questão')
+    //   return
+    // } else {
+    //   api.post(`/questions/${newQuestion}`)
+    //   const question = []
+    //   setQuestions([...questions, question])
+    //   setNewQuestion('')
+    // }
     api.post('/questions', data)
   }
 
@@ -213,7 +219,7 @@ const AdminDashboard: React.FC = () => {
                 Reset
               </Button>
               <Button className="button" type="submit" variantColor="green">
-                Create question
+                Create new question
               </Button>
             </ButtonGroup>
           </Form>
