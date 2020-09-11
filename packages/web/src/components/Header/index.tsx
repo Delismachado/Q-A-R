@@ -27,8 +27,8 @@ const Header: React.FC = props => {
       align="center"
       justify="space-between"
       wrap="wrap"
-      padding="1.5rem"
-      bg="gray.700"
+      padding="2.5rem"
+      bg="teal.500"
       color="white"
       {...props}
     >
