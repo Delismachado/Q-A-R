@@ -7,7 +7,7 @@ import { Box, Heading, Button, ButtonGroup } from '@chakra-ui/core'
 import { SubmitHandler } from '@unform/core'
 
 import Input from '../../components/Input'
-import Select from '../../components/Select'
+import Select from '../../components/LabeledSelect'
 
 const SignUp: React.FC = () => {
   const history = useHistory()

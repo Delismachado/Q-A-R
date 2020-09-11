@@ -4,7 +4,7 @@ import api from '../../services/api'
 import { Link } from 'react-router-dom'
 import Input from '../../components/Input'
 import LabeledInput from '../../components/LabeledInput'
-import Select, { OptionType } from '../../components/Select'
+import Select, { OptionType } from '../../components/LabeledSelect'
 import Textarea from '../../components/Textarea'
 import { FormHandles, useField } from '@unform/core'
 import {
@@ -168,21 +168,13 @@ const AdminDashboard: React.FC = () => {
     })
   }, [user])
 
-  const handleNewQuestion = (data: CreateQuestionData) => {
-    // if (!newQuestion) {
-    //   setInputError('Digite uma questão')
-    //   return
-    // } else {
-    //   api.post(`/questions/${newQuestion}`)
-    //   const question = []
-    //   setQuestions([...questions, question])
-    //   setNewQuestion('')
-    // }
-    api.post('/questions', data)
-  }
-
   const formRef = useRef<FormHandles>(null)
   const [type, setType] = useState<string>('')
+
+  const handleNewQuestion = (data: CreateQuestionData) => {
+    api.post('/questions', data).then(q => setQuestions([...questions, q.data]))
+    formRef.current.reset()
+  }
 
   return (
     <Box maxWidth="6xl" margin="auto">

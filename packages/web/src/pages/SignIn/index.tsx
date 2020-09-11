@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Heading } from '@chakra-ui/core'
+import { Box, Button, ButtonGroup, Heading, Flex } from '@chakra-ui/core'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import React, { useCallback, useRef } from 'react'
@@ -65,27 +65,24 @@ const SignIn: React.FC = () => {
             placeholder="***"
             marginTop={2}
           />
-
-          <ButtonGroup spacing={2}>
+          <ButtonGroup>
             <Button
-              m={4}
-              rightIcon="check"
-              variantColor="pink"
-              marginTop={6}
-              isLoading={false}
-              type="submit"
-            >
-              Login
-            </Button>
-
-            <Button
-              m={4}
               leftIcon="arrow-back"
               variantColor="pink"
               marginTop={6}
               isLoading={false}
             >
               <Link to="/forgot">Forgot your password</Link>
+            </Button>
+            <Button
+              rightIcon="check"
+              variantColor="pink"
+              marginTop={6}
+              marginRight="auto"
+              isLoading={false}
+              type="submit"
+            >
+              Login
             </Button>
           </ButtonGroup>
         </Form>

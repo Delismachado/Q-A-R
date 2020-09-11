@@ -1,115 +1,79 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Link,
-  useParams,
-  RouteComponentProps,
-  useRouteMatch
-} from 'react-router-dom'
-import { Form } from '@unform/web'
+import { Link, useParams } from 'react-router-dom'
 
 import api from '../../services/api'
 
 import { useAuth } from '../../hooks/auth'
 
-import Select from '../../components/Select'
-import Button from '../../components/Button'
-import Header from '../../components/Header'
-import Container from '../../components/Container'
-import Content from '../../components/Content'
+import { Form } from '@unform/web'
+import { Box, Heading, Text, Button, ButtonGroup } from '@chakra-ui/core'
 
-import { StyledForm } from './style'
+import RadioGroup, { RadioGroupOptions } from '../../components/RadioGroup'
+import CheckboxGroup, {
+  CheckboxGroupOptions
+} from '../../components/CheckboxGroup'
+import LabeledSelect, { OptionType } from '../../components/LabeledSelect'
 
 interface ChangeValuesFunc {
   (values: any): void
 }
 
 interface TrueOrFalseAnswerFieldsetProps {
-  onChangeValues: ChangeValuesFunc
   options: any
 }
 
 const TrueOrFalseAnswerFieldset: React.FC<TrueOrFalseAnswerFieldsetProps> = ({
-  onChangeValues,
   options
 }: TrueOrFalseAnswerFieldsetProps) => {
+  const trueFalseOptions: RadioGroupOptions[] = [
+    { label: options.trueLabel, value: 'true' },
+    { label: options.falseLabel, value: 'false' }
+  ]
   return (
     <fieldset>
-      <input
-        type="radio"
-        value="true"
-        id="trueValue"
-        onChange={e => onChangeValues(e.target.value)}
-        name="answer"
-      />{' '}
-      <label htmlFor="trueValue">{options.trueLabel}</label>
-      <input
-        type="radio"
-        value="false"
-        onChange={e => onChangeValues(e.target.value)}
-        name="answer"
-      />
-      <label htmlFor="falseValue">{options.falseLabel}</label>
+      <RadioGroup name="values" isInline options={trueFalseOptions} />
     </fieldset>
   )
 }
 
 interface ChoicesAnswerFieldsetProps {
-  onChangeValues: ChangeValuesFunc
   options: any
 }
 
 const ChoicesAnswerFieldset: React.FC<ChoicesAnswerFieldsetProps> = ({
-  onChangeValues,
   options
 }: ChoicesAnswerFieldsetProps) => {
+  const choicesOptions: OptionType[] = options.choices.map(c => ({
+    label: c,
+    value: c
+  }))
+
   return (
     <fieldset>
-      <select onChange={e => onChangeValues(e.target.value)}>
-        {options.choices.map((c: string) => (
-          <option key={c} value={c}>
-            {c}
-          </option>
-        ))}
-      </select>
+      <LabeledSelect options={choicesOptions} name="values" />
     </fieldset>
   )
 }
 
 interface MultipleChoicesAnswerFieldsetProps {
-  onChangeValues: ChangeValuesFunc
   options: any
 }
 
 const MultipleChoicesAnswerFieldset: React.FC<MultipleChoicesAnswerFieldsetProps> = ({
-  onChangeValues,
   options
 }: MultipleChoicesAnswerFieldsetProps) => {
-  const [selectedState, setSelectedState] = useState([])
-
-  function handleChange(checked, value) {
-    const selected = selectedState
-    console.log(checked)
-    if (checked) {
-      selected.push(value)
-    } else {
-      selected.splice(selected.indexOf(value), 1)
-    }
-    onChangeValues(selected)
-    setSelectedState(selected)
-  }
+  const checkBoxOptions: CheckboxGroupOptions[] = options.choices.map(o => ({
+    label: o,
+    value: o
+  }))
 
   return (
     <fieldset>
-      {options.choices.map((c: string) => (
-        <label key={c} className="form-check-label">
-          <input
-            type="checkbox"
-            onChange={e => handleChange(e.target.checked, c)}
-            className="form-check-input"
-          />
-          {c}
-        </label>
-      ))}
+      <CheckboxGroup
+        variantColor="green"
+        options={checkBoxOptions}
+        name="values"
+      />
     </fieldset>
   )
 }
@@ -120,31 +84,15 @@ interface AnswerFieldProps {
 }
 
 const AnswerField: React.FC<AnswerFieldProps> = ({
-  question,
-  onChangeValues
+  question
 }: AnswerFieldProps) => {
   switch (question.type) {
     case 'true or false':
-      return (
-        <TrueOrFalseAnswerFieldset
-          options={question.options}
-          onChangeValues={onChangeValues}
-        />
-      )
+      return <TrueOrFalseAnswerFieldset options={question.options} />
     case 'choices':
-      return (
-        <ChoicesAnswerFieldset
-          options={question.options}
-          onChangeValues={onChangeValues}
-        />
-      )
+      return <ChoicesAnswerFieldset options={question.options} />
     case 'multiple choices':
-      return (
-        <MultipleChoicesAnswerFieldset
-          options={question.options}
-          onChangeValues={onChangeValues}
-        />
-      )
+      return <MultipleChoicesAnswerFieldset options={question.options} />
     default:
       return <p>Carregando ...</p>
   }
@@ -172,34 +120,40 @@ const AnswerQuestion: React.FC = () => {
       .then(response => setQuestion(response.data as QuestionData))
   }, [question_id])
 
-  const { user } = useAuth()
-
-  const [values, setValues] = useState({})
-
-  const handleSubmit = () => {
-    api.post(`/users/${user.id}/answers`, {
-      values: values,
-      question_id: question_id
-    })
+  const handleSubmit = (data, a, e) => {
+    e.preventDefault()
+    data.question_id = question_id
+    console.log(data)
+    // api.post(`/users/${user.id}/answers`, data)
   }
 
   return (
-    <>
-      <Container>
-        <Content>
-          <h1>{question.name}</h1>
-          <p>{question.description}</p>
-          <StyledForm onSubmit={handleSubmit}>
-            <AnswerField
-              question={question}
-              onChangeValues={e => setValues(e)}
-            />
-            <Button type="submit">Register</Button>
-            <Link to="/user-dashboard">Go back</Link>
-          </StyledForm>
-        </Content>
-      </Container>
-    </>
+    <Box maxWidth="3xl" margin="auto">
+      <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
+        <Heading size="lg" textAlign="center" paddingBottom="2rem">
+          {question.name}
+        </Heading>
+        <Text paddingBottom="2rem">{question.description}</Text>
+        <Form onSubmit={handleSubmit}>
+          <AnswerField question={question} />
+          <ButtonGroup display="flex" paddingTop="2rem">
+            <Box flex="1">
+              <Link to="/user-dashboard">
+                <Button leftIcon="arrow-back">Go back</Button>
+              </Link>
+            </Box>
+            <Button
+              flex="1"
+              type="submit"
+              variantColor="green"
+              leftIcon="check"
+            >
+              Register answer
+            </Button>
+          </ButtonGroup>
+        </Form>
+      </Box>
+    </Box>
   )
 }
 
