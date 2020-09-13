@@ -80,7 +80,6 @@ const MultipleChoicesAnswerFieldset: React.FC<MultipleChoicesAnswerFieldsetProps
 
 interface AnswerFieldProps {
   question: QuestionData
-  onChangeValues: ChangeValuesFunc
 }
 
 const AnswerField: React.FC<AnswerFieldProps> = ({
