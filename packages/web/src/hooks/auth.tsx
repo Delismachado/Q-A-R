@@ -34,6 +34,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     const user = localStorage.getItem('@QAR:user')
 
     if (token && user) {
+      api.defaults.headers.authorization = `Bearer ${token}`
       return { token, user: JSON.parse(user) as User }
     }
 
@@ -46,6 +47,8 @@ export const AuthProvider: React.FC = ({ children }) => {
       password
     })
     const { token, user } = response.data
+
+    api.defaults.headers.authorization = `Bearer ${token}`
 
     localStorage.setItem('@QAR:token', token)
     localStorage.setItem('@QAR:user', JSON.stringify(user))

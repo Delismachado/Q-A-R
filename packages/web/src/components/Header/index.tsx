@@ -1,10 +1,8 @@
 import React, { useCallback } from 'react'
 
-import { HeaderStyle } from './styles'
 import { useAuth } from '../../hooks/auth'
 import { Link } from 'react-router-dom'
 
-import logoImg from '../../assets/logo.png'
 import { Box, Heading, Flex, Text, Button } from '@chakra-ui/core'
 
 const MenuItems = ({ children }) => (
@@ -13,26 +11,12 @@ const MenuItems = ({ children }) => (
   </Text>
 )
 
-const Header: React.FC = (props) => {
-  /* const { user, signOut } = useAuth()
+const Header: React.FC = props => {
+  const { user, signOut } = useAuth()
 
   const handleLogOut = useCallback(() => {
     signOut()
   }, [user])
-
-  let userPanel
-  if (user) {
-    userPanel = (
-      <>
-        <p>Logged in as {user.email}</p>
-        <button type="button" onClick={handleLogOut}>
-          Go out
-        </button>
-      </>
-    )
-  } else {
-    userPanel = <Link to="/sign-up">Sign up</Link>
-  } */
 
   const [show, setShow] = React.useState(false)
   const handleToggle = () => setShow(!show)
@@ -43,7 +27,7 @@ const Header: React.FC = (props) => {
       align="center"
       justify="space-between"
       wrap="wrap"
-      padding="1.5rem"
+      padding="2.5rem"
       bg="teal.500"
       color="white"
       {...props}
@@ -82,11 +66,23 @@ const Header: React.FC = (props) => {
         display={{ sm: show ? 'block' : 'none', md: 'block' }}
         mt={{ base: 4, md: 0 }}
       >
-        <Link to="/sign-up">
-          <Button bg="transparent" border="1px">
-            Create account
-          </Button>
-        </Link>
+        {user && (
+          <>
+            <Box as="span" fontSize="lg" marginRight="1rem">
+              Welcome {user.email}
+            </Box>
+            <Button bg="transparent" border="1px" onClick={handleLogOut}>
+              Logoff
+            </Button>
+          </>
+        )}
+        {!user && (
+          <Link to="/sign-up">
+            <Button bg="transparent" border="1px">
+              Create account
+            </Button>
+          </Link>
+        )}
       </Box>
     </Flex>
   )

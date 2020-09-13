@@ -19,7 +19,12 @@ interface Props extends SelectProps {
   options: OptionType[]
 }
 
-const Select: React.FC<Props> = ({ name, label, options, ...rest }: Props) => {
+const LabeledSelect: React.FC<Props> = ({
+  name,
+  label,
+  options,
+  ...rest
+}: Props) => {
   const selectRef = useRef(null)
   const { fieldName, defaultValue, registerField, error } = useField(name)
 
@@ -32,7 +37,7 @@ const Select: React.FC<Props> = ({ name, label, options, ...rest }: Props) => {
   }, [fieldName, registerField])
 
   return (
-    <FormControl>
+    <FormControl paddingTop="1rem">
       {label && <FormLabel htmlFor={fieldName}>{label}</FormLabel>}
       <ChakraSelect
         name={fieldName}
@@ -52,14 +57,4 @@ const Select: React.FC<Props> = ({ name, label, options, ...rest }: Props) => {
   )
 }
 
-/**
- *
-    <ReactSelect
-      defaultValue={defaultValue}
-      ref={selectRef}
-      classNamePrefix="react-select"
-      {...rest}
-    />
- */
-
-export default Select
+export default LabeledSelect

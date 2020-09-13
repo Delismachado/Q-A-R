@@ -18,14 +18,14 @@ const Home: React.FC = () => (
           <p>Lorem ipsum is placeholder text commonly used in the graphic</p>
           <Link to="/sign-in">
             <Button rightIcon="arrow-forward" variantColor="teal" size="lg">
-              Sign Up
+              Sign In
             </Button>
           </Link>
         </Flex>
       </Text>
     </Flex>
     <Box>
-      <Text bg="tomato" color="white"></Text>
+      <Text bg="tomato" color="black"></Text>
     </Box>
   </Flex>
 )

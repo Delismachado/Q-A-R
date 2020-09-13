@@ -1,15 +1,28 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
-
-import { Container, Content, StyledForm, Table } from './style'
-
-import Header from '../../components/Header'
+import React, { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import { Link } from 'react-router-dom'
 import Input from '../../components/Input'
-import Select, { OptionType } from '../../components/Select'
-import { FormHandles } from '@unform/core'
-// import { Content } from '../../components/Input/style'
+import LabeledInput from '../../components/LabeledInput'
+import Select, { OptionType } from '../../components/LabeledSelect'
+import Textarea from '../../components/Textarea'
+import { FormHandles, useField } from '@unform/core'
+import {
+  Box,
+  Heading,
+  Flex,
+  FormControl,
+  IconButton,
+  SimpleGrid,
+  FormLabel,
+  InputGroup,
+  InputRightElement,
+  Stack,
+  ButtonGroup,
+  Button,
+  Text
+} from '@chakra-ui/core'
+import { Form } from '@unform/web'
 
 interface CreateQuestionData {
   name: string
@@ -18,235 +31,234 @@ interface CreateQuestionData {
   options: any
 }
 
-interface OnOptionsChangeFunc {
-  (options: any): void
-}
-
-interface OptionsFieldsetProps {
-  onOptionsChange: OnOptionsChangeFunc
-}
-
-interface TrueFalseOptions {
-  trueLabel: string
-  falseLabel: string
-}
-
-const TrueFalseFields: React.FC<OptionsFieldsetProps> = (
-  props: OptionsFieldsetProps
-) => {
-  const [options, setOptions] = useState<TrueFalseOptions>({
-    trueLabel: '',
-    falseLabel: ''
-  })
-  function changeOptions(options) {
-    setOptions(options)
-    props.onOptionsChange(options)
-  }
-
+const TrueFalseFields: React.FC = () => {
   return (
-    <fieldset>
-      <input
-        placeholder="True value label"
-        value={options.trueLabel}
-        onChange={e =>
-          changeOptions({
-            trueLabel: e.target.value,
-            falseLabel: options.falseLabel
-          })
-        }
+    <>
+      <LabeledInput
+        label="True value label"
+        placeholder="Yes!"
+        name="options.trueLabel"
       />
-      <input
-        placeholder="False value label"
-        value={options.falseLabel}
-        onChange={e =>
-          changeOptions({
-            trueLabel: options.trueLabel,
-            falseLabel: e.target.value
-          })
-        }
+      <LabeledInput
+        label="False value label"
+        placeholder="No."
+        name="options.falseLabel"
       />
-    </fieldset>
+    </>
   )
 }
 
-const ChoicesFields: React.FC<OptionsFieldsetProps> = (
-  props: OptionsFieldsetProps
-) => {
+const ChoicesFields: React.FC = () => {
   const [choices, setChoices] = useState([])
+
+  const { fieldName, registerField } = useField('options.choices')
+  useEffect(() => {
+    registerField({
+      name: fieldName,
+      getValue: () => choices
+    })
+  }, [fieldName, registerField, choices])
+
   const [choiceLabel, setChoiceLabel] = useState('')
 
   function addChoice() {
-    props.onOptionsChange({ choices: [...choices, choiceLabel] })
     setChoices([...choices, choiceLabel])
   }
 
   function removeChoice(idx) {
     const currentChoices = [...choices]
     currentChoices.splice(idx, 1)
-    props.onOptionsChange({ choices: currentChoices })
     setChoices(currentChoices)
   }
 
   return (
-    <fieldset>
-      <ul>
+    <>
+      <Stack>
         {choices.map((choice, idx) => (
-          <li key={idx}>
+          <Flex
+            key={idx}
+            width="100%"
+            borderWidth="1px"
+            borderRadius="md"
+            borderColor="gray.500"
+            padding=".5rem"
+          >
             {choice}
-            <a onClick={e => removeChoice(idx)}>Delete</a>
-          </li>
+            <IconButton
+              marginLeft="auto"
+              title="Remove choice"
+              aria-label="delete"
+              icon="small-close"
+              onClick={e => removeChoice(idx)}
+            />
+          </Flex>
         ))}
-      </ul>
-      <input
-        placeholder="Choice label"
-        value={choiceLabel}
-        onChange={e => setChoiceLabel(e.target.value)}
-      />
-      <button type="button" onClick={addChoice}>Add choice</button>
-    </fieldset>
+      </Stack>
+      <FormControl paddingTop=".5rem">
+        <FormLabel>Choice label</FormLabel>
+        <InputGroup>
+          <Input
+            placeholder="Another option"
+            name="choiceLabel"
+            onChange={e => setChoiceLabel(e.target.value)}
+          />
+          <InputRightElement>
+            <IconButton
+              title="Add choice"
+              aria-label="Add choice"
+              icon="plus-square"
+              type="button"
+              onClick={addChoice}
+            />
+          </InputRightElement>
+        </InputGroup>
+      </FormControl>
+    </>
   )
 }
 
 interface OptionsFieldsProps {
   type: string
-  onOptionsChange: OnOptionsChangeFunc
 }
 
-const OptionFields: React.FC<OptionsFieldsProps> = ({
-  type,
-  onOptionsChange
+const OptionsFieldsByType: React.FC<OptionsFieldsProps> = ({
+  type
 }: OptionsFieldsProps) => {
   switch (type) {
     case 'true or false':
-      return <TrueFalseFields onOptionsChange={e => onOptionsChange(e)} />
+      return <TrueFalseFields />
     case 'choices':
     case 'multiple choices':
-      return <ChoicesFields onOptionsChange={e => onOptionsChange(e)} />
+      return <ChoicesFields />
     default:
       return <p>Choose a question type</p>
   }
 }
 
+const OptionFields: React.FC<OptionsFieldsProps> = ({
+  type
+}: OptionsFieldsProps) => {
+  return (
+    <Box
+      as="fieldset"
+      borderWidth="1px"
+      borderRadius="lg"
+      borderColor="gray.800"
+      mt="1rem"
+      p="1rem"
+    >
+      <legend>Question options:</legend>
+      <OptionsFieldsByType type={type} />
+    </Box>
+  )
+}
+
+const optionsTypes: OptionType[] = [
+  { value: 'true or false', label: 'True or false' },
+  { value: 'choices', label: 'Choices' },
+  { value: 'multiple choices', label: 'Multiple choices' }
+]
+
 const AdminDashboard: React.FC = () => {
-  const { user, token } = useAuth()
+  const { user } = useAuth()
   const [questions, setQuestions] = useState([])
-  const [users, setUsers] = useState([])
-
-  const optionsTypes: OptionType = [
-    { value: 'true or false', label: 'True or false' },
-    { value: 'choices', label: 'Choices' },
-    { value: 'multiple choices', label: 'Multiple choices' }
-  ]
-
   useEffect(() => {
-    api
-      .get('/questions', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(response => {
-        setQuestions(response.data)
-      })
-  }, [user])
-
-  useEffect(() => {
-    api
-      .get('/users', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(response => {
-        setUsers(response.data)
-      })
-  }, [user])
-
-  const handleNewQuestion = (data: CreateQuestionData): void => {
-    data.options = options
-    api.post('/questions', data, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+    api.get('/questions').then(response => {
+      setQuestions(response.data)
     })
-  }
+  }, [user])
 
   const formRef = useRef<FormHandles>(null)
   const [type, setType] = useState<string>('')
-  const [options, setOptions] = useState({})
+
+  const handleNewQuestion = (data: CreateQuestionData) => {
+    api.post('/questions', data).then(q => setQuestions([...questions, q.data]))
+    formRef.current.reset()
+  }
 
   return (
-    <>
-      <Header />
-      <Container>
-        <h1>Admin Dashboard</h1>
-        <Content>
-          <h2>Create new question</h2>
-          <StyledForm onSubmit={handleNewQuestion} ref={formRef}>
-            <Input placeholder="Question title" name="name" />
-            <Input placeholder="Description" name="description" />
+    <Box maxWidth="6xl" margin="auto">
+      <SimpleGrid columns={[1, 1, 1, 2]}>
+        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
+          <Heading as="h3" size="lg">
+            Create new question
+          </Heading>
+          <Form onSubmit={handleNewQuestion} ref={formRef}>
+            <LabeledInput
+              label="Question title"
+              placeholder="How are you?"
+              name="name"
+            />
+            <Textarea
+              label="Question Description"
+              placeholder="Describe your question here"
+              name="description"
+            />
             <Select
+              label="Question type"
               name="type"
               options={optionsTypes}
-              onChange={e => setType(e.value)}
+              placeholder="True/false, multiple choices, ..."
+              onChange={e => setType(e.target.value)}
             />
-            <OptionFields type={type} onOptionsChange={e => setOptions(e)} />
-            <button className="button" type="submit">
-              Register
-            </button>
-          </StyledForm>
-        </Content>
-        <Content>
-          <h2>Questions</h2>
-          <Table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Question</th>
-                <th>View Answers</th>
-              </tr>
-            </thead>
-            <tbody>
-              {questions.map((question, idx) => (
-                <tr key={question.id}>
-                  <td>{idx}</td>
-                  <td>{question.name}</td>
-                  <td>
-                    <Link to={`/answers/${question.id}`}>View answers</Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Content>
-        <Content>
-          <h2>Users</h2>
-          <Table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>User name</th>
-                <th>User email</th>
-                <th>View questions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user, idx) => (
-                <tr key={user.id}>
-                  {user.name}
-                  <td>{idx}</td>
-                  <td>{user.email}</td>
-                  <td>{user.role}</td>
-                  <td>
-                    <Link to={`/users/${user.id}/answers`}>View questions</Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Content>
-      </Container>
-    </>
+            <OptionFields type={type} />
+            <ButtonGroup mt="1rem">
+              <Button
+                className="button"
+                type="reset"
+                onClick={() => setType('')}
+              >
+                Reset
+              </Button>
+              <Button className="button" type="submit" variantColor="green">
+                Create new question
+              </Button>
+            </ButtonGroup>
+          </Form>
+        </Box>
+        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
+          <Heading as="h3" size="lg">
+            Questions list
+          </Heading>
+          {questions.map(question => (
+            <Flex
+              key={question.id}
+              border="1px"
+              borderColor="gray.500"
+              borderRadius="lg"
+              padding=".5rem"
+              marginY=".5rem"
+              verticalAlign="middle"
+            >
+              <Text>
+                <strong>{question.name}</strong>: {question.type}
+              </Text>
+              <ButtonGroup marginLeft="auto">
+                <IconButton
+                  isDisabled={true}
+                  aria-label="Remove question"
+                  title="Remove question"
+                  icon="delete"
+                />
+                <IconButton
+                  isDisabled={true}
+                  aria-label="Edit question"
+                  title="Edit question"
+                  icon="edit"
+                />
+                <Link to={`/answers/${question.id}`}>
+                  <IconButton
+                    aria-label="View answers"
+                    title="View answers"
+                    icon="info"
+                  />
+                </Link>
+              </ButtonGroup>
+            </Flex>
+          ))}
+        </Box>
+      </SimpleGrid>
+    </Box>
   )
 }
 

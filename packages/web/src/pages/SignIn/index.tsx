@@ -1,21 +1,13 @@
 import React, { useCallback, useRef } from 'react'
-import { Form } from '@unform/web'
-import { FormHandles } from '@unform/core'
-import * as Yup from 'yup'
 import { Link, useHistory } from 'react-router-dom'
+import * as Yup from 'yup'
+import { FormHandles } from '@unform/core'
+import { Form } from '@unform/web'
 
+import LabeledInput from '../../components/LabeledInput'
 import { useAuth } from '../../hooks/auth'
-
 import getValidationErrors from '../../utils/getValidationErrors'
-
-import Input from '../../components/Input'
-import Button from '../../components/Button'
-
-import { StyledForm } from './style'
-
-import Header from '../../components/Header'
-import Container from '../../components/Container'
-import Content from '../../components/Content'
+import { Box, Button, ButtonGroup, Heading, Flex } from '@chakra-ui/core'
 
 interface SignInFormData {
   email: string
@@ -27,15 +19,26 @@ const SignIn: React.FC = () => {
 
   const { signIn, user } = useAuth()
   const history = useHistory()
+
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
-      console.log(user)
       try {
+        formRef.current?.setErrors({})
+        const schema = Yup.object().shape({
+          email: Yup.string()
+            .required('Enter a valid e-mail address')
+            .email('Enter a valid email address'),
+          password: Yup.string().required('Enter a valid password')
+        })
+
+        await schema.validate(data, {
+          abortEarly: false
+        })
+
         await signIn({
           email: data.email,
           password: data.password
         })
-
         history.push(`/${user.role}-dashboard`)
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -49,23 +52,54 @@ const SignIn: React.FC = () => {
     [signIn, history]
   )
   return (
-    <>
-      <Header />
-      <Container>
-        <Content>
-          <h1>Faça seu login</h1>
-          <StyledForm ref={formRef} onSubmit={handleSubmit}>
-            <Input name="email" placeholder="E-mail" />
-
-            <Input name="password" type="Password" placeholder="Senha" />
-
-            <Button type="submit">Entrar</Button>
-          </StyledForm>
-          <Link to="/sign-up">Criar conta</Link>
-          <a href="forgot">Esqueci minha senha</a>
-        </Content>
-      </Container>
-    </>
+    <Box d="flex" flexDir="column" alignItems="center">
+      <Box
+        border="1px"
+        borderColor="gray.200"
+        borderRadius="10px"
+        p="16"
+        m="5"
+        width="35%"
+        backgroundColor="gray.200"
+      >
+        <Heading size="lg" textAlign="center" paddingBottom="1rem">
+          Log in here
+        </Heading>
+        <Form ref={formRef} onSubmit={handleSubmit}>
+          <LabeledInput
+            label="E-mail"
+            name="email"
+            placeholder="your@email.com"
+          />
+          <LabeledInput
+            label="Password:"
+            name="password"
+            type="password"
+            placeholder="***"
+            marginTop={2}
+          />
+          <ButtonGroup spacing={8}>
+            <Button
+              leftIcon="arrow-back"
+              variantColor="teal"
+              marginTop={10}
+              isLoading={false}
+            >
+              <Link to="/forgot">Forgot your password</Link>
+            </Button>
+            <Button
+              rightIcon="check"
+              variantColor="teal"
+              marginTop={10}
+              isLoading={false}
+              type="submit"
+            >
+              Click to login
+            </Button>
+          </ButtonGroup>
+        </Form>
+      </Box>
+    </Box>
   )
 }
 
