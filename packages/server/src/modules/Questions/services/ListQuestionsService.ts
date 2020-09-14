@@ -5,7 +5,7 @@ import Question from '../infra/typeorm/entities/Question'
 import IQuestionsRepository from '../repositories/IQuestionsRepository'
 
 @injectable()
-class ListQuestionsService {
+class GetQuestionService {
   constructor(
     @inject('QuestionsRepository')
     private questionsRepository: IQuestionsRepository
@@ -17,4 +17,4 @@ class ListQuestionsService {
   }
 }
 
-export default ListQuestionsService
+export default GetQuestionService
