@@ -1,8 +1,6 @@
 /* eslint-disable no-useless-constructor */
 import { inject, injectable } from 'tsyringe'
 
-import AppError from '../../../shared/errors/AppError'
-
 import Question from '../infra/typeorm/entities/Question'
 import IQuestionsRepository from '../repositories/IQuestionsRepository'
 
@@ -11,6 +9,7 @@ interface IRequest {
   description: string
   type: string
   options: any
+  questionsSetId: string
 }
 
 @injectable()
@@ -24,15 +23,16 @@ class CreateQuestionService {
     name,
     description,
     type,
-    options
+    options,
+    questionsSetId
   }: IRequest): Promise<Question> {
     const question = await this.questionsRepository.create({
       name,
       description,
       type,
-      options
+      options,
+      questionsSetId
     })
-
     return question
   }
 }

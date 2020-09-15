@@ -4,9 +4,11 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  ManyToOne
 } from 'typeorm'
 import { type } from 'os'
+import QuestionsSet from '@modules/QuestionsSets/infra/typeorm/entities/QuestionsSet'
 
 @Entity('questions')
 class Question {
@@ -30,6 +32,14 @@ class Question {
 
   @Column({ type: 'json' })
   options: any
+
+  @Column()
+  questionsSetId: string
+
+  @ManyToOne(type => QuestionsSet, questionSet => questionSet.questions, {
+    eager: true
+  })
+  questionsSet: QuestionsSet
 }
 
 export default Question

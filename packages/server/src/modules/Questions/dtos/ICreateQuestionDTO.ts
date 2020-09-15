@@ -3,4 +3,5 @@ export default interface ICreateQuestionDTO {
   description: string
   type: string
   options: any
+  questionsSetId: string
 }

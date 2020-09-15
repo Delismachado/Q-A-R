@@ -1,10 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm'
 
-export class AddRulesEntity1600042970106 implements MigrationInterface {
+export class CreateQuestionSetEntity1600126167623
+implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     return await queryRunner.createTable(
       new Table({
-        name: 'rules',
+        name: 'questions_sets',
         columns: [
           {
             name: 'id',
@@ -14,14 +15,8 @@ export class AddRulesEntity1600042970106 implements MigrationInterface {
             default: 'uuid_generate_v4()'
           },
           {
-            name: 'question_id',
-            type: 'uuid'
-          },
-          {
-            name: 'exact_value',
-            type: 'json',
-            isNullable: false,
-            default: "'{}'"
+            name: 'name',
+            type: 'varchar'
           },
           {
             name: 'created_at',
@@ -33,22 +28,12 @@ export class AddRulesEntity1600042970106 implements MigrationInterface {
             type: 'timestamp',
             default: 'now()'
           }
-        ],
-        foreignKeys: [
-          {
-            name: 'ForeignQuestion',
-            columnNames: ['question_id'],
-            referencedTableName: 'questions',
-            referencedColumnNames: ['id'],
-            onDelete: 'CASCADE',
-            onUpdate: 'CASCADE'
-          }
         ]
       })
     )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    return await queryRunner.dropTable('rules')
+    return await queryRunner.dropTable('questions_sets')
   }
 }

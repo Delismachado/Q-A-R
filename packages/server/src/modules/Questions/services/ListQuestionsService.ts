@@ -5,16 +5,16 @@ import Question from '../infra/typeorm/entities/Question'
 import IQuestionsRepository from '../repositories/IQuestionsRepository'
 
 @injectable()
-class GetQuestionService {
+class ListQuestionsService {
   constructor(
     @inject('QuestionsRepository')
     private questionsRepository: IQuestionsRepository
   ) {}
 
   public async execute(): Promise<Question[]> {
-    const question = await this.questionsRepository.all()
-    return question
+    const questions = await this.questionsRepository.all()
+    return questions
   }
 }
 
-export default GetQuestionService
+export default ListQuestionsService

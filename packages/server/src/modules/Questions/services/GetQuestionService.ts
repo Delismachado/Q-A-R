@@ -6,7 +6,7 @@ import IQuestionsRepository from '../repositories/IQuestionsRepository'
 import AppError from '@shared/errors/AppError'
 
 @injectable()
-class ListQuestionsService {
+class GetQuestionService {
   constructor(
     @inject('QuestionsRepository')
     private questionsRepository: IQuestionsRepository
@@ -21,4 +21,4 @@ class ListQuestionsService {
   }
 }
 
-export default ListQuestionsService
+export default GetQuestionService
