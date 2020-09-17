@@ -10,6 +10,10 @@ import Rule from '../infra/typeorm/entities/Rule'
 interface IRequest {
   question_id: string
   exact_value: any
+  ruleType: string
+  operator: string
+  operand1: Rule | undefined
+  operand2: Rule | undefined
 }
 
 @injectable()
@@ -21,14 +25,25 @@ class CreateRuleService {
     private questionsRepository: IQuestionsRepository
   ) {}
 
-  public async execute({ question_id, exact_value }: IRequest): Promise<Rule> {
+  public async execute({
+    question_id,
+    exact_value,
+    ruleType,
+    operator,
+    operand1,
+    operand2
+  }: IRequest): Promise<Rule> {
     const question = await this.questionsRepository.findById(question_id)
     if (!question) {
       throw new AppError('Question not found', 401)
     }
     const rule = await this.rulesRepository.create({
       question,
-      exact_value
+      exact_value,
+      ruleType,
+      operator,
+      operand1,
+      operand2
     })
     return rule
   }
