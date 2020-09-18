@@ -9,9 +9,14 @@ import {
 
 import { Exclude } from 'class-transformer'
 
+export enum UserRole {
+  ADMIN = 'admin',
+  USER = 'user'
+}
+
 @Entity('users')
 class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string
 
   @Column()
@@ -21,14 +26,18 @@ class User {
   @Column()
   password: string
 
-  @Column()
-  role: string
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.USER
+  })
+  role: UserRole
 
   @CreateDateColumn()
-  created_at: Date
+  createdAt: Date
 
   @UpdateDateColumn()
-  updated_at: Date
+  updatedAt: Date
 }
 
 export default User

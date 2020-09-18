@@ -5,15 +5,14 @@ import AppError from '../../../shared/errors/AppError'
 
 import IRulesRepository from '../repositories/IRulesRepository'
 import IQuestionsRepository from '@modules/Questions/repositories/IQuestionsRepository'
-import Rule from '../infra/typeorm/entities/Rule'
+import Rule, { RuleType } from '../infra/typeorm/entities/Rule'
 
 interface IRequest {
-  question_id: string
-  exact_value: any
-  ruleType: string
+  questionId: string
+  exactValue: any
+  type: string
   operator: string
-  operand1: Rule | undefined
-  operand2: Rule | undefined
+  operands: Rule[]
 }
 
 @injectable()
@@ -26,24 +25,23 @@ class CreateRuleService {
   ) {}
 
   public async execute({
-    question_id,
-    exact_value,
-    ruleType,
+    questionId,
+    exactValue,
+    type,
     operator,
-    operand1,
-    operand2
+    operands
   }: IRequest): Promise<Rule> {
-    const question = await this.questionsRepository.findById(question_id)
+    const question = await this.questionsRepository.findById(questionId)
     if (!question) {
       throw new AppError('Question not found', 401)
     }
+
     const rule = await this.rulesRepository.create({
       question,
-      exact_value,
-      ruleType,
+      exactValue,
+      type: type as RuleType,
       operator,
-      operand1,
-      operand2
+      operands
     })
     return rule
   }

@@ -7,12 +7,19 @@ import {
   UpdateDateColumn,
   ManyToOne
 } from 'typeorm'
-import { type } from 'os'
 import QuestionsSet from '@modules/QuestionsSets/infra/typeorm/entities/QuestionsSet'
+
+export enum QuestionType {
+  TRUEORFALSE = 'true or false',
+  CHOICES = 'choices',
+  MULTIPLE_CHOICES = 'multiple choices',
+  NUMERIC_RANGE = 'numeric range',
+  TEXT = 'text'
+}
 
 @Entity('questions')
 class Question {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string
 
   @Column()
@@ -21,25 +28,26 @@ class Question {
   @Column()
   description: string
 
-  @Column()
-  type: string
+  @Column({
+    type: 'enum',
+    enum: QuestionType,
+    default: QuestionType.TRUEORFALSE
+  })
+  type: QuestionType
 
-  @CreateDateColumn()
-  created_at: Date
-
-  @UpdateDateColumn()
-  updated_at: Date
-
-  @Column({ type: 'json' })
+  @Column({ type: 'json', default: {} })
   options: any
 
-  @Column()
-  questionsSetId: string
-
-  @ManyToOne(type => QuestionsSet, questionSet => questionSet.questions, {
+  @ManyToOne(() => QuestionsSet, questionSet => questionSet.questions, {
     eager: true
   })
   questionsSet: QuestionsSet
+
+  @CreateDateColumn()
+  createdAt: Date
+
+  @UpdateDateColumn()
+  updatedAt: Date
 }
 
 export default Question

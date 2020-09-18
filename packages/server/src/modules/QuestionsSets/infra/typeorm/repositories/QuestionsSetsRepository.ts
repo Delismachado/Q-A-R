@@ -22,9 +22,10 @@ class QuestionsSetsRepository implements IQuestionsSetsRepository {
   }
 
   public async findById(
-    questions_set_id: string
+    questionsSetId: string
   ): Promise<QuestionsSet | undefined> {
-    const questionSet = await this.ormRepository.findOne(questions_set_id)
+    console.log(questionsSetId)
+    const questionSet = await this.ormRepository.findOne(questionsSetId)
     return questionSet
   }
 

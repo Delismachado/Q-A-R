@@ -18,32 +18,30 @@ class QuestionsRepository implements IQuestionsRepository {
     description,
     type,
     options,
-    questionsSetId
+    questionsSet
   }: ICreateQuestionDTO): Promise<Question> {
     const question = this.ormRepository.create({
       name,
       description,
       type,
       options,
-      questionsSetId
+      questionsSet
     })
     await this.ormRepository.save(question)
     return question
   }
 
-  public async findByQuestionSetId(
-    questionsSetId: string
-  ): Promise<Question[]> {
+  public async findByQuestionSet(questionsSet: string): Promise<Question[]> {
     const question = await this.ormRepository.find({
       where: {
-        questionsSetId
+        questionsSet
       }
     })
     return question
   }
 
-  public async findById(question_id: string): Promise<Question | undefined> {
-    const question = await this.ormRepository.findOne(question_id)
+  public async findById(questionId: string): Promise<Question | undefined> {
+    const question = await this.ormRepository.findOne(questionId)
     return question
   }
 

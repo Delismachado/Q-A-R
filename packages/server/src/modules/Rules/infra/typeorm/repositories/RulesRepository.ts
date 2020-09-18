@@ -20,44 +20,31 @@ class RulesRepository implements IRulesRepository {
 
   private async createRecursive(
     ruleId: string | undefined,
-    {
-      question,
-      exact_value,
-      ruleType,
-      operator,
-      operand1,
-      operand2
-    }: ICreateRuleDTO
+    { question, exactValue, type, operator, operands }: ICreateRuleDTO
   ): Promise<Rule | undefined> {
-    if (operand1) {
-      operand1 = await this.createRecursive(operand1.id, {
-        question: operand1.question,
-        exact_value: operand1.exact_value,
-        ruleType: operand1.ruleType,
-        operator: operand1.operator,
-        operand1: operand1.operand1,
-        operand2: operand1.operand2
-      })
-    }
-    if (operand2) {
-      operand2 = await this.createRecursive(operand2.id, {
-        question: operand2.question,
-        exact_value: operand2.exact_value,
-        ruleType: operand2.ruleType,
-        operator: operand2.operator,
-        operand1: operand2.operand1,
-        operand2: operand2.operand2
-      })
+    if (operands) {
+      for (const i = 0; i < operands.length; i++) {
+        const operand = operands[i]
+        const newRule = await this.createRecursive(operand.id, {
+          question: operand.question,
+          exactValue: operand.exactValue,
+          type: operand.type,
+          operator: operand.operator,
+          operands: operand.operands
+        })
+        if (!newRule) {
+          throw new AppError('Failed to create expression')
+        }
+        operands[i] = newRule
+      }
     }
     if (!ruleId) {
-      console.log(question, exact_value, ruleType, operator, operand1, operand2)
       const rule = await this.ormRepository.create({
         question: question,
-        exact_value: exact_value,
-        ruleType: ruleType,
+        exactValue: exactValue,
+        type: type,
         operator: operator,
-        operand1: operand1,
-        operand2: operand2
+        operands: operands
       })
       await this.ormRepository.save(rule)
       return rule
@@ -76,15 +63,11 @@ class RulesRepository implements IRulesRepository {
     if (!rule_id) {
       return undefined
     }
-    // const manager = this.ormRepository.manager
-    // const trees = await manager.getTreeRepository(Rule)
+    const manager = this.ormRepository.manager
+    const trees = await manager.getTreeRepository(Rule)
     const rule = await this.ormRepository.findOne(rule_id)
-    console.log(rule_id)
-    if (rule?.operand1) {
-      rule.operand1 = await this.findById(rule.operand1.id)
-    }
-    if (rule?.operand2) {
-      rule.operand2 = await this.findById(rule.operand2.id)
+    if (rule) {
+      await trees.findDescendantsTree(rule)
     }
     return rule
   }

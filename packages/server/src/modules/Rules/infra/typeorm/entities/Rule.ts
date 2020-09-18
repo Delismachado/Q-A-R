@@ -4,35 +4,44 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  JoinColumn
+  Tree,
+  TreeChildren,
+  TreeParent
 } from 'typeorm'
 import Question from '@modules/Questions/infra/typeorm/entities/Question'
 
+export enum RuleType {
+  EXPRESSION = 'expression',
+  FACT = 'fact'
+}
+
 @Entity('rules')
+@Tree('nested-set')
 class Rule {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string
 
   @ManyToOne(() => Question)
-  @JoinColumn({ name: 'question_id' })
   question: Question
 
-  @Column({ type: 'json' })
-  exact_value: any
+  @Column({ type: 'json', nullable: true })
+  exactValue: any
 
-  @Column()
-  ruleType: string
+  @Column({
+    type: 'enum',
+    enum: RuleType,
+    default: RuleType.FACT
+  })
+  type: RuleType
 
-  @Column()
+  @Column({ nullable: true })
   operator: string
 
-  @ManyToOne(() => Rule, { lazy: true })
-  @JoinColumn({ name: 'operand1Id' })
-  operand1: Rule | undefined
+  @TreeChildren()
+  operands: Rule[]
 
-  @ManyToOne(() => Rule, { lazy: true })
-  @JoinColumn({ name: 'operand2Id' })
-  operand2: Rule | undefined
+  @TreeParent()
+  parent: Rule
 }
 
 export default Rule

@@ -1,11 +1,10 @@
 import Question from '@modules/Questions/infra/typeorm/entities/Question'
-import Rule from '../infra/typeorm/entities/Rule'
+import Rule, { RuleType } from '../infra/typeorm/entities/Rule'
 
-export default interface ICreateQuestionDTO {
+export default interface ICreateRuleDTO {
   question: Question
-  exact_value: any
-  ruleType: string
+  exactValue: any
+  type: RuleType
   operator: string
-  operand1: Rule | undefined
-  operand2: Rule | undefined
+  operands: Rule[]
 }
