@@ -7,14 +7,14 @@ import GetQuestionService from '../../../services/GetQuestionService'
 
 export default class QuestionsController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, description, type, options, questionsSetId } = request.body
+    const { name, description, type, options, projectId } = request.body
     const createQuestion = container.resolve(CreateQuestionService)
     const question = await createQuestion.execute({
       name,
       description,
       type,
       options,
-      questionsSetId
+      projectId
     })
     return response.status(201).json(question)
   }

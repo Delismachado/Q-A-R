@@ -8,10 +8,10 @@ import Home from '../pages/Home'
 import SignUp from '../pages/SignUp'
 import UserDashboard from '../pages/UserDashboard'
 import AdminDashboard from '../pages/AdminDashboard'
-// import QuestionList from '../pages/QuestionList'
 import AnswerQuestion from '../pages/AnswerQuestion'
 import UserAnswers from '../pages/UserAnswers'
 import QuestionAnswers from '../pages/QuestionAnswers'
+import ProjectDashboard from '../pages/ProjectDashboard'
 
 const Routes: React.FC = () => (
   <Switch>
@@ -27,6 +27,7 @@ const Routes: React.FC = () => (
     <Route exact path="/admin-dashboard" component={AdminDashboard} isPrivate />
     <Route path="/users/:user_id/answers" component={UserAnswers} isPrivate />
     <Route path="/answers/:question_id" component={QuestionAnswers} isPrivate />
+    <Route path="/projects/:projectId" component={ProjectDashboard} isPrivate />
   </Switch>
 )
 

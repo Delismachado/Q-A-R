@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-constructor */
 
-import IQuestionsSetsRepository from '@modules/QuestionsSets/repositories/IQuestionsSetsRepository'
+import IProjectsRepository from '@modules/Projects/repositories/IProjectsRepository'
 import AppError from '@shared/errors/AppError'
 import { inject, injectable } from 'tsyringe'
 
@@ -12,7 +12,7 @@ interface IRequest {
   description: string
   type: string
   options: any
-  questionsSetId: string
+  projectId: string
 }
 
 @injectable()
@@ -20,8 +20,8 @@ class CreateQuestionService {
   constructor(
     @inject('QuestionsRepository')
     private questionsRepository: IQuestionsRepository,
-    @inject('QuestionsSetsRepository')
-    private questionsSetsRepository: IQuestionsSetsRepository
+    @inject('ProjectsRepository')
+    private ProjectsRepository: IProjectsRepository
   ) {}
 
   public async execute({
@@ -29,13 +29,11 @@ class CreateQuestionService {
     description,
     type,
     options,
-    questionsSetId
+    projectId
   }: IRequest): Promise<Question> {
-    const questionsSet = await this.questionsSetsRepository.findById(
-      questionsSetId
-    )
+    const project = await this.ProjectsRepository.findById(projectId)
 
-    if (!questionsSet) {
+    if (!project) {
       throw new AppError('Question set not found!')
     }
 
@@ -44,7 +42,7 @@ class CreateQuestionService {
       description,
       type: type as QuestionType,
       options,
-      questionsSet
+      project
     })
 
     return question

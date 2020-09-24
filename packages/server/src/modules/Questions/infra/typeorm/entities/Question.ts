@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
   ManyToOne
 } from 'typeorm'
-import QuestionsSet from '@modules/QuestionsSets/infra/typeorm/entities/QuestionsSet'
+import Project from '@modules/Projects/infra/typeorm/entities/Project'
 
 export enum QuestionType {
   TRUEORFALSE = 'true or false',
@@ -38,10 +38,11 @@ class Question {
   @Column({ type: 'json', default: {} })
   options: any
 
-  @ManyToOne(() => QuestionsSet, questionSet => questionSet.questions, {
-    eager: true
+  @ManyToOne(() => Project, questionSet => questionSet.questions, {
+    eager: true,
+    onDelete: 'CASCADE'
   })
-  questionsSet: QuestionsSet
+  project: Project
 
   @CreateDateColumn()
   createdAt: Date

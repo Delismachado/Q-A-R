@@ -14,8 +14,8 @@ import AnswersRepository from '@modules/Answers/infra/typeorm/repositories/Answe
 import IRulesRepository from '@modules/Rules/repositories/IRulesRepository'
 import RulesRepository from '@modules/Rules/infra/typeorm/repositories/RulesRepository'
 
-import IQuestionsSetsRepository from '@modules/QuestionsSets/repositories/IQuestionsSetsRepository'
-import QuestionsSetsRepository from '@modules/QuestionsSets/infra/typeorm/repositories/QuestionsSetsRepository'
+import IProjectsRepository from '@modules/Projects/repositories/IProjectsRepository'
+import ProjectsRepository from '@modules/Projects/infra/typeorm/repositories/ProjectsRepository'
 
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
@@ -37,7 +37,7 @@ container.registerSingleton<IRulesRepository>(
   RulesRepository
 )
 
-container.registerSingleton<IQuestionsSetsRepository>(
-  'QuestionsSetsRepository',
-  QuestionsSetsRepository
+container.registerSingleton<IProjectsRepository>(
+  'ProjectsRepository',
+  ProjectsRepository
 )

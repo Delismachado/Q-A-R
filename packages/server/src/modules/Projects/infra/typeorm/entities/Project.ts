@@ -9,15 +9,15 @@ import {
 } from 'typeorm'
 import Question from '@modules/Questions/infra/typeorm/entities/Question'
 
-@Entity('questions_sets')
-class QuestionsSet {
+@Entity('projects')
+class Project {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
   @Column()
   name: string
 
-  @OneToMany(() => Question, question => question.questionsSet)
+  @OneToMany(() => Question, question => question.project)
   questions: Question[]
 
   @CreateDateColumn()
@@ -27,4 +27,4 @@ class QuestionsSet {
   updatedAt: Date
 }
 
-export default QuestionsSet
+export default Project

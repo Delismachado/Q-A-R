@@ -1,4 +1,4 @@
-import QuestionsSet from '@modules/QuestionsSets/infra/typeorm/entities/QuestionsSet'
+import Project from '@modules/Projects/infra/typeorm/entities/Project'
 import { QuestionType } from '../infra/typeorm/entities/Question'
 
 export default interface ICreateQuestionDTO {
@@ -6,5 +6,5 @@ export default interface ICreateQuestionDTO {
   description: string
   type: QuestionType
   options: any
-  questionsSet: QuestionsSet
+  project: Project
 }

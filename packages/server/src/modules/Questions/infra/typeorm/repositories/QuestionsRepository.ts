@@ -4,6 +4,7 @@ import IQuestionsRepository from '../../../repositories/IQuestionsRepository'
 import ICreateQuestionDTO from '../../../dtos/ICreateQuestionDTO'
 import Question from '../entities/Question'
 import { injectable } from 'tsyringe'
+import Project from '@modules/Projects/infra/typeorm/entities/Project'
 
 @injectable()
 class QuestionsRepository implements IQuestionsRepository {
@@ -18,23 +19,23 @@ class QuestionsRepository implements IQuestionsRepository {
     description,
     type,
     options,
-    questionsSet
+    project
   }: ICreateQuestionDTO): Promise<Question> {
     const question = this.ormRepository.create({
       name,
       description,
       type,
       options,
-      questionsSet
+      project
     })
     await this.ormRepository.save(question)
     return question
   }
 
-  public async findByQuestionSet(questionsSet: string): Promise<Question[]> {
+  public async findByProject(project: Project): Promise<Question[]> {
     const question = await this.ormRepository.find({
       where: {
-        questionsSet
+        project
       }
     })
     return question
