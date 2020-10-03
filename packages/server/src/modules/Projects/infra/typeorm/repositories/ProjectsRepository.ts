@@ -39,13 +39,6 @@ class ProjectsRepository implements IProjectsRepository {
   public async delete(project: Project): Promise<void> {
     await this.ormRepository.delete(project.id)
   }
-
-  // public async findFacts(project: Project): Promise<Fact[]> {
-  //   return await this.ormRepository.find({
-  //     relations: ['facts'],
-  //     where: { project }
-  //   })
-  // }
 }
 
 export default ProjectsRepository

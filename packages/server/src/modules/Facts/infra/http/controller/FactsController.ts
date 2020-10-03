@@ -9,11 +9,15 @@ import UpdateFactService from '@modules/Facts/services/UpdateFactService'
 
 export default class FactsController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, questionId } = request.body
+    const { name, questionId, type, value, begin, end } = request.body
     const createFact = container.resolve(CreateFactService)
     const fact = await createFact.execute({
       name,
-      questionId
+      questionId,
+      type,
+      value,
+      begin,
+      end
     })
     return response.status(201).json(fact)
   }

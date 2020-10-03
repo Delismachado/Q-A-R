@@ -1,15 +1,16 @@
-/* eslint-disable camelcase */
 import {
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  Column
+  Column,
+  TableInheritance
 } from 'typeorm'
 import Question from '@modules/Questions/infra/typeorm/entities/Question'
 
 @Entity('facts')
+@TableInheritance({ column: { type: 'varchar', name: 'type' } })
 class Fact {
   @PrimaryGeneratedColumn('uuid')
   id: string

@@ -2,7 +2,6 @@ import { getRepository, Repository } from 'typeorm'
 
 import { injectable } from 'tsyringe'
 import IFactsRepository from '@modules/Facts/repositories/IFactsRepository'
-import ICreateFactDTO from '@modules/Facts/dtos/ICreateFactDTO'
 import Fact from '../entities/Fact'
 import Project from '@modules/Projects/infra/typeorm/entities/Project'
 
@@ -40,15 +39,6 @@ class FactsRepository implements IFactsRepository {
 
   public async update(fact: Fact): Promise<void> {
     await this.ormRepository.update(fact.id, fact)
-  }
-
-  public async create({ name, question }: ICreateFactDTO): Promise<Fact> {
-    const fact = this.ormRepository.create({
-      name,
-      question
-    })
-    await this.ormRepository.save(fact)
-    return fact
   }
 }
 

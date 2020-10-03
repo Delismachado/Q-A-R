@@ -20,6 +20,12 @@ import ProjectsRepository from '@modules/Projects/infra/typeorm/repositories/Pro
 import IFactsRepository from '@modules/Facts/repositories/IFactsRepository'
 import FactsRepository from '@modules/Facts/infra/typeorm/repositories/FactsRepository'
 
+import IChoiceMatchFactsRepository from '@modules/Facts/repositories/IChoiceMatchFactsRepository'
+import INumericIntervalFactsRepository from '@modules/Facts/repositories/INumericIntervalFactsRepository'
+
+import ChoiceMatchFactsRepository from '@modules/Facts/infra/typeorm/repositories/ChoiceMatchFactsRepository'
+import NumericIntervalFactsRepository from '@modules/Facts/infra/typeorm/repositories/NumericIntervalFactsRepository'
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository
@@ -48,4 +54,14 @@ container.registerSingleton<IProjectsRepository>(
 container.registerSingleton<IFactsRepository>(
   'FactsRepository',
   FactsRepository
+)
+
+container.registerSingleton<IChoiceMatchFactsRepository>(
+  'ChoiceMatchFactsRepository',
+  ChoiceMatchFactsRepository
+)
+
+container.registerSingleton<INumericIntervalFactsRepository>(
+  'NumericIntervalFactsRepository',
+  NumericIntervalFactsRepository
 )
