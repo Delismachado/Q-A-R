@@ -1,28 +1,27 @@
 /* eslint-disable camelcase */
 import {
   Entity,
-  Column,
   PrimaryGeneratedColumn,
-  OneToMany,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  ManyToOne,
+  Column
 } from 'typeorm'
 import Question from '@modules/Questions/infra/typeorm/entities/Question'
-import Fact from '@modules/Facts/infra/typeorm/entities/Fact'
 
-@Entity('projects')
-class Project {
+@Entity('facts')
+class Fact {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
   @Column()
   name: string
 
-  @OneToMany(() => Question, question => question.project)
-  questions: Question[]
-
-  @OneToMany(() => Fact, fact => fact.question.project)
-  facts: Fact[]
+  @ManyToOne(() => Question, {
+    eager: true,
+    onDelete: 'CASCADE'
+  })
+  question: Question
 
   @CreateDateColumn()
   createdAt: Date
@@ -31,4 +30,4 @@ class Project {
   updatedAt: Date
 }
 
-export default Project
+export default Fact

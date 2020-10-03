@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import { Link } from 'react-router-dom'
@@ -36,22 +36,25 @@ const AdminDashboard: React.FC = () => {
 
   const formRef = useRef<FormHandles>(null)
 
-  const handleSaveProject = (project: ProjectData) => {
-    if (editingProject) {
-      api.put(`/projects/${editingProject.id}`, project).then(q => {
-        const newProjects = projects.map(pr =>
-          pr.id === editingProject.id ? q.data : pr
-        )
-        setProjects(newProjects)
-        setEditingProject(null)
-      })
-    } else {
-      api
-        .post('/projects', project)
-        .then(q => setProjects([...projects, q.data]))
-    }
-    formRef.current.reset()
-  }
+  const handleSaveProject = useCallback(
+    (project: ProjectData) => {
+      if (editingProject) {
+        api.put(`/projects/${editingProject.id}`, project).then(q => {
+          const newProjects = projects.map(pr =>
+            pr.id === editingProject.id ? q.data : pr
+          )
+          setProjects(newProjects)
+          setEditingProject(null)
+        })
+      } else {
+        api
+          .post('/projects', project)
+          .then(q => setProjects([...projects, q.data]))
+      }
+      formRef.current.reset()
+    },
+    [user, editingProject]
+  )
 
   const handleRemoveProject = (project: ProjectData) => {
     api.delete(`/projects/${project.id}`).then(() => {
@@ -78,7 +81,11 @@ const AdminDashboard: React.FC = () => {
               name="name"
             />
             <ButtonGroup mt="1rem">
-              <Button className="button" type="reset">
+              <Button
+                className="button"
+                type="reset"
+                onClick={() => setEditingProject(null)}
+              >
                 Reset
               </Button>
               <Button className="button" type="submit" variantColor="green">
@@ -107,13 +114,13 @@ const AdminDashboard: React.FC = () => {
               <ButtonGroup marginLeft="auto">
                 <IconButton
                   aria-label="Remove project"
-                  title="Remove question"
+                  title="Remove project"
                   icon="delete"
                   onClick={() => handleRemoveProject(project)}
                 />
                 <IconButton
                   aria-label="Edit project"
-                  title="Edit question"
+                  title="Edit project"
                   icon="edit"
                   onClick={() => handleEditProject(project)}
                 />

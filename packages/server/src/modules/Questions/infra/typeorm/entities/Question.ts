@@ -5,9 +5,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne
+  ManyToOne,
+  OneToMany
 } from 'typeorm'
 import Project from '@modules/Projects/infra/typeorm/entities/Project'
+import Fact from '@modules/Facts/infra/typeorm/entities/Fact'
 
 export enum QuestionType {
   TRUEORFALSE = 'true or false',
@@ -38,11 +40,16 @@ class Question {
   @Column({ type: 'json', default: {} })
   options: any
 
-  @ManyToOne(() => Project, questionSet => questionSet.questions, {
+  @ManyToOne(() => Project, project => project.questions, {
     eager: true,
     onDelete: 'CASCADE'
   })
   project: Project
+
+  @OneToMany(() => Fact, fact => fact.question, {
+    eager: false
+  })
+  facts: Fact[]
 
   @CreateDateColumn()
   createdAt: Date

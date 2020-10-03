@@ -17,6 +17,9 @@ import RulesRepository from '@modules/Rules/infra/typeorm/repositories/RulesRepo
 import IProjectsRepository from '@modules/Projects/repositories/IProjectsRepository'
 import ProjectsRepository from '@modules/Projects/infra/typeorm/repositories/ProjectsRepository'
 
+import IFactsRepository from '@modules/Facts/repositories/IFactsRepository'
+import FactsRepository from '@modules/Facts/infra/typeorm/repositories/FactsRepository'
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository
@@ -40,4 +43,9 @@ container.registerSingleton<IRulesRepository>(
 container.registerSingleton<IProjectsRepository>(
   'ProjectsRepository',
   ProjectsRepository
+)
+
+container.registerSingleton<IFactsRepository>(
+  'FactsRepository',
+  FactsRepository
 )

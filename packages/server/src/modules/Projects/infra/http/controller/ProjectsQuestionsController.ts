@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 
 import { container } from 'tsyringe'
-import ListProjectQuestions from '@modules/Projects/services/ListProjectQuestions'
+import ListProjectQuestions from '@modules/Projects/services/ListProjectQuestionsService'
 
 class ProjectsQuestionsController {
   public async index(request: Request, response: Response): Promise<Response> {
