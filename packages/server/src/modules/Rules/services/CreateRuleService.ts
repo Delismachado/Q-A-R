@@ -3,46 +3,56 @@ import { inject, injectable } from 'tsyringe'
 
 import AppError from '../../../shared/errors/AppError'
 
-import IRulesRepository from '../repositories/IRulesRepository'
-import IQuestionsRepository from '@modules/Questions/repositories/IQuestionsRepository'
-import Rule, { RuleType } from '../infra/typeorm/entities/Rule'
+import Rule from '../infra/typeorm/entities/Rule'
+import IRulesCreatorRepository from '../repositories/IRulesCreatorRepository'
+import ICreateRuleDTO from '../dtos/ICreateRuleDTO'
 
 interface IRequest {
-  questionId: string
-  exactValue: any
   type: string
-  operator: string
-  operands: Rule[]
+  operands: IRequest[]
+  factId?: string
 }
 
 @injectable()
 class CreateRuleService {
   constructor(
-    @inject('RulesRepository')
-    private rulesRepository: IRulesRepository,
-    @inject('QuestionsRepository')
-    private questionsRepository: IQuestionsRepository
+    @inject('AndRulesRepository')
+    private andRulesRepository: IRulesCreatorRepository,
+    @inject('OrRulesRepository')
+    private orRulesRepository: IRulesCreatorRepository,
+    @inject('NotRulesRepository')
+    private notRulesRepository: IRulesCreatorRepository,
+    @inject('FactRulesRepository')
+    private factRulesRepository: IRulesCreatorRepository
   ) {}
 
-  public async execute({
-    questionId,
-    exactValue,
-    type,
-    operator,
-    operands
-  }: IRequest): Promise<Rule> {
-    const question = await this.questionsRepository.findById(questionId)
-    if (!question) {
-      throw new AppError('Question not found', 401)
+  private async createRule(data: IRequest, operands: Rule[]): Promise<Rule> {
+    const createDto: ICreateRuleDTO = {
+      factId: data.factId
     }
+    switch (data.type) {
+      case 'AndRule':
+        return await this.andRulesRepository.create(createDto, operands)
+      case 'OrRule':
+        return await this.orRulesRepository.create(createDto, operands)
+      case 'NotRule':
+        return await this.notRulesRepository.create(createDto, operands)
+      case 'FactRule':
+        return await this.factRulesRepository.create(createDto, operands)
+      default:
+        throw new AppError('Unknown rule type ' + data.type)
+    }
+  }
 
-    const rule = await this.rulesRepository.create({
-      question,
-      exactValue,
-      type: type as RuleType,
-      operator,
-      operands
-    })
+  private async createRecursive(data: IRequest): Promise<Rule> {
+    const operands: Rule[] = await Promise.all(
+      data.operands.map(dt => this.createRecursive(dt))
+    )
+    return await this.createRule(data, operands)
+  }
+
+  public async execute(data: IRequest): Promise<Rule> {
+    const rule = await this.createRecursive(data)
     return rule
   }
 }

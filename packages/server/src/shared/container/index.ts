@@ -8,8 +8,6 @@ import UsersRepository from '@modules/Users/infra/typeorm/repositories/UserRepos
 import IAnswersRepository from '@modules/Answers/repositories/IAnswersRepository'
 import AnswersRepository from '@modules/Answers/infra/typeorm/repositories/AnswersRepository'
 
-import IRulesRepository from '@modules/Rules/repositories/IRulesRepository'
-import RulesRepository from '@modules/Rules/infra/typeorm/repositories/RulesRepository'
 
 import IProjectsRepository from '@modules/Projects/repositories/IProjectsRepository'
 import ProjectsRepository from '@modules/Projects/infra/typeorm/repositories/ProjectsRepository'
@@ -24,6 +22,7 @@ import ChoiceMatchFactsRepository from '@modules/Facts/infra/typeorm/repositorie
 import NumericIntervalFactsRepository from '@modules/Facts/infra/typeorm/repositories/NumericIntervalFactsRepository'
 
 import './questions'
+import './rules'
 
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
@@ -33,11 +32,6 @@ container.registerSingleton<IUsersRepository>(
 container.registerSingleton<IAnswersRepository>(
   'AnswersRepository',
   AnswersRepository
-)
-
-container.registerSingleton<IRulesRepository>(
-  'RulesRepository',
-  RulesRepository
 )
 
 container.registerSingleton<IProjectsRepository>(

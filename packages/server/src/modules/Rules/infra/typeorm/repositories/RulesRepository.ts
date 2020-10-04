@@ -18,47 +18,6 @@ class RulesRepository implements IRulesRepository {
     this.ormRepository = getRepository(Rule)
   }
 
-  private async createRecursive(
-    ruleId: string | undefined,
-    { question, exactValue, type, operator, operands }: ICreateRuleDTO
-  ): Promise<Rule | undefined> {
-    if (operands) {
-      for (const i = 0; i < operands.length; i++) {
-        const operand = operands[i]
-        const newRule = await this.createRecursive(operand.id, {
-          question: operand.question,
-          exactValue: operand.exactValue,
-          type: operand.type,
-          operator: operand.operator,
-          operands: operand.operands
-        })
-        if (!newRule) {
-          throw new AppError('Failed to create expression')
-        }
-        operands[i] = newRule
-      }
-    }
-    if (!ruleId) {
-      const rule = await this.ormRepository.create({
-        question: question,
-        exactValue: exactValue,
-        type: type,
-        operator: operator,
-        operands: operands
-      })
-      await this.ormRepository.save(rule)
-      return rule
-    } else {
-      return await this.findById(ruleId)
-    }
-  }
-
-  public async create(rule: ICreateRuleDTO): Promise<Rule> {
-    const createdRule = await this.createRecursive(undefined, rule)
-    if (!createdRule) throw new AppError('rule is already created')
-    return createdRule
-  }
-
   public async findById(rule_id: string): Promise<Rule | undefined> {
     if (!rule_id) {
       return undefined

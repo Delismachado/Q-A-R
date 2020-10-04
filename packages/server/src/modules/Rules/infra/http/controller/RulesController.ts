@@ -7,14 +7,12 @@ import GetRuleService from '@modules/Rules/services/GetRuleService'
 
 export default class RulesAnswersController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { questionId, exactValue, type, operator, operands } = request.body
+    const { type, operands, factId } = request.body
     const createRule = container.resolve(CreateRuleService)
     const rule = await createRule.execute({
-      questionId,
-      exactValue,
       type,
-      operator,
-      operands
+      operands,
+      factId
     })
     return response.status(201).json(rule)
   }
