@@ -24,6 +24,9 @@ class Fact {
   })
   question: Question
 
+  @Column()
+  type: string
+
   @CreateDateColumn()
   createdAt: Date
 

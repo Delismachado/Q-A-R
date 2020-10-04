@@ -4,8 +4,6 @@ import { inject, injectable } from 'tsyringe'
 import IQuestionsRepository from '@modules/Questions/repositories/IQuestionsRepository'
 import AppError from '@shared/errors/AppError'
 import Fact from '../infra/typeorm/entities/Fact'
-import NumericIntervalFact from '../infra/typeorm/entities/NumericIntervalFact'
-import ChoiceMatchFact from '../infra/typeorm/entities/ChoiceMatchFact'
 import IChoiceMatchFactsRepository from '../repositories/IChoiceMatchFactsRepository'
 import INumericIntervalFactsRepository from '../repositories/INumericIntervalFactsRepository'
 

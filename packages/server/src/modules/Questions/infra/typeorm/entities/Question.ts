@@ -6,20 +6,16 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  OneToMany
+  OneToMany,
+  TableInheritance
 } from 'typeorm'
 import Project from '@modules/Projects/infra/typeorm/entities/Project'
 import Fact from '@modules/Facts/infra/typeorm/entities/Fact'
 
-export enum QuestionType {
-  TRUEORFALSE = 'true or false',
-  CHOICES = 'choices',
-  MULTIPLE_CHOICES = 'multiple choices',
-  NUMERIC_RANGE = 'numeric range',
-  TEXT = 'text'
-}
-
 @Entity('questions')
+@TableInheritance({
+  column: { type: 'varchar', name: 'type' }
+})
 class Question {
   @PrimaryGeneratedColumn('uuid')
   id: string
@@ -30,12 +26,8 @@ class Question {
   @Column()
   description: string
 
-  @Column({
-    type: 'enum',
-    enum: QuestionType,
-    default: QuestionType.TRUEORFALSE
-  })
-  type: QuestionType
+  @Column()
+  type: string
 
   @Column({ type: 'json', default: {} })
   options: any
@@ -56,6 +48,12 @@ class Question {
 
   @UpdateDateColumn()
   updatedAt: Date
+
+  readonly factTypes: string[]
+
+  constructor(factTypes: string[]) {
+    this.factTypes = factTypes
+  }
 }
 
 export default Question
