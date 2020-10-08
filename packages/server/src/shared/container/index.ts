@@ -20,8 +20,8 @@ import INumericIntervalFactsRepository from '@modules/Facts/repositories/INumeri
 import ChoiceMatchFactsRepository from '@modules/Facts/infra/typeorm/repositories/ChoiceMatchFactsRepository'
 import NumericIntervalFactsRepository from '@modules/Facts/infra/typeorm/repositories/NumericIntervalFactsRepository'
 
-import IRecomendationsRepository from '@modules/Recomendations/repositories/IRecomendationsRepository'
-import RecomendationsRepository from '@modules/Recomendations/infra/typeorm/repositories/RecomendationsRepository'
+import IRecommendationsRepository from '@modules/Recommendations/repositories/IRecommendationsRepository'
+import RecommendationsRepository from '@modules/Recommendations/infra/typeorm/repositories/RecommendationsRepository'
 import './questions'
 import './rules'
 
@@ -55,7 +55,7 @@ container.registerSingleton<INumericIntervalFactsRepository>(
   NumericIntervalFactsRepository
 )
 
-container.registerSingleton<IRecomendationsRepository>(
-  'RecomendationsRepository',
-  RecomendationsRepository
+container.registerSingleton<IRecommendationsRepository>(
+  'RecommendationsRepository',
+  RecommendationsRepository
 )

@@ -4,13 +4,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
-  ManyToOne,
-  TableInheritance
+  ManyToOne
 } from 'typeorm'
 import Project from '@modules/Projects/infra/typeorm/entities/Project'
 
-@Entity('recomendations')
-class Recomendation {
+@Entity('recommendations')
+class Recommendation {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -26,7 +25,7 @@ class Recomendation {
   @Column()
   projectId: string
 
-  @ManyToOne(() => Project, project => project.recomendations, {
+  @ManyToOne(() => Project, project => project.recommendations, {
     eager: true,
     onDelete: 'CASCADE'
   })
@@ -39,4 +38,4 @@ class Recomendation {
   updatedAt: Date
 }
 
-export default Recomendation
+export default Recommendation

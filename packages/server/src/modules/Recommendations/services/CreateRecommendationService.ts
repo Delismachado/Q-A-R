@@ -1,9 +1,9 @@
 /* eslint-disable no-useless-constructor */
 import { inject, injectable } from 'tsyringe'
-import IRecomendationsRepository from '@modules/Recomendations/repositories/IRecomendationsRepository'
+import IRecommendationsRepository from '@modules/Recommendations/repositories/IRecommendationsRepository'
 import IProjectsRepository from '@modules/Projects/repositories/IProjectsRepository'
 import AppError from '@shared/errors/AppError'
-import Recomendation from '../infra/typeorm/entities/Recomendation'
+import Recommendation from '../infra/typeorm/entities/Recommendation'
 
 interface IRequest {
   name: string
@@ -12,10 +12,10 @@ interface IRequest {
 }
 
 @injectable()
-class CreateRecomendationService {
+class CreateRecommendationService {
   constructor(
-    @inject('RecomendationsRepository')
-    private recomendationsRepository: IRecomendationsRepository,
+    @inject('RecommendationsRepository')
+    private recommendationsRepository: IRecommendationsRepository,
     @inject('ProjectsRepository')
     private ProjectsRepository: IProjectsRepository
   ) {}
@@ -24,20 +24,20 @@ class CreateRecomendationService {
     name,
     description,
     projectId
-  }: IRequest): Promise<Recomendation> {
+  }: IRequest): Promise<Recommendation> {
     const project = await this.ProjectsRepository.findById(projectId)
 
     if (!project) {
-      throw new AppError('Recomendation not found!')
+      throw new AppError('Recommendation not found!')
     }
 
-    const recomendation = await this.recomendationsRepository.create({
+    const recommendation = await this.recommendationsRepository.create({
       name,
       description,
       projectId
     })
-    return recomendation
+    return recommendation
   }
 }
 
-export default CreateRecomendationService
+export default CreateRecommendationService
