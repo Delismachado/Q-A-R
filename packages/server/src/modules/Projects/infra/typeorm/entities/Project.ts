@@ -9,6 +9,7 @@ import {
 } from 'typeorm'
 import Question from '@modules/Questions/infra/typeorm/entities/Question'
 import Fact from '@modules/Facts/infra/typeorm/entities/Fact'
+import Recomendation from '@modules/Recomendations/infra/typeorm/entities/Recomendation'
 
 @Entity('projects')
 class Project {
@@ -23,6 +24,9 @@ class Project {
 
   @OneToMany(() => Fact, fact => fact.question.project)
   facts: Fact[]
+
+  @OneToMany(() => Recomendation, recomendation => recomendation.project)
+  recomendations: Recomendation[]
 
   @CreateDateColumn()
   createdAt: Date
