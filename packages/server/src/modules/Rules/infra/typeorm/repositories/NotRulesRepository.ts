@@ -6,16 +6,16 @@ import { injectable } from 'tsyringe'
 import Rule from '../entities/Rule'
 import NotRule from '../entities/NotRule'
 
-interface ICreateRuleDTORecursive extends ICreateRuleDTO {
-  nextRule: Rule
-}
-
 @injectable()
-class NotRulesRepository implements IRulesCreatorRepository {
+class NotRulesRepository implements IRulesCreatorRepository<NotRule> {
   private ormRepository: Repository<NotRule> = getRepository(NotRule)
 
-  public async create(_: ICreateRuleDTO, operands: Rule[]): Promise<NotRule> {
+  public async create(
+    { projectId }: ICreateRuleDTO,
+    operands: Rule[]
+  ): Promise<NotRule> {
     const rule = this.ormRepository.create({
+      projectId,
       operands: operands
     })
     return await this.ormRepository.save(rule)

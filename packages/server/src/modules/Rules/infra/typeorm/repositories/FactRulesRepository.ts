@@ -7,22 +7,19 @@ import Rule from '../entities/Rule'
 import FactRule from '../entities/FactRule'
 import AppError from '@shared/errors/AppError'
 
-interface ICreateRuleDTORecursive extends ICreateRuleDTO {
-  nextRule: Rule
-}
-
 @injectable()
-class FactRulesRepository implements IRulesCreatorRepository {
+class FactRulesRepository implements IRulesCreatorRepository<FactRule> {
   private ormRepository: Repository<FactRule> = getRepository(FactRule)
 
   public async create(
-    { factId }: ICreateRuleDTO,
+    { projectId, factId }: ICreateRuleDTO,
     operands: Rule[]
   ): Promise<FactRule> {
     if (!factId) {
       throw new AppError('Fact not specified')
     }
     const rule = this.ormRepository.create({
+      projectId,
       factId,
       operands
     })

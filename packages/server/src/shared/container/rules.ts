@@ -6,28 +6,32 @@ import AndRulesRepository from '@modules/Rules/infra/typeorm/repositories/AndRul
 import OrRulesRepository from '@modules/Rules/infra/typeorm/repositories/OrRulesRepository'
 import IRulesCreatorRepository from '@modules/Rules/repositories/IRulesCreatorRepository'
 import FactRulesRepository from '@modules/Rules/infra/typeorm/repositories/FactRulesRepository'
+import AndRule from '@modules/Rules/infra/typeorm/entities/AndRule'
+import OrRule from '@modules/Rules/infra/typeorm/entities/OrRule'
+import NotRule from '@modules/Rules/infra/typeorm/entities/NotRule'
+import FactRule from '@modules/Rules/infra/typeorm/entities/FactRule'
 
 container.registerSingleton<IRulesRepository>(
   'RulesRepository',
   RulesRepository
 )
 
-container.registerSingleton<IRulesCreatorRepository>(
+container.registerSingleton<IRulesCreatorRepository<AndRule>>(
   'AndRulesRepository',
   AndRulesRepository
 )
 
-container.registerSingleton<IRulesCreatorRepository>(
+container.registerSingleton<IRulesCreatorRepository<OrRule>>(
   'OrRulesRepository',
   OrRulesRepository
 )
 
-container.registerSingleton<IRulesCreatorRepository>(
+container.registerSingleton<IRulesCreatorRepository<NotRule>>(
   'NotRulesRepository',
   NotRulesRepository
 )
 
-container.registerSingleton<IRulesCreatorRepository>(
+container.registerSingleton<IRulesCreatorRepository<FactRule>>(
   'FactRulesRepository',
   FactRulesRepository
 )

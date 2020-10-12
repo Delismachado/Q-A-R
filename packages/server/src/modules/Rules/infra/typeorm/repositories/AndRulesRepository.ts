@@ -7,11 +7,15 @@ import Rule from '../entities/Rule'
 import AndRule from '../entities/AndRule'
 
 @injectable()
-class AndRulesRepository implements IRulesCreatorRepository {
+class AndRulesRepository implements IRulesCreatorRepository<AndRule> {
   private ormRepository: Repository<AndRule> = getRepository(AndRule)
 
-  public async create(_: ICreateRuleDTO, operands: Rule[]): Promise<AndRule> {
+  public async create(
+    { projectId }: ICreateRuleDTO,
+    operands: Rule[]
+  ): Promise<AndRule> {
     const rule = this.ormRepository.create({
+      projectId,
       operands: operands
     })
     return await this.ormRepository.save(rule)

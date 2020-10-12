@@ -1,6 +1,10 @@
+import Project from '@modules/Projects/infra/typeorm/entities/Project'
 import Rule from '../infra/typeorm/entities/Rule'
 
-export default interface IRulesRepository {
-  findById(Rule_id: string): Promise<Rule | undefined>
+interface IRulesRepository {
   all(): Promise<Rule[]>
+  findById(rule_id: string): Promise<Rule | undefined>
+  findByProject(project: Project): Promise<Rule[]>
 }
+
+export default IRulesRepository

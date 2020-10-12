@@ -7,12 +7,16 @@ import Rule from '../entities/Rule'
 import OrRule from '../entities/OrRule'
 
 @injectable()
-class OrRulesRepository implements IRulesCreatorRepository {
+class OrRulesRepository implements IRulesCreatorRepository<OrRule> {
   private ormRepository: Repository<OrRule> = getRepository(OrRule)
 
-  public async create(_: ICreateRuleDTO, operands: Rule[]): Promise<OrRule> {
+  public async create(
+    { projectId }: ICreateRuleDTO,
+    operands: Rule[]
+  ): Promise<OrRule> {
     const rule = this.ormRepository.create({
-      operands: operands
+      projectId,
+      operands
     })
     return await this.ormRepository.save(rule)
   }

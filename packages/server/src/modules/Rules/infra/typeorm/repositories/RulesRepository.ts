@@ -1,10 +1,15 @@
-import { getRepository, Repository } from 'typeorm'
+import {
+  getRepository,
+  getTreeRepository,
+  Repository,
+  TreeRepository
+} from 'typeorm'
 
 import IRulesRepository from '../../../repositories/IRulesRepository'
 import ICreateRuleDTO from '../../../dtos/ICreateRuleDTO'
 import { injectable } from 'tsyringe'
 import Rule from '../entities/Rule'
-import AppError from '@shared/errors/AppError'
+import Project from '@modules/Projects/infra/typeorm/entities/Project'
 
 interface ICreateRuleDTORecursive extends ICreateRuleDTO {
   nextRule: Rule
@@ -13,20 +18,17 @@ interface ICreateRuleDTORecursive extends ICreateRuleDTO {
 @injectable()
 class RulesRepository implements IRulesRepository {
   private ormRepository: Repository<Rule>
+  private treeRepository: TreeRepository<Rule>
 
   constructor() {
     this.ormRepository = getRepository(Rule)
+    this.treeRepository = getTreeRepository(Rule)
   }
 
-  public async findById(rule_id: string): Promise<Rule | undefined> {
-    if (!rule_id) {
-      return undefined
-    }
-    const manager = this.ormRepository.manager
-    const trees = await manager.getTreeRepository(Rule)
-    const rule = await this.ormRepository.findOne(rule_id)
+  public async findById(ruleId: string): Promise<Rule | undefined> {
+    const rule = await this.ormRepository.findOne(ruleId)
     if (rule) {
-      await trees.findDescendantsTree(rule)
+      await this.treeRepository.findDescendantsTree(rule)
     }
     return rule
   }
@@ -34,6 +36,19 @@ class RulesRepository implements IRulesRepository {
   public async all(): Promise<Rule[]> {
     const rules = await this.ormRepository.find()
     return rules
+  }
+
+  public async findByProject(project: Project): Promise<Rule[]> {
+    const parentRules = await this.ormRepository.find({
+      where: {
+        projectId: project.id,
+        parent: null
+      }
+    })
+    for (const pr of parentRules) {
+      await this.treeRepository.findDescendantsTree(pr)
+    }
+    return parentRules
   }
 }
 

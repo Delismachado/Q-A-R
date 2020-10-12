@@ -1,4 +1,5 @@
 interface ICreateRuleDTO {
+  projectId: string
   factId?: string
 }
 

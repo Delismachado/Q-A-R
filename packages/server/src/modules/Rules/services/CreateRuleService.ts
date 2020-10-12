@@ -1,13 +1,16 @@
 /* eslint-disable no-useless-constructor */
 import { inject, injectable } from 'tsyringe'
-
 import AppError from '../../../shared/errors/AppError'
-
+import ICreateRuleDTO from '../dtos/ICreateRuleDTO'
+import AndRule from '../infra/typeorm/entities/AndRule'
+import FactRule from '../infra/typeorm/entities/FactRule'
+import NotRule from '../infra/typeorm/entities/NotRule'
+import OrRule from '../infra/typeorm/entities/OrRule'
 import Rule from '../infra/typeorm/entities/Rule'
 import IRulesCreatorRepository from '../repositories/IRulesCreatorRepository'
-import ICreateRuleDTO from '../dtos/ICreateRuleDTO'
 
 interface IRequest {
+  projectId: string
   type: string
   operands: IRequest[]
   factId?: string
@@ -17,20 +20,24 @@ interface IRequest {
 class CreateRuleService {
   constructor(
     @inject('AndRulesRepository')
-    private andRulesRepository: IRulesCreatorRepository,
+    private andRulesRepository: IRulesCreatorRepository<AndRule>,
     @inject('OrRulesRepository')
-    private orRulesRepository: IRulesCreatorRepository,
+    private orRulesRepository: IRulesCreatorRepository<OrRule>,
     @inject('NotRulesRepository')
-    private notRulesRepository: IRulesCreatorRepository,
+    private notRulesRepository: IRulesCreatorRepository<NotRule>,
     @inject('FactRulesRepository')
-    private factRulesRepository: IRulesCreatorRepository
+    private factRulesRepository: IRulesCreatorRepository<FactRule>
   ) {}
 
-  private async createRule(data: IRequest, operands: Rule[]): Promise<Rule> {
+  private async createRule(
+    { projectId, factId, type }: IRequest,
+    operands: Rule[]
+  ): Promise<Rule> {
     const createDto: ICreateRuleDTO = {
-      factId: data.factId
+      projectId,
+      factId
     }
-    switch (data.type) {
+    switch (type) {
       case 'AndRule':
         return await this.andRulesRepository.create(createDto, operands)
       case 'OrRule':
@@ -40,7 +47,7 @@ class CreateRuleService {
       case 'FactRule':
         return await this.factRulesRepository.create(createDto, operands)
       default:
-        throw new AppError('Unknown rule type ' + data.type)
+        throw new AppError('Unknown rule type ' + type)
     }
   }
 
