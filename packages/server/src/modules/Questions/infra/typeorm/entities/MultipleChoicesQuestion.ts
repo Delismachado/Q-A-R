@@ -5,7 +5,7 @@ import Question from './Question'
 @ChildEntity()
 class MultipleChoicesQuestion extends Question {
   constructor() {
-    super([])
+    super(['ChoiceMatchFact'])
   }
 }
 

@@ -127,10 +127,10 @@ const OptionsFieldsByType: React.FC<OptionsFieldsProps> = ({
   type
 }: OptionsFieldsProps) => {
   switch (type) {
-    case 'true or false':
+    case 'TrueFalseQuestion':
       return <TrueFalseFields />
-    case 'choices':
-    case 'multiple choices':
+    case 'ChoicesQuestion':
+    case 'MultipleChoicesQuestion':
       return <ChoicesFields />
     default:
       return <p>Choose a question type</p>
@@ -156,9 +156,9 @@ const OptionFields: React.FC<OptionsFieldsProps> = ({
 }
 
 const optionsTypes: OptionType[] = [
-  { value: 'true or false', label: 'True or false' },
-  { value: 'choices', label: 'Choices' },
-  { value: 'multiple choices', label: 'Multiple choices' }
+  { value: 'TrueFalseQuestion', label: 'True or false' },
+  { value: 'ChoicesQuestion', label: 'Choices' },
+  { value: 'MultipleChoicesQuestion', label: 'Multiple choices' }
 ]
 
 interface QuestionsBoxProps extends BoxProps {
@@ -182,7 +182,13 @@ const QuestionsBox: React.FC<QuestionsBoxProps> = ({
 
   const handleNewQuestion = (data: CreateQuestionData) => {
     data.projectId = projectId
-    api.post('/questions', data).then(q => setQuestions([...questions, q.data]))
+    api
+      .post('/questions', data)
+      .then(q => setQuestions([...questions, q.data]))
+      .catch(err => {
+        console.log(err)
+        alert('Error creating the new question.')
+      })
     formRef.current.reset()
   }
 

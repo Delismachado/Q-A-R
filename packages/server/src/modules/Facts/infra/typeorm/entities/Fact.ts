@@ -18,6 +18,9 @@ class Fact {
   @Column()
   name: string
 
+  @Column()
+  questionId: string
+
   @ManyToOne(() => Question, {
     eager: true,
     onDelete: 'CASCADE'
