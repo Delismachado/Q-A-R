@@ -8,7 +8,6 @@ import UsersRepository from '@modules/Users/infra/typeorm/repositories/UserRepos
 import IAnswersRepository from '@modules/Answers/repositories/IAnswersRepository'
 import AnswersRepository from '@modules/Answers/infra/typeorm/repositories/AnswersRepository'
 
-
 import IProjectsRepository from '@modules/Projects/repositories/IProjectsRepository'
 import ProjectsRepository from '@modules/Projects/infra/typeorm/repositories/ProjectsRepository'
 
@@ -21,6 +20,8 @@ import INumericIntervalFactsRepository from '@modules/Facts/repositories/INumeri
 import ChoiceMatchFactsRepository from '@modules/Facts/infra/typeorm/repositories/ChoiceMatchFactsRepository'
 import NumericIntervalFactsRepository from '@modules/Facts/infra/typeorm/repositories/NumericIntervalFactsRepository'
 
+import IRecommendationsRepository from '@modules/Recommendations/repositories/IRecommendationsRepository'
+import RecommendationsRepository from '@modules/Recommendations/infra/typeorm/repositories/RecommendationsRepository'
 import './questions'
 import './rules'
 
@@ -52,4 +53,9 @@ container.registerSingleton<IChoiceMatchFactsRepository>(
 container.registerSingleton<INumericIntervalFactsRepository>(
   'NumericIntervalFactsRepository',
   NumericIntervalFactsRepository
+)
+
+container.registerSingleton<IRecommendationsRepository>(
+  'RecommendationsRepository',
+  RecommendationsRepository
 )
