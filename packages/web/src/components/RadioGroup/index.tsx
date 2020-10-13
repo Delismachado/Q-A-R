@@ -31,7 +31,6 @@ const RadioGroup: React.FC<IRadioProps> = ({
       name: fieldName,
       ref: inputRef.current,
       getValue: function (field) {
-        console.log(field)
         return selected
       }
     })

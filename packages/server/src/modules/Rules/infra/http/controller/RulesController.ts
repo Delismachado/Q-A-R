@@ -9,12 +9,14 @@ export default class RulesAnswersController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { projectId, type, operands, factId } = request.body
     const createRule = container.resolve(CreateRuleService)
-    const rule = await createRule.execute({
-      projectId,
-      type,
-      operands,
-      factId
-    })
+    const rule = await createRule.execute(
+      {
+        type,
+        operands,
+        factId
+      },
+      projectId
+    )
     return response.status(201).json(rule)
   }
 

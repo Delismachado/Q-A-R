@@ -10,7 +10,6 @@ import Rule from '../infra/typeorm/entities/Rule'
 import IRulesCreatorRepository from '../repositories/IRulesCreatorRepository'
 
 interface IRequest {
-  projectId: string
   type: string
   operands: IRequest[]
   factId?: string
@@ -30,8 +29,9 @@ class CreateRuleService {
   ) {}
 
   private async createRule(
-    { projectId, factId, type }: IRequest,
-    operands: Rule[]
+    { factId, type }: IRequest,
+    operands: Rule[],
+    projectId: string
   ): Promise<Rule> {
     const createDto: ICreateRuleDTO = {
       projectId,
@@ -51,15 +51,21 @@ class CreateRuleService {
     }
   }
 
-  private async createRecursive(data: IRequest): Promise<Rule> {
-    const operands: Rule[] = await Promise.all(
-      data.operands.map(dt => this.createRecursive(dt))
-    )
-    return await this.createRule(data, operands)
+  private async createRecursive(
+    data: IRequest,
+    projectId: string
+  ): Promise<Rule> {
+    if (data.operands) {
+      const operands: Rule[] = await Promise.all(
+        data.operands.map(dt => this.createRecursive(dt, projectId))
+      )
+      return await this.createRule(data, operands, projectId)
+    }
+    return await this.createRule(data, [], projectId)
   }
 
-  public async execute(data: IRequest): Promise<Rule> {
-    const rule = await this.createRecursive(data)
+  public async execute(data: IRequest, projectId: string): Promise<Rule> {
+    const rule = await this.createRecursive(data, projectId)
     return rule
   }
 }
