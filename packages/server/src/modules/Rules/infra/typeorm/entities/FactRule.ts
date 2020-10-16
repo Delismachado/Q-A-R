@@ -16,6 +16,7 @@ class FactRule extends Rule {
 
   async stringExpression(): Promise<string> {
     const fact = await this.fact
+    this.label = fact.name
     return fact.name
   }
 }

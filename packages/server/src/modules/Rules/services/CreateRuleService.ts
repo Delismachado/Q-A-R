@@ -8,6 +8,7 @@ import NotRule from '../infra/typeorm/entities/NotRule'
 import OrRule from '../infra/typeorm/entities/OrRule'
 import Rule from '../infra/typeorm/entities/Rule'
 import IRulesCreatorRepository from '../repositories/IRulesCreatorRepository'
+import IRulesRepository from '../repositories/IRulesRepository'
 
 interface IRequest {
   type: string
@@ -18,6 +19,8 @@ interface IRequest {
 @injectable()
 class CreateRuleService {
   constructor(
+    @inject('RulesRepository')
+    private rulesRepository: IRulesRepository,
     @inject('AndRulesRepository')
     private andRulesRepository: IRulesCreatorRepository<AndRule>,
     @inject('OrRulesRepository')
@@ -66,6 +69,11 @@ class CreateRuleService {
 
   public async execute(data: IRequest, projectId: string): Promise<Rule> {
     const rule = await this.createRecursive(data, projectId)
+    const savedRule = await this.rulesRepository.findById(rule.id)
+    if (savedRule) {
+      await savedRule.stringExpression()
+      return savedRule
+    }
     return rule
   }
 }

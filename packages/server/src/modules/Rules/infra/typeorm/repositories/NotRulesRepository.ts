@@ -15,6 +15,7 @@ class NotRulesRepository implements IRulesCreatorRepository<NotRule> {
     operands: Rule[]
   ): Promise<NotRule> {
     const rule = this.ormRepository.create({
+      type: 'NotRule',
       projectId,
       operands: operands
     })

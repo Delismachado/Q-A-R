@@ -15,6 +15,7 @@ class OrRulesRepository implements IRulesCreatorRepository<OrRule> {
     operands: Rule[]
   ): Promise<OrRule> {
     const rule = this.ormRepository.create({
+      type: 'OrRule',
       projectId,
       operands
     })

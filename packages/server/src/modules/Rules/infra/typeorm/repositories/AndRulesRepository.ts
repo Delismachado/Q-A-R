@@ -15,10 +15,12 @@ class AndRulesRepository implements IRulesCreatorRepository<AndRule> {
     operands: Rule[]
   ): Promise<AndRule> {
     const rule = this.ormRepository.create({
+      type: 'AndRule',
       projectId,
       operands: operands
     })
-    return await this.ormRepository.save(rule)
+    const savedRule = await this.ormRepository.save(rule)
+    return savedRule
   }
 }
 

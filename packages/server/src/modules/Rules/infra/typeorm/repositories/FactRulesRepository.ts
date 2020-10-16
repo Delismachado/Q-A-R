@@ -19,6 +19,7 @@ class FactRulesRepository implements IRulesCreatorRepository<FactRule> {
       throw new AppError('Fact not specified')
     }
     const rule = this.ormRepository.create({
+      type: 'FactRule',
       projectId,
       factId,
       operands

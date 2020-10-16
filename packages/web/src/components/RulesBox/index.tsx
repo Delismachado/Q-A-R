@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
+  Badge,
   Box,
   BoxProps,
   Button,
@@ -15,6 +16,13 @@ import {
 import { Form } from '@unform/web'
 import RadioGroup from '../../components/RadioGroup'
 import api from '../../services/api'
+import LabeledSelect from '../LabeledSelect'
+import { FormHandles } from '@unform/core'
+
+interface FactsData {
+  id: string
+  name: string
+}
 
 interface RuleData {
   id?: string
@@ -22,19 +30,50 @@ interface RuleData {
   label?: string
   operands: RuleData[] | null
   factId?: string
+  fact: FactsData
 }
 
-interface FactsData {
-  id: string
-  name: string
+interface RuleLabelProps {
+  rule: RuleData
+}
+
+const RuleLabel: React.FC<RuleLabelProps> = ({ rule }: RuleLabelProps) => {
+  return (
+    <span>
+      {rule.type === 'FactRule' && (
+        <Badge variantColor="green">{rule.label}</Badge>
+      )}
+      {rule.type === 'AndRule' &&
+        rule.operands.map((r, idx) => (
+          <span key={idx}>
+            (<RuleLabel rule={r} />)
+            {idx !== rule.operands.length - 1 && ' AND '}
+          </span>
+        ))}
+      {rule.type === 'OrRule' &&
+        rule.operands.map((r, idx) => (
+          <span key={idx}>
+            (<RuleLabel rule={r} />){idx !== rule.operands.length - 1 && ' OR '}
+          </span>
+        ))}
+      {rule.type === 'NotRule' &&
+        rule.operands.map((r, idx) => (
+          <span key={idx}>
+            NOT (<RuleLabel rule={r} />)
+          </span>
+        ))}
+    </span>
+  )
 }
 
 interface RuleFieldsProps extends BoxProps {
   baseName: string
+  facts: FactsData[]
 }
 
 const RuleFields: React.FC<RuleFieldsProps> = ({
   baseName,
+  facts,
   ...rest
 }: RuleFieldsProps) => {
   const ruleTypes = [
@@ -44,13 +83,15 @@ const RuleFields: React.FC<RuleFieldsProps> = ({
     { label: 'FACT', value: 'FactRule' }
   ]
 
-  const [selectedType, setSelectedType] = useState<string>()
+  const [selectedType, setSelectedType] = useState<string>(null)
   const [noOperands, setNoOperands] = useState<number>(0)
 
   return (
     <Box
       margin="auto"
       p="1rem"
+      borderStyle="solid"
+      border="1px"
       borderRadius="lg"
       backgroundColor="gray.100"
       {...rest}
@@ -75,9 +116,13 @@ const RuleFields: React.FC<RuleFieldsProps> = ({
         <FormControl>
           <FormLabel>Rule operands:</FormLabel>
           {Array.from(Array(noOperands), (e, i) => (
-            <RuleFields baseName={baseName + '.operands[' + i + ']'} />
+            <RuleFields
+              key={i}
+              baseName={baseName + '.operands[' + i + ']'}
+              facts={facts}
+            />
           ))}
-          {['AndRule', 'OrRule', 'NotRule'].includes(selectedType) && (
+          {['AndRule', 'OrRule'].includes(selectedType) && (
             <Button
               leftIcon="plus-square"
               onClick={() => setNoOperands(noOperands + 1)}
@@ -87,7 +132,17 @@ const RuleFields: React.FC<RuleFieldsProps> = ({
           )}
         </FormControl>
       )}
-      {selectedType === 'FactRule' && <p>Fact rule</p>}
+      {['FactRule'].includes(selectedType) && (
+        <fieldset>
+          <LabeledSelect
+            name={baseName + '.factId'}
+            options={facts.map(fact => ({
+              label: fact.name,
+              value: fact.id
+            }))}
+          />
+        </fieldset>
+      )}
     </Box>
   )
 }
@@ -103,25 +158,46 @@ const RulesBox: React.FC<RulesBoxProps> = ({
   const [rules, setRules] = useState<RuleData[]>([])
   const [facts, setFacts] = useState<FactsData[]>([])
 
+  const formRef = useRef<FormHandles>(null)
+  const emptyRule = { type: null, operands: [] }
+
+  useEffect(() => {
+    api.get(`/projects/${projectId}/facts`).then(response => {
+      setFacts(response.data)
+    })
+  }, [projectId])
+
   useEffect(() => {
     api.get(`/projects/${projectId}/rules`).then(res => setRules(res.data))
   }, [projectId])
 
+  const validateFacts = function (rule: RuleData) {
+    if (['AndRule', 'NotRule', 'OrRule'].includes(rule.type)) {
+      return rule.operands.every(validateFacts)
+    } else {
+      return rule.type === 'FactRule'
+    }
+  }
+
   const handleNewRule = useCallback(
-    (data, err, ev) => {
-      // console.log(data)
+    data => {
       data.rule.projectId = projectId
+      if (!validateFacts(data.rule)) {
+        alert('All leaf operands must be facts!')
+        return
+      }
       api
         .post('/rules', data.rule)
         .then(res => {
           setRules([...rules, res.data])
+          formRef.current.reset({ type: null })
         })
         .catch(res => {
           console.log(res)
           alert('Error creating new rule')
         })
     },
-    [projectId]
+    [projectId, rules]
   )
 
   return (
@@ -131,8 +207,8 @@ const RulesBox: React.FC<RulesBoxProps> = ({
           <Heading as="h3" size="lg">
             Create new rule
           </Heading>
-          <Form onSubmit={handleNewRule}>
-            <RuleFields baseName="rule" />
+          <Form onSubmit={handleNewRule} ref={formRef} initialData={emptyRule}>
+            <RuleFields baseName="rule" facts={facts} />
             <ButtonGroup mt="1rem">
               <Button className="button" type="reset">
                 Reset
@@ -158,7 +234,9 @@ const RulesBox: React.FC<RulesBoxProps> = ({
               verticalAlign="middle"
             >
               <Text>
-                <strong>{rule.label}</strong>
+                <strong>
+                  <RuleLabel rule={rule} />
+                </strong>
               </Text>
               <ButtonGroup marginLeft="auto">
                 <IconButton
