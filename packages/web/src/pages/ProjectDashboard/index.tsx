@@ -4,6 +4,7 @@ import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/core'
 import QuestionsBox from '../../components/QuestionsBox'
 import RulesBox from '../../components/RulesBox'
 import FactsBox from '../../components/FactsBox'
+import RecommendationDashboard from '../RecommendationDashboard'
 
 interface ProjectDashboardParams {
   projectId: string
@@ -20,6 +21,7 @@ const ProjectDashboard: React.FC = () => {
           <Tab>Facts</Tab>
           <Tab>Questions</Tab>
           <Tab>Rules</Tab>
+          <Tab>Recommendation</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -30,6 +32,9 @@ const ProjectDashboard: React.FC = () => {
           </TabPanel>
           <TabPanel>
             <RulesBox projectId={projectId} />
+          </TabPanel>
+          <TabPanel>
+            <RecommendationDashboard />
           </TabPanel>
         </TabPanels>
       </Tabs>
