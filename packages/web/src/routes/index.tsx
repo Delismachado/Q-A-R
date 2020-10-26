@@ -12,6 +12,7 @@ import AnswerQuestion from '../pages/AnswerQuestion'
 import UserAnswers from '../pages/UserAnswers'
 import QuestionAnswers from '../pages/QuestionAnswers'
 import ProjectDashboard from '../pages/ProjectDashboard'
+import RecommendationDashboard from '../pages/RecommendationDashboard'
 
 const Routes: React.FC = () => (
   <Switch>
@@ -28,6 +29,11 @@ const Routes: React.FC = () => (
     <Route path="/users/:user_id/answers" component={UserAnswers} isPrivate />
     <Route path="/answers/:question_id" component={QuestionAnswers} isPrivate />
     <Route path="/projects/:projectId" component={ProjectDashboard} isPrivate />
+    <Route
+      path="/recommendations/:recommendationId"
+      component={RecommendationDashboard}
+      isPrivate
+    />
   </Switch>
 )
 
