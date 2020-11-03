@@ -3,11 +3,13 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
+  OneToMany,
   CreateDateColumn,
   UpdateDateColumn
 } from 'typeorm'
 
 import { Exclude } from 'class-transformer'
+import Participation from '@modules/Participations/infra/typeorm/entities/Participation'
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -32,6 +34,9 @@ class User {
     default: UserRole.USER
   })
   role: UserRole
+
+  @OneToMany(() => Participation, participation => participation.user)
+  participation: Participation[]
 
   @CreateDateColumn()
   createdAt: Date

@@ -22,6 +22,9 @@ import NumericIntervalFactsRepository from '@modules/Facts/infra/typeorm/reposit
 
 import IRecommendationsRepository from '@modules/Recommendations/repositories/IRecommendationsRepository'
 import RecommendationsRepository from '@modules/Recommendations/infra/typeorm/repositories/RecommendationsRepository'
+import IParticipationsRepository from '@modules/Participations/repositories/IParticipationsRepository'
+import ParticipationsRepository from '@modules/Participations/infra/typeorm/repositories/ParticipationsRepository'
+
 import './questions'
 import './rules'
 
@@ -58,4 +61,9 @@ container.registerSingleton<INumericIntervalFactsRepository>(
 container.registerSingleton<IRecommendationsRepository>(
   'RecommendationsRepository',
   RecommendationsRepository
+)
+
+container.registerSingleton<IParticipationsRepository>(
+  'ParticipationsRepository',
+  ParticipationsRepository
 )
