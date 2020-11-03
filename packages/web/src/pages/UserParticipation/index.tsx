@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {
   Box,
   Heading,
@@ -12,64 +12,46 @@ import {
   ListItem
 } from '@chakra-ui/core'
 
-interface ParticipationData {
+interface ProjectData {
   id: string
-  project: {
-    id: string
-    name: string
-  }
+  name: string
 }
 
-const UserDashboard: React.FC = () => {
+interface QuestionData {
+  id: string
+  name: string
+  description: string
+}
+
+interface ParamsData {
+  participationId: string
+}
+
+const UserParticipation: React.FC = () => {
   const { user } = useAuth()
-  const [participations, setParticipations] = useState<ParticipationData[]>([])
+  const { participationId } = useParams<ParamsData>()
+
+  const [project, setProject] = useState<ProjectData>(null)
+  const [questions, setQuestions] = useState<QuestionData[]>([])
 
   useEffect(() => {
-    api.get(`/users/${user.id}/participations`).then(response => {
-      setParticipations(response.data)
+    api.get(`/participations/${participationId}`).then(response => {
+      setProject(response.data.project)
     })
   }, [user])
 
-  const [questions, setQuestions] = useState([])
-
   useEffect(() => {
-    api.get('/questions').then(response => {
+    if (!project) {
+      return
+    }
+    api.get(`/projects/${project.id}/questions`).then(response => {
       setQuestions(response.data)
     })
-  }, [user])
+  }, [user, project])
 
   return (
     <Box maxWidth="6xl" margin="auto">
       <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
-        <Heading as="h2" size="lg" paddingBottom="1rem">
-          My Projects
-        </Heading>
-        <List>
-          {participations.map((participation, idx) => (
-            <ListItem
-              display="flex"
-              border="1px"
-              borderColor="gray.700"
-              borderRadius="lg"
-              padding=".5rem"
-              marginY=".5rem"
-              key={participation.id}
-            >
-              <Box>
-                <Text as="strong">
-                  {idx + 1}. Project: {participation.project.name}
-                </Text>
-              </Box>
-              <ButtonGroup marginLeft="auto">
-                <Link to={`/my-projects/${participation.id}`}>
-                  <Button variantColor="teal" leftIcon="plus-square">
-                    Select project
-                  </Button>
-                </Link>
-              </ButtonGroup>
-            </ListItem>
-          ))}
-        </List>
         <Heading as="h2" size="lg" paddingBottom="1rem">
           Questions list
         </Heading>
@@ -107,4 +89,4 @@ const UserDashboard: React.FC = () => {
   )
 }
 
-export default UserDashboard
+export default UserParticipation

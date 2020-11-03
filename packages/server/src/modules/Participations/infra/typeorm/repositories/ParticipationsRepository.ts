@@ -4,6 +4,7 @@ import IParticipationsRepository from '../../../repositories/IParticipationsRepo
 import ICreateParticipationSetsDTO from '../../../dtos/ICreateParticipationDTO'
 import Participation from '@modules/Participations/infra/typeorm/entities/Participation'
 import { injectable } from 'tsyringe'
+import User from '@modules/Users/infra/typeorm/entities/User'
 
 @injectable()
 class ParticipationsRepository implements IParticipationsRepository {
@@ -46,6 +47,14 @@ class ParticipationsRepository implements IParticipationsRepository {
 
   public async delete(participation: Participation): Promise<void> {
     await this.ormRepository.delete(participation.id)
+  }
+
+  public async getParticipationsByUser(user: User): Promise<Participation[]> {
+    return await this.ormRepository.find({
+      where: {
+        userId: user.id
+      }
+    })
   }
 }
 

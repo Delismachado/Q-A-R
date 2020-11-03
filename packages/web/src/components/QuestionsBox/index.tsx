@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Input from '../Input'
 import LabeledInput from '../LabeledInput'
 import Select, { OptionType } from '../LabeledSelect'

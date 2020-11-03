@@ -13,6 +13,7 @@ import UserAnswers from '../pages/UserAnswers'
 import QuestionAnswers from '../pages/QuestionAnswers'
 import ProjectDashboard from '../pages/ProjectDashboard'
 import RecommendationDashboard from '../pages/RecommendationDashboard'
+import UserParticipation from '../pages/UserParticipation'
 
 const Routes: React.FC = () => (
   <Switch>
@@ -32,6 +33,11 @@ const Routes: React.FC = () => (
     <Route
       path="/recommendations/:recommendationId"
       component={RecommendationDashboard}
+      isPrivate
+    />
+    <Route
+      path="/my-projects/:participationId"
+      component={UserParticipation}
       isPrivate
     />
   </Switch>
