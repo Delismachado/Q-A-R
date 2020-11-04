@@ -22,7 +22,7 @@ const Routes: React.FC = () => (
     <Route exact path="/sign-up" component={SignUp} />
     <Route exact path="/user-dashboard" component={UserDashboard} isPrivate />
     <Route
-      path="/questions/:question_id"
+      path="/my-projects/:participationId/questions/:questionId"
       component={() => <AnswerQuestion />}
       isPrivate
     />

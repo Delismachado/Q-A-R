@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
 import api from '../../services/api'
@@ -13,6 +13,7 @@ import CheckboxGroup, {
   CheckboxGroupOptions
 } from '../../components/CheckboxGroup'
 import LabeledSelect, { OptionType } from '../../components/LabeledSelect'
+import Input from '../../components/Input'
 
 interface ChangeValuesFunc {
   (values: any): void
@@ -78,6 +79,20 @@ const MultipleChoicesAnswerFieldset: React.FC<MultipleChoicesAnswerFieldsetProps
   )
 }
 
+interface NumericAnswerFieldsetProps {
+  options: any
+}
+
+const NumericAnswerFieldset: React.FC<NumericAnswerFieldsetProps> = ({
+  options
+}: NumericAnswerFieldsetProps) => {
+  return (
+    <fieldset>
+      <Input type="number" name="values" />
+    </fieldset>
+  )
+}
+
 interface AnswerFieldProps {
   question: QuestionData
 }
@@ -86,12 +101,14 @@ const AnswerField: React.FC<AnswerFieldProps> = ({
   question
 }: AnswerFieldProps) => {
   switch (question.type) {
-    case 'true or false':
+    case 'TrueFalseQuestion':
       return <TrueOrFalseAnswerFieldset options={question.options} />
-    case 'choices':
+    case 'ChoicesQuestion':
       return <ChoicesAnswerFieldset options={question.options} />
-    case 'multiple choices':
+    case 'MultipleChoicesQuestion':
       return <MultipleChoicesAnswerFieldset options={question.options} />
+    case 'NumericQuestion':
+      return <NumericAnswerFieldset options={question.options} />
     default:
       return <p>Carregando ...</p>
   }
@@ -104,7 +121,14 @@ interface QuestionData {
   options: any
 }
 
+interface ParamsData {
+  questionId: string
+  participationId: string
+}
+
 const AnswerQuestion: React.FC = () => {
+  const { user } = useAuth()
+
   const [question, setQuestion] = useState<QuestionData>({
     name: 'Loading...',
     description: '',
@@ -112,19 +136,20 @@ const AnswerQuestion: React.FC = () => {
     options: {}
   })
 
-  const { question_id } = useParams()
+  const { questionId, participationId } = useParams<ParamsData>()
   useEffect(() => {
     api
-      .get(`/questions/${question_id}`)
+      .get(`/questions/${questionId}`)
       .then(response => setQuestion(response.data as QuestionData))
-  }, [question_id])
+  }, [questionId])
 
-  const handleSubmit = (data, a, e) => {
-    e.preventDefault()
-    data.question_id = question_id
-    console.log(data)
-    // api.post(`/users/${user.id}/answers`, data)
-  }
+  const handleSubmit = useCallback(
+    data => {
+      data.questionId = questionId
+      api.post(`/users/${user.id}/answers`, data)
+    },
+    [user, questionId]
+  )
 
   return (
     <Box maxWidth="3xl" margin="auto">
@@ -137,7 +162,7 @@ const AnswerQuestion: React.FC = () => {
           <AnswerField question={question} />
           <ButtonGroup display="flex" paddingTop="2rem">
             <Box flex="1">
-              <Link to="/user-dashboard">
+              <Link to={`/my-projects/${participationId}`}>
                 <Button leftIcon="arrow-back">Go back</Button>
               </Link>
             </Box>

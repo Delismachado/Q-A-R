@@ -45,6 +45,7 @@ const UserParticipation: React.FC = () => {
       return
     }
     api.get(`/projects/${project.id}/questions`).then(response => {
+      console.log(project.id)
       setQuestions(response.data)
     })
   }, [user, project])
@@ -75,7 +76,9 @@ const UserParticipation: React.FC = () => {
                 </Text>
               </Box>
               <ButtonGroup marginLeft="auto">
-                <Link to={`/questions/${question.id}`}>
+                <Link
+                  to={`/my-projects/${participationId}/questions/${question.id}`}
+                >
                   <Button variantColor="teal" leftIcon="plus-square">
                     Add answer
                   </Button>

@@ -43,7 +43,7 @@ class CreateQuestionService {
     const project = await this.ProjectsRepository.findById(projectId)
 
     if (!project) {
-      throw new AppError('Question set not found!')
+      throw new AppError('Project not found!')
     }
 
     const question = {
