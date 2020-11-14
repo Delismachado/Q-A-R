@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v1.4.2
+        uses: actions/setup-node@v2-beta
         with:
           node-version: 12.x
                 
@@ -26,6 +26,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
+          rm: true
           source: ".,!node_modules"
           target: git/Q-A-R/
       
@@ -51,7 +52,7 @@ jobs:
             cd git/Q-A-R/
             ./node_modules/.bin/typeorm migration:run
       
-      - name: Run server database migration
+      - name: Restart running server process
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
