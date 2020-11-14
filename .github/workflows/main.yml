@@ -39,6 +39,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd git/Q-A-R/
+            cp ../Q-A-R-configs/* .
             yarn workspace "@qar/server" install
       
       - name: Run server database migration
