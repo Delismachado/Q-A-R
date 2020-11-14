@@ -4,13 +4,20 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  ManyToOne,
+  OneToMany,
+  TableInheritance
 } from 'typeorm'
-import { type } from 'os'
+import Project from '@modules/Projects/infra/typeorm/entities/Project'
+import Fact from '@modules/Facts/infra/typeorm/entities/Fact'
 
 @Entity('questions')
+@TableInheritance({
+  column: { type: 'varchar', name: 'type' }
+})
 class Question {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string
 
   @Column()
@@ -22,14 +29,31 @@ class Question {
   @Column()
   type: string
 
+  @Column({ type: 'json', default: {} })
+  options: any
+
+  @ManyToOne(() => Project, project => project.questions, {
+    eager: true,
+    onDelete: 'CASCADE'
+  })
+  project: Project
+
+  @OneToMany(() => Fact, fact => fact.question, {
+    eager: false
+  })
+  facts: Fact[]
+
   @CreateDateColumn()
-  created_at: Date
+  createdAt: Date
 
   @UpdateDateColumn()
-  updated_at: Date
+  updatedAt: Date
 
-  @Column({ type: 'json' })
-  options: any
+  readonly factTypes: string[]
+
+  constructor(factTypes: string[]) {
+    this.factTypes = factTypes
+  }
 }
 
 export default Question

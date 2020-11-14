@@ -1,179 +1,70 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
 import { Link } from 'react-router-dom'
-import Input from '../../components/Input'
 import LabeledInput from '../../components/LabeledInput'
-import Select, { OptionType } from '../../components/LabeledSelect'
+import Select from '../../components/LabeledSelect'
 import Textarea from '../../components/Textarea'
-import { FormHandles, useField } from '@unform/core'
+import { FormHandles } from '@unform/core'
 import {
   Box,
   Heading,
   Flex,
-  FormControl,
   IconButton,
   SimpleGrid,
-  FormLabel,
-  InputGroup,
-  InputRightElement,
-  Stack,
   ButtonGroup,
   Button,
   Text
 } from '@chakra-ui/core'
 import { Form } from '@unform/web'
 
-interface CreateQuestionData {
+interface ProjectData {
+  id: string
   name: string
-  type: string
-  description: string
-  options: any
 }
-
-const TrueFalseFields: React.FC = () => {
-  return (
-    <>
-      <LabeledInput
-        label="True value label"
-        placeholder="Yes!"
-        name="options.trueLabel"
-      />
-      <LabeledInput
-        label="False value label"
-        placeholder="No."
-        name="options.falseLabel"
-      />
-    </>
-  )
-}
-
-const ChoicesFields: React.FC = () => {
-  const [choices, setChoices] = useState([])
-
-  const { fieldName, registerField } = useField('options.choices')
-  useEffect(() => {
-    registerField({
-      name: fieldName,
-      getValue: () => choices
-    })
-  }, [fieldName, registerField, choices])
-
-  const [choiceLabel, setChoiceLabel] = useState('')
-
-  function addChoice() {
-    setChoices([...choices, choiceLabel])
-  }
-
-  function removeChoice(idx) {
-    const currentChoices = [...choices]
-    currentChoices.splice(idx, 1)
-    setChoices(currentChoices)
-  }
-
-  return (
-    <>
-      <Stack>
-        {choices.map((choice, idx) => (
-          <Flex
-            key={idx}
-            width="100%"
-            borderWidth="1px"
-            borderRadius="md"
-            borderColor="gray.500"
-            padding=".5rem"
-          >
-            {choice}
-            <IconButton
-              marginLeft="auto"
-              title="Remove choice"
-              aria-label="delete"
-              icon="small-close"
-              onClick={e => removeChoice(idx)}
-            />
-          </Flex>
-        ))}
-      </Stack>
-      <FormControl paddingTop=".5rem">
-        <FormLabel>Choice label</FormLabel>
-        <InputGroup>
-          <Input
-            placeholder="Another option"
-            name="choiceLabel"
-            onChange={e => setChoiceLabel(e.target.value)}
-          />
-          <InputRightElement>
-            <IconButton
-              title="Add choice"
-              aria-label="Add choice"
-              icon="plus-square"
-              type="button"
-              onClick={addChoice}
-            />
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
-    </>
-  )
-}
-
-interface OptionsFieldsProps {
-  type: string
-}
-
-const OptionsFieldsByType: React.FC<OptionsFieldsProps> = ({
-  type
-}: OptionsFieldsProps) => {
-  switch (type) {
-    case 'true or false':
-      return <TrueFalseFields />
-    case 'choices':
-    case 'multiple choices':
-      return <ChoicesFields />
-    default:
-      return <p>Choose a question type</p>
-  }
-}
-
-const OptionFields: React.FC<OptionsFieldsProps> = ({
-  type
-}: OptionsFieldsProps) => {
-  return (
-    <Box
-      as="fieldset"
-      borderWidth="1px"
-      borderRadius="lg"
-      borderColor="gray.800"
-      mt="1rem"
-      p="1rem"
-    >
-      <legend>Question options:</legend>
-      <OptionsFieldsByType type={type} />
-    </Box>
-  )
-}
-
-const optionsTypes: OptionType[] = [
-  { value: 'true or false', label: 'True or false' },
-  { value: 'choices', label: 'Choices' },
-  { value: 'multiple choices', label: 'Multiple choices' }
-]
 
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth()
-  const [questions, setQuestions] = useState([])
+  const [projects, setProjects] = useState<ProjectData[]>([])
+  const [editingProject, setEditingProject] = useState<ProjectData>()
+
   useEffect(() => {
-    api.get('/questions').then(response => {
-      setQuestions(response.data)
+    api.get('/projects').then(response => {
+      setProjects(response.data)
     })
   }, [user])
 
   const formRef = useRef<FormHandles>(null)
-  const [type, setType] = useState<string>('')
 
-  const handleNewQuestion = (data: CreateQuestionData) => {
-    api.post('/questions', data).then(q => setQuestions([...questions, q.data]))
-    formRef.current.reset()
+  const handleSaveProject = useCallback(
+    (project: ProjectData) => {
+      if (editingProject) {
+        api.put(`/projects/${editingProject.id}`, project).then(q => {
+          const newProjects = projects.map(pr =>
+            pr.id === editingProject.id ? q.data : pr
+          )
+          setProjects(newProjects)
+          setEditingProject(null)
+        })
+      } else {
+        api
+          .post('/projects', project)
+          .then(q => setProjects([...projects, q.data]))
+      }
+      formRef.current.reset()
+    },
+    [user, editingProject]
+  )
+
+  const handleRemoveProject = (project: ProjectData) => {
+    api.delete(`/projects/${project.id}`).then(() => {
+      setProjects(projects.filter(p => p.id !== project.id))
+    })
+  }
+
+  const handleEditProject = (project: ProjectData) => {
+    setEditingProject(project)
+    formRef.current.setData(project)
   }
 
   return (
@@ -181,48 +72,35 @@ const AdminDashboard: React.FC = () => {
       <SimpleGrid columns={[1, 1, 1, 2]}>
         <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
           <Heading as="h3" size="lg">
-            Create new question
+            Create new project
           </Heading>
-          <Form onSubmit={handleNewQuestion} ref={formRef}>
+          <Form onSubmit={handleSaveProject} ref={formRef}>
             <LabeledInput
-              label="Question title"
-              placeholder="How are you?"
+              label="Project name"
+              placeholder="Your project name"
               name="name"
             />
-            <Textarea
-              label="Question Description"
-              placeholder="Describe your question here"
-              name="description"
-            />
-            <Select
-              label="Question type"
-              name="type"
-              options={optionsTypes}
-              placeholder="True/false, multiple choices, ..."
-              onChange={e => setType(e.target.value)}
-            />
-            <OptionFields type={type} />
             <ButtonGroup mt="1rem">
               <Button
                 className="button"
                 type="reset"
-                onClick={() => setType('')}
+                onClick={() => setEditingProject(null)}
               >
                 Reset
               </Button>
               <Button className="button" type="submit" variantColor="green">
-                Create new question
+                {editingProject ? 'Update project' : 'Create new project'}
               </Button>
             </ButtonGroup>
           </Form>
         </Box>
         <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
           <Heading as="h3" size="lg">
-            Questions list
+            Projects list
           </Heading>
-          {questions.map(question => (
+          {projects.map(project => (
             <Flex
-              key={question.id}
+              key={project.id}
               border="1px"
               borderColor="gray.500"
               borderRadius="lg"
@@ -231,25 +109,25 @@ const AdminDashboard: React.FC = () => {
               verticalAlign="middle"
             >
               <Text>
-                <strong>{question.name}</strong>: {question.type}
+                <strong>{project.name}</strong>
               </Text>
               <ButtonGroup marginLeft="auto">
                 <IconButton
-                  isDisabled={true}
-                  aria-label="Remove question"
-                  title="Remove question"
+                  aria-label="Remove project"
+                  title="Remove project"
                   icon="delete"
+                  onClick={() => handleRemoveProject(project)}
                 />
                 <IconButton
-                  isDisabled={true}
-                  aria-label="Edit question"
-                  title="Edit question"
+                  aria-label="Edit project"
+                  title="Edit project"
                   icon="edit"
+                  onClick={() => handleEditProject(project)}
                 />
-                <Link to={`/answers/${question.id}`}>
+                <Link to={`/projects/${project.id}`}>
                   <IconButton
-                    aria-label="View answers"
-                    title="View answers"
+                    aria-label="View project"
+                    title="View project"
                     icon="info"
                   />
                 </Link>

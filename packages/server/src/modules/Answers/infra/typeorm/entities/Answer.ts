@@ -13,25 +13,23 @@ import Question from '@modules/Questions/infra/typeorm/entities/Question'
 
 @Entity('answers')
 class Answer {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
   user: User
 
   @ManyToOne(() => Question)
-  @JoinColumn({ name: 'question_id' })
   question: Question
 
   @Column({ type: 'json' })
   values: any
 
   @CreateDateColumn()
-  created_at: Date
+  createdAt: Date
 
   @UpdateDateColumn()
-  updated_at: Date
+  updatedAt: Date
 }
 
 export default Answer

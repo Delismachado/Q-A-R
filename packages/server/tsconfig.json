@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "include": [
-    "./src/**/*", "ormconfig.js"
+    "./src/**/*", "ormconfig.js", "../web/src/components/FactForm"
   ],
   "compilerOptions": {
     "outDir": "./dist",

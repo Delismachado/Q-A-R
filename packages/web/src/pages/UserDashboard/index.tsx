@@ -12,8 +12,24 @@ import {
   ListItem
 } from '@chakra-ui/core'
 
+interface ParticipationData {
+  id: string
+  project: {
+    id: string
+    name: string
+  }
+}
+
 const UserDashboard: React.FC = () => {
   const { user } = useAuth()
+  const [participations, setParticipations] = useState<ParticipationData[]>([])
+
+  useEffect(() => {
+    api.get(`/users/${user.id}/participations`).then(response => {
+      setParticipations(response.data)
+    })
+  }, [user])
+
   const [questions, setQuestions] = useState([])
 
   useEffect(() => {
@@ -26,10 +42,10 @@ const UserDashboard: React.FC = () => {
     <Box maxWidth="6xl" margin="auto">
       <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
         <Heading as="h2" size="lg" paddingBottom="1rem">
-          Questions list
+          My Projects
         </Heading>
         <List>
-          {questions.map((question, idx) => (
+          {participations.map((participation, idx) => (
             <ListItem
               display="flex"
               border="1px"
@@ -37,20 +53,17 @@ const UserDashboard: React.FC = () => {
               borderRadius="lg"
               padding=".5rem"
               marginY=".5rem"
-              key={question.id}
+              key={participation.id}
             >
               <Box>
                 <Text as="strong">
-                  {idx + 1}. {question.name}
-                </Text>
-                <Text as="p" color="gray.500">
-                  {question.description}
+                  {idx + 1}. Project: {participation.project.name}
                 </Text>
               </Box>
               <ButtonGroup marginLeft="auto">
-                <Link to={`/questions/${question.id}`}>
+                <Link to={`/my-projects/${participation.id}`}>
                   <Button variantColor="teal" leftIcon="plus-square">
-                    Add answer
+                    Select project
                   </Button>
                 </Link>
               </ButtonGroup>

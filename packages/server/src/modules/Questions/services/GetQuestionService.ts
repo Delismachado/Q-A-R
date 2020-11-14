@@ -4,9 +4,10 @@ import { inject, injectable } from 'tsyringe'
 import Question from '../infra/typeorm/entities/Question'
 import IQuestionsRepository from '../repositories/IQuestionsRepository'
 import AppError from '@shared/errors/AppError'
+import TrueFalseQuestion from '../infra/typeorm/entities/TrueFalseQuestion'
 
 @injectable()
-class ListQuestionsService {
+class GetQuestionService {
   constructor(
     @inject('QuestionsRepository')
     private questionsRepository: IQuestionsRepository
@@ -17,8 +18,11 @@ class ListQuestionsService {
     if (!question) {
       throw new AppError('Question not found')
     }
+    if (question instanceof TrueFalseQuestion) {
+      console.log(question.factTypes)
+    }
     return question
   }
 }
 
-export default ListQuestionsService
+export default GetQuestionService

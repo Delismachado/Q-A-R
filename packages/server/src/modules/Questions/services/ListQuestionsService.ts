@@ -12,8 +12,8 @@ class ListQuestionsService {
   ) {}
 
   public async execute(): Promise<Question[]> {
-    const question = await this.questionsRepository.all()
-    return question
+    const questions = await this.questionsRepository.all()
+    return questions
   }
 }
 
