@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useAuth } from '../../hooks/auth'
 import api from '../../services/api'
-import { Link } from 'react-router-dom'
 import Input from '../Input'
 import LabeledInput from '../LabeledInput'
 import Select, { OptionType } from '../LabeledSelect'
@@ -26,6 +25,7 @@ import {
 import { Form } from '@unform/web'
 
 interface CreateQuestionData {
+  id: string
   projectId: string
   name: string
   type: string
@@ -52,16 +52,27 @@ const TrueFalseFields: React.FC = () => {
 
 const ChoicesFields: React.FC = () => {
   const [choices, setChoices] = useState([])
-
+  const [choiceLabel, setChoiceLabel] = useState('')
   const { fieldName, registerField } = useField('options.choices')
+  const choicesRef = useRef(choices)
+
   useEffect(() => {
+    console.log('register field ', choices)
     registerField({
       name: fieldName,
-      getValue: () => choices
+      ref: choicesRef,
+      getValue: (ref: any) => {
+        return ref.current
+      },
+      setValue: (ref, value) => {
+        setChoices(value)
+      }
     })
-  }, [fieldName, registerField, choices])
+  }, [fieldName, registerField])
 
-  const [choiceLabel, setChoiceLabel] = useState('')
+  useEffect(() => {
+    choicesRef.current = choices
+  }, [choices])
 
   function addChoice() {
     setChoices([...choices, choiceLabel])
@@ -91,7 +102,7 @@ const ChoicesFields: React.FC = () => {
               title="Remove choice"
               aria-label="delete"
               icon="small-close"
-              onClick={e => removeChoice(idx)}
+              onClick={() => removeChoice(idx)}
             />
           </Flex>
         ))}
@@ -171,6 +182,7 @@ const QuestionsBox: React.FC<QuestionsBoxProps> = ({
 }: QuestionsBoxProps) => {
   const { user } = useAuth()
   const [questions, setQuestions] = useState([])
+  const [editingQuestion, setEditingQuestion] = useState(null)
   useEffect(() => {
     api.get(`/projects/${projectId}/questions`).then(response => {
       setQuestions(response.data)
@@ -180,17 +192,62 @@ const QuestionsBox: React.FC<QuestionsBoxProps> = ({
   const formRef = useRef<FormHandles>(null)
   const [type, setType] = useState<string>('')
 
-  const handleNewQuestion = (data: CreateQuestionData) => {
-    data.projectId = projectId
-    api
-      .post('/questions', data)
-      .then(q => setQuestions([...questions, q.data]))
-      .catch(err => {
-        console.log(err)
-        alert('Error creating the new question.')
-      })
-    formRef.current.reset()
-  }
+  const handleSaveQuestion = useCallback(
+    (data: CreateQuestionData) => {
+      data.projectId = projectId
+      if (!editingQuestion) {
+        api
+          .post('/questions', data)
+          .then(q => setQuestions([...questions, q.data]))
+          .catch(err => {
+            console.log(err)
+            alert('Error creating the new question.')
+          })
+        formRef.current.reset()
+      } else {
+        api
+          .put(`/questions/${editingQuestion.id}`, data)
+          .then(response => {
+            const newQuestions = [...questions]
+            const idx = newQuestions.findIndex(q => q.id === editingQuestion.id)
+            newQuestions[idx] = response.data
+            setQuestions(newQuestions)
+          })
+          .catch(err => {
+            console.log(err)
+            alert('Error creating the new question.')
+          })
+      }
+    },
+    [formRef, projectId, editingQuestion]
+  )
+
+  const handleRemoveQuestion = useCallback(
+    question => {
+      api
+        .delete(`/questions/${question.id}`)
+        .then(() => setQuestions(questions.filter(q => q.id !== question.id)))
+        .catch(err => {
+          console.log(err)
+          alert('Error removing the new question.')
+        })
+    },
+    [questions]
+  )
+
+  const handleEditQuestion = useCallback(
+    question => {
+      setType(question.type)
+      setEditingQuestion(question)
+    },
+    [questions]
+  )
+
+  useEffect(() => {
+    if (editingQuestion) {
+      formRef.current.setData(editingQuestion)
+    }
+  }, [editingQuestion, type])
 
   return (
     <Box maxWidth="6xl" margin="auto" {...rest}>
@@ -199,7 +256,7 @@ const QuestionsBox: React.FC<QuestionsBoxProps> = ({
           <Heading as="h3" size="lg">
             Create new question
           </Heading>
-          <Form onSubmit={handleNewQuestion} ref={formRef}>
+          <Form onSubmit={handleSaveQuestion} ref={formRef}>
             <LabeledInput
               label="Question title"
               placeholder="How are you?"
@@ -251,24 +308,17 @@ const QuestionsBox: React.FC<QuestionsBoxProps> = ({
               </Text>
               <ButtonGroup marginLeft="auto">
                 <IconButton
-                  isDisabled={true}
+                  onClick={e => handleRemoveQuestion(question)}
                   aria-label="Remove question"
                   title="Remove question"
                   icon="delete"
                 />
                 <IconButton
-                  isDisabled={true}
+                  onClick={e => handleEditQuestion(question)}
                   aria-label="Edit question"
                   title="Edit question"
                   icon="edit"
                 />
-                <Link to={`/answers/${question.id}`}>
-                  <IconButton
-                    aria-label="View answers"
-                    title="View answers"
-                    icon="info"
-                  />
-                </Link>
               </ButtonGroup>
             </Flex>
           ))}

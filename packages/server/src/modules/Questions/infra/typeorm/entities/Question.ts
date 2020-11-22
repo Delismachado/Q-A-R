@@ -32,6 +32,9 @@ class Question {
   @Column({ type: 'json', default: {} })
   options: any
 
+  @Column()
+  projectId: string
+
   @ManyToOne(() => Project, project => project.questions, {
     eager: true,
     onDelete: 'CASCADE'

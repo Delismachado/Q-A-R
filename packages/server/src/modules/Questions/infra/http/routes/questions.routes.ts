@@ -12,6 +12,8 @@ const questionsController = new QuestionsController()
 questionsRouter.post('/', questionsController.create)
 questionsRouter.get('/', questionsController.index)
 questionsRouter.get('/:question_id', questionsController.get)
+questionsRouter.delete('/:question_id', questionsController.delete)
+questionsRouter.put('/:question_id', questionsController.update)
 
 const questionsAnswersRouter = Router({ mergeParams: true })
 const questionsAnswersController = new QuestionsAnswersController()

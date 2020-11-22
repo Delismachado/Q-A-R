@@ -50,6 +50,17 @@ class QuestionsRepository implements IQuestionsRepository {
     const questions = await this.ormRepository.find()
     return questions
   }
+
+  public async update(
+    questionId: string,
+    data: ICreateQuestionDTO
+  ): Promise<void> {
+    this.ormRepository.update(questionId, data)
+  }
+
+  public async delete(question: Question): Promise<void> {
+    this.ormRepository.delete(question.id)
+  }
 }
 
 export default QuestionsRepository
