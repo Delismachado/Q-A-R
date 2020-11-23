@@ -6,7 +6,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 
 import getValidationErrors from '../../utils/getValidationErrors'
 import api from '../../services/api'
-import { Button, Box } from '@chakra-ui/core'
+import { Button, Box } from '@chakra-ui/react'
 import Input from '../../components/Input'
 
 interface ResetPasswordFormData {

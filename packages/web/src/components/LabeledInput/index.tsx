@@ -5,11 +5,11 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
 
 import { useField } from '@unform/core'
 
-interface IInputProps extends InputProps<HTMLInputElement> {
+interface IInputProps extends InputProps {
   name: string
   label?: string
 }

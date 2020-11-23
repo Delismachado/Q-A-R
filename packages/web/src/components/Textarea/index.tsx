@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from 'react'
 import {
   Textarea as ChakraTextarea,
-  InputProps,
+  TextareaProps,
   FormControl,
   FormLabel,
   FormErrorMessage
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
 
 import { useField } from '@unform/core'
 import { Form } from '@unform/web'
 
-interface IInputProps extends InputProps<HTMLTextAreaElement> {
+interface IInputProps extends TextareaProps {
   name: string
   label?: string
 }

@@ -12,12 +12,13 @@ import {
   IconButton,
   SimpleGrid,
   Text
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
 import { Form } from '@unform/web'
 import RadioGroup from '../../components/RadioGroup'
 import api from '../../services/api'
 import LabeledSelect from '../LabeledSelect'
 import { FormHandles } from '@unform/core'
+import { DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons'
 
 interface FactsData {
   id: string
@@ -89,11 +90,10 @@ const RuleFields: React.FC<RuleFieldsProps> = ({
   return (
     <Box
       margin="auto"
-      p="1rem"
+      pl="1rem"
       borderStyle="solid"
       border="1px"
       borderRadius="lg"
-      backgroundColor="gray.100"
       {...rest}
     >
       <Box>
@@ -102,12 +102,9 @@ const RuleFields: React.FC<RuleFieldsProps> = ({
           <RadioGroup
             options={ruleTypes}
             name={baseName + '.type'}
-            isInline
             onChange={e => {
-              setSelectedType(e.target.value)
-              setNoOperands(
-                e.target.value === 'FactRule' ? 0 : Math.max(1, noOperands)
-              )
+              setSelectedType(e)
+              setNoOperands(e === 'FactRule' ? 0 : Math.max(1, noOperands))
             }}
           />
         </FormControl>
@@ -124,7 +121,7 @@ const RuleFields: React.FC<RuleFieldsProps> = ({
           ))}
           {['AndRule', 'OrRule'].includes(selectedType) && (
             <Button
-              leftIcon="plus-square"
+              leftIcon={<PlusSquareIcon />}
               onClick={() => setNoOperands(noOperands + 1)}
             >
               Operand
@@ -203,7 +200,7 @@ const RulesBox: React.FC<RulesBoxProps> = ({
   return (
     <Box maxWidth="6xl" margin="auto" {...rest}>
       <SimpleGrid columns={[1, 1, 1, 2]}>
-        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
+        <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
           <Heading as="h3" size="lg">
             Create new rule
           </Heading>
@@ -219,7 +216,7 @@ const RulesBox: React.FC<RulesBoxProps> = ({
             </ButtonGroup>
           </Form>
         </Box>
-        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
+        <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
           <Heading as="h3" size="lg">
             Rules list
           </Heading>
@@ -243,13 +240,13 @@ const RulesBox: React.FC<RulesBoxProps> = ({
                   isDisabled={true}
                   aria-label="Remove rule"
                   title="Remove rule"
-                  icon="delete"
+                  icon={<DeleteIcon />}
                 />
                 <IconButton
                   isDisabled={true}
                   aria-label="Edit rule"
                   title="Edit rule"
-                  icon="edit"
+                  icon={<EditIcon />}
                 />
               </ButtonGroup>
             </Flex>

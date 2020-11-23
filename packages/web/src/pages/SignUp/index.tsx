@@ -4,7 +4,7 @@ import * as Yup from 'yup'
 
 import { Link, useHistory } from 'react-router-dom'
 import { Form } from '@unform/web'
-import { Box, Heading, Button, ButtonGroup } from '@chakra-ui/core'
+import { Box, Heading, Button, ButtonGroup } from '@chakra-ui/react'
 import { FormHandles } from '@unform/core'
 
 import LabeledInput from '../../components/LabeledInput'

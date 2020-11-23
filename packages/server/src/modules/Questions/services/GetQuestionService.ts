@@ -4,7 +4,6 @@ import { inject, injectable } from 'tsyringe'
 import Question from '../infra/typeorm/entities/Question'
 import IQuestionsRepository from '../repositories/IQuestionsRepository'
 import AppError from '@shared/errors/AppError'
-import TrueFalseQuestion from '../infra/typeorm/entities/TrueFalseQuestion'
 
 @injectable()
 class GetQuestionService {

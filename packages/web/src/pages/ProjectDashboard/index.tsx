@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/core'
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react'
 import QuestionsBox from '../../components/QuestionsBox'
 import RulesBox from '../../components/RulesBox'
 import FactsBox from '../../components/FactsBox'

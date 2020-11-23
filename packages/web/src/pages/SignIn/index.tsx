@@ -7,7 +7,8 @@ import { Form } from '@unform/web'
 import LabeledInput from '../../components/LabeledInput'
 import { useAuth } from '../../hooks/auth'
 import getValidationErrors from '../../utils/getValidationErrors'
-import { Box, Button, ButtonGroup, Heading, Flex } from '@chakra-ui/core'
+import { Box, Button, ButtonGroup, Heading, Flex } from '@chakra-ui/react'
+import { ArrowBackIcon, CheckIcon } from '@chakra-ui/icons'
 
 interface SignInFormData {
   email: string
@@ -60,7 +61,6 @@ const SignIn: React.FC = () => {
         p="16"
         m="5"
         width="35%"
-        backgroundColor="gray.200"
       >
         <Heading size="lg" textAlign="center" paddingBottom="1rem">
           Log in here
@@ -78,19 +78,17 @@ const SignIn: React.FC = () => {
             placeholder="***"
             marginTop={2}
           />
-          <ButtonGroup spacing={8}>
+          <ButtonGroup spacing="8" mt="10">
             <Button
-              leftIcon="arrow-back"
-              variantColor="teal"
-              marginTop={10}
+              leftIcon={<ArrowBackIcon />}
+              colorScheme="gray"
               isLoading={false}
             >
               <Link to="/forgot">Forgot your password</Link>
             </Button>
             <Button
-              rightIcon="check"
-              variantColor="teal"
-              marginTop={10}
+              rightIcon={<CheckIcon />}
+              colorScheme="teal"
               isLoading={false}
               type="submit"
             >

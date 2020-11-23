@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import api from '../../services/api'
 
-import { Box, Heading, List, ListIcon, ListItem } from '@chakra-ui/core'
+import { Box, Heading, List, ListIcon, ListItem } from '@chakra-ui/react'
 
 interface RecommendationDashboardParams {
   name: string
@@ -19,7 +19,7 @@ const RecommendationDashboard: React.FC = () => {
   // }, [])
 
   return (
-    <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="blue.50">
+    <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
       <Heading as="h2" size="lg" paddingBottom="1rem">
         Your next steps | Recommendations
       </Heading>

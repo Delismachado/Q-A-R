@@ -21,8 +21,14 @@ import {
   Button,
   Text,
   BoxProps
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
 import { Form } from '@unform/web'
+import {
+  CloseIcon,
+  DeleteIcon,
+  EditIcon,
+  PlusSquareIcon
+} from '@chakra-ui/icons'
 
 interface CreateQuestionData {
   id: string
@@ -57,7 +63,6 @@ const ChoicesFields: React.FC = () => {
   const choicesRef = useRef(choices)
 
   useEffect(() => {
-    console.log('register field ', choices)
     registerField({
       name: fieldName,
       ref: choicesRef,
@@ -101,7 +106,7 @@ const ChoicesFields: React.FC = () => {
               marginLeft="auto"
               title="Remove choice"
               aria-label="delete"
-              icon="small-close"
+              icon={<CloseIcon />}
               onClick={() => removeChoice(idx)}
             />
           </Flex>
@@ -119,7 +124,7 @@ const ChoicesFields: React.FC = () => {
             <IconButton
               title="Add choice"
               aria-label="Add choice"
-              icon="plus-square"
+              icon={<PlusSquareIcon />}
               type="button"
               onClick={addChoice}
             />
@@ -252,7 +257,7 @@ const QuestionsBox: React.FC<QuestionsBoxProps> = ({
   return (
     <Box maxWidth="6xl" margin="auto" {...rest}>
       <SimpleGrid columns={[1, 1, 1, 2]}>
-        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
+        <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
           <Heading as="h3" size="lg">
             Create new question
           </Heading>
@@ -278,18 +283,19 @@ const QuestionsBox: React.FC<QuestionsBoxProps> = ({
             <ButtonGroup mt="1rem">
               <Button
                 className="button"
+                colorScheme="orange"
                 type="reset"
                 onClick={() => setType('')}
               >
                 Reset
               </Button>
-              <Button className="button" type="submit" variantColor="green">
-                Create new question
+              <Button className="button" type="submit" colorScheme="teal">
+                Save
               </Button>
             </ButtonGroup>
           </Form>
         </Box>
-        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
+        <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
           <Heading as="h3" size="lg">
             Questions list
           </Heading>
@@ -308,16 +314,16 @@ const QuestionsBox: React.FC<QuestionsBoxProps> = ({
               </Text>
               <ButtonGroup marginLeft="auto">
                 <IconButton
-                  onClick={e => handleRemoveQuestion(question)}
+                  onClick={() => handleRemoveQuestion(question)}
                   aria-label="Remove question"
                   title="Remove question"
-                  icon="delete"
+                  icon={<DeleteIcon />}
                 />
                 <IconButton
-                  onClick={e => handleEditQuestion(question)}
+                  onClick={() => handleEditQuestion(question)}
                   aria-label="Edit question"
                   title="Edit question"
-                  icon="edit"
+                  icon={<EditIcon />}
                 />
               </ButtonGroup>
             </Flex>

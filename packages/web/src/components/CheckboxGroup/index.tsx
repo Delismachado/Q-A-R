@@ -3,7 +3,7 @@ import {
   Checkbox,
   CheckboxGroup as ChakraCheckboxGroup,
   CheckboxGroupProps
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
 
 import { useField } from '@unform/core'
 

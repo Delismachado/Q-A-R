@@ -10,7 +10,7 @@ import {
   IconButton,
   SimpleGrid,
   Text
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import { AxiosResponse } from 'axios'
@@ -20,6 +20,7 @@ import api from '../../services/api'
 import LabeledInput from '../LabeledInput'
 import LabeledSelect from '../LabeledSelect'
 import CheckboxGroup from '../CheckboxGroup'
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 
 interface QuestionData {
   id: string
@@ -218,7 +219,7 @@ const FactsBox: React.FC<FactsBoxProps> = ({
   return (
     <Box maxWidth="6xl" margin="auto" {...rest}>
       <SimpleGrid columns={[1, 1, 1, 2]}>
-        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
+        <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
           <Heading as="h3" size="lg">
             Create new fact
           </Heading>
@@ -254,13 +255,13 @@ const FactsBox: React.FC<FactsBoxProps> = ({
               >
                 Reset
               </Button>
-              <Button className="button" type="submit" variantColor="green">
+              <Button className="button" type="submit" colorScheme="green">
                 {editingFact ? 'Update fact' : 'Create new fact'}
               </Button>
             </ButtonGroup>
           </Form>
         </Box>
-        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
+        <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
           <Heading as="h3" size="lg">
             Facts list
           </Heading>
@@ -281,13 +282,13 @@ const FactsBox: React.FC<FactsBoxProps> = ({
                 <IconButton
                   aria-label="Remove fact"
                   title="Remove fact"
-                  icon="delete"
+                  icon={<DeleteIcon />}
                   onClick={() => handleRemoveFact(fact)}
                 />
                 <IconButton
                   aria-label="Edit fact"
                   title="Edit fact"
-                  icon="edit"
+                  icon={<EditIcon />}
                   onClick={() => handleEditFact(fact)}
                 />
               </ButtonGroup>

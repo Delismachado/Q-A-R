@@ -3,7 +3,7 @@ import {
   Radio,
   RadioGroup as ChakraRadioGroup,
   RadioGroupProps
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
 
 import { useField } from '@unform/core'
 

@@ -15,8 +15,9 @@ import {
   ButtonGroup,
   Button,
   Text
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
 import { Form } from '@unform/web'
+import { DeleteIcon, EditIcon, InfoIcon } from '@chakra-ui/icons'
 
 interface ProjectData {
   id: string
@@ -70,7 +71,7 @@ const AdminDashboard: React.FC = () => {
   return (
     <Box maxWidth="6xl" margin="auto">
       <SimpleGrid columns={[1, 1, 1, 2]}>
-        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
+        <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
           <Heading as="h3" size="lg">
             Create new project
           </Heading>
@@ -94,7 +95,7 @@ const AdminDashboard: React.FC = () => {
             </ButtonGroup>
           </Form>
         </Box>
-        <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
+        <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
           <Heading as="h3" size="lg">
             Projects list
           </Heading>
@@ -115,20 +116,20 @@ const AdminDashboard: React.FC = () => {
                 <IconButton
                   aria-label="Remove project"
                   title="Remove project"
-                  icon="delete"
+                  icon={<DeleteIcon />}
                   onClick={() => handleRemoveProject(project)}
                 />
                 <IconButton
                   aria-label="Edit project"
                   title="Edit project"
-                  icon="edit"
+                  icon={<EditIcon />}
                   onClick={() => handleEditProject(project)}
                 />
                 <Link to={`/projects/${project.id}`}>
                   <IconButton
                     aria-label="View project"
                     title="View project"
-                    icon="info"
+                    icon={<InfoIcon />}
                   />
                 </Link>
               </ButtonGroup>

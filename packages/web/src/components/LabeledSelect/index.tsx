@@ -6,7 +6,7 @@ import {
   Select as ChakraSelect,
   FormErrorMessage,
   SelectProps
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
 
 export interface OptionType {
   label: string

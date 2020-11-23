@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import { useAuth } from '../../hooks/auth'
 import { Link } from 'react-router-dom'
 
-import { Box, Heading, Flex, Text, Button } from '@chakra-ui/core'
+import { Box, Heading, Flex, Text, Button } from '@chakra-ui/react'
 
 const MenuItems = ({ children }) => (
   <Text mt={{ base: 4, md: 0 }} mr={6} display="block">
@@ -28,7 +28,7 @@ const Header: React.FC = props => {
       justify="space-between"
       wrap="wrap"
       padding="2.5rem"
-      bg="teal.500"
+      bg="teal.700"
       color="white"
       {...props}
     >

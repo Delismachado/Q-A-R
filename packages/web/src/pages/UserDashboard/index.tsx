@@ -10,7 +10,8 @@ import {
   Text,
   List,
   ListItem
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
+import { PlusSquareIcon } from '@chakra-ui/icons'
 
 interface ParticipationData {
   id: string
@@ -40,7 +41,7 @@ const UserDashboard: React.FC = () => {
 
   return (
     <Box maxWidth="6xl" margin="auto">
-      <Box m="1rem" p="1rem" borderRadius="lg" backgroundColor="gray.200">
+      <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
         <Heading as="h2" size="lg" paddingBottom="1rem">
           My Projects
         </Heading>
@@ -62,7 +63,7 @@ const UserDashboard: React.FC = () => {
               </Box>
               <ButtonGroup marginLeft="auto">
                 <Link to={`/my-projects/${participation.id}`}>
-                  <Button variantColor="teal" leftIcon="plus-square">
+                  <Button variantColor="teal" leftIcon={<PlusSquareIcon />}>
                     Select project
                   </Button>
                 </Link>

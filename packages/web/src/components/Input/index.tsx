@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react'
-import { Input as ChakraInput, InputProps } from '@chakra-ui/core'
+import { Input as ChakraInput, InputProps } from '@chakra-ui/react'
 
 import { useField } from '@unform/core'
 
-interface IInputProps extends InputProps<HTMLInputElement> {
+interface IInputProps extends InputProps {
   name: string
   label?: string
 }

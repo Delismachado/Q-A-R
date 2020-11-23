@@ -6,7 +6,7 @@ import api from '../../services/api'
 import { useAuth } from '../../hooks/auth'
 
 import { Form } from '@unform/web'
-import { Box, Heading, Text, Button, ButtonGroup } from '@chakra-ui/core'
+import { Box, Heading, Text, Button, ButtonGroup } from '@chakra-ui/react'
 
 import RadioGroup, { RadioGroupOptions } from '../../components/RadioGroup'
 import CheckboxGroup, {
