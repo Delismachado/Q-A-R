@@ -4,6 +4,10 @@ import { inject, injectable } from 'tsyringe'
 import User from '../infra/typeorm/entities/User'
 import IUsersRepository from '../repositories/IUsersRepository'
 
+interface IRequest {
+  role?: string
+}
+
 @injectable()
 class ListUsersService {
   constructor(
@@ -11,8 +15,8 @@ class ListUsersService {
     private usersRepository: IUsersRepository
   ) {}
 
-  public async execute(): Promise<User[]> {
-    const users = await this.usersRepository.findAll()
+  public async execute({ role }: IRequest): Promise<User[]> {
+    const users = await this.usersRepository.findAll({ role })
     return users
   }
 }

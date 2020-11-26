@@ -5,6 +5,7 @@ import ICreateParticipationSetsDTO from '../../../dtos/ICreateParticipationDTO'
 import Participation from '@modules/Participations/infra/typeorm/entities/Participation'
 import { injectable } from 'tsyringe'
 import User from '@modules/Users/infra/typeorm/entities/User'
+import Project from '@modules/Projects/infra/typeorm/entities/Project'
 
 @injectable()
 class ParticipationsRepository implements IParticipationsRepository {
@@ -53,6 +54,14 @@ class ParticipationsRepository implements IParticipationsRepository {
     return await this.ormRepository.find({
       where: {
         userId: user.id
+      }
+    })
+  }
+
+  public async findByProject(project: Project): Promise<Participation[]> {
+    return await this.ormRepository.find({
+      where: {
+        projectId: project.id
       }
     })
   }

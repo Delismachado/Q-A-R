@@ -12,7 +12,7 @@ export interface RadioGroupOptions {
   value: string
 }
 
-interface IRadioProps extends RadioGroupProps {
+interface IRadioProps extends Omit<RadioGroupProps, 'children'> {
   name: string
   options: RadioGroupOptions[]
 }

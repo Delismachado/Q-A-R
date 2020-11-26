@@ -5,6 +5,7 @@ import ensureAuthenticated from '@modules/Users/infra/http/middlewares/ensureAut
 import ProjectsQuestionsController from '../controller/ProjectsQuestionsController'
 import ProjectsFactsController from '../controller/ProjectsFactsController'
 import ProjectsRulesController from '../controller/ProjectsRulesController'
+import ProjectsParticipationsController from '../controller/ProjectsParticipationsController'
 
 const projectsController = new ProjectsController()
 const projectsRouter = Router()
@@ -29,5 +30,10 @@ const projectRulesController = new ProjectsRulesController()
 const projectsRulesRouter = Router({ mergeParams: true })
 projectsRouter.use('/:projectId/rules', projectsRulesRouter)
 projectsRulesRouter.get('/', projectRulesController.index)
+
+const projectParticipationsController = new ProjectsParticipationsController()
+const projectsParticipationsRouter = Router({ mergeParams: true })
+projectsRouter.use('/:projectId/participations', projectsParticipationsRouter)
+projectsParticipationsRouter.get('/', projectParticipationsController.index)
 
 export default projectsRouter

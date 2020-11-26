@@ -1,10 +1,12 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react'
-import QuestionsBox from '../../components/QuestionsBox'
-import RulesBox from '../../components/RulesBox'
-import FactsBox from '../../components/FactsBox'
-import RecommendationDashboard from '../RecommendationDashboard'
+
+import QuestionsBox from './QuestionsBox'
+import RulesBox from './RulesBox'
+import FactsBox from './FactsBox'
+import RecommendationBox from './RecommendationsBox'
+import ParticipationsBox from './ParticipationsBox'
 
 interface ProjectDashboardParams {
   projectId: string
@@ -21,7 +23,8 @@ const ProjectDashboard: React.FC = () => {
           <Tab>Facts</Tab>
           <Tab>Questions</Tab>
           <Tab>Rules</Tab>
-          <Tab>Recommendation</Tab>
+          <Tab>Recommendations</Tab>
+          <Tab>Participations</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -34,7 +37,10 @@ const ProjectDashboard: React.FC = () => {
             <RulesBox projectId={projectId} />
           </TabPanel>
           <TabPanel>
-            <RecommendationDashboard />
+            <RecommendationBox projectId={projectId} />
+          </TabPanel>
+          <TabPanel>
+            <ParticipationsBox projectId={projectId} />
           </TabPanel>
         </TabPanels>
       </Tabs>

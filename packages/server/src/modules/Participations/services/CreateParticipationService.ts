@@ -24,6 +24,12 @@ class CreateParticipationService {
       userId,
       projectId
     })
+    const savedParticipation = await this.ParticipationsRepository.findById(
+      participation.id
+    )
+    if (savedParticipation) {
+      return savedParticipation
+    }
     return participation
   }
 }

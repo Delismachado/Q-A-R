@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { useAuth } from '../../hooks/auth'
-import api from '../../services/api'
-import Input from '../Input'
-import LabeledInput from '../LabeledInput'
-import Select, { OptionType } from '../LabeledSelect'
-import Textarea from '../Textarea'
+import { useAuth } from '../../../hooks/auth'
+import api from '../../../services/api'
+import Input from '../../../components/Input'
+import LabeledInput from '../../../components/LabeledInput'
+import Select, { OptionType } from '../../../components/LabeledSelect'
+import Textarea from '../../../components/Textarea'
 import { FormHandles, useField } from '@unform/core'
 import {
   Box,

@@ -14,9 +14,9 @@ import {
   Text
 } from '@chakra-ui/react'
 import { Form } from '@unform/web'
-import RadioGroup from '../../components/RadioGroup'
-import api from '../../services/api'
-import LabeledSelect from '../LabeledSelect'
+import RadioGroup from '../../../components/RadioGroup'
+import LabeledSelect from '../../../components/LabeledSelect'
+import api from '../../../services/api'
 import { FormHandles } from '@unform/core'
 import { DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons'
 

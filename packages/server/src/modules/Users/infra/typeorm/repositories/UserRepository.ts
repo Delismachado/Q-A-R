@@ -1,6 +1,8 @@
 import { getRepository, Repository } from 'typeorm'
 
-import IUsersRepository from '../../../repositories/IUsersRepository'
+import IUsersRepository, {
+  IFindParams
+} from '../../../repositories/IUsersRepository'
 import ICreateUserDTO from '../../../dtos/ICreateUserDTO'
 import User from '../entities/User'
 import { injectable } from 'tsyringe'
@@ -47,8 +49,12 @@ class UsersRepository implements IUsersRepository {
     return findUser
   }
 
-  public async findAll(): Promise<User[]> {
-    const allUsers = await this.ormRepository.find()
+  public async findAll(params: IFindParams): Promise<User[]> {
+    let where = {}
+    if (params.role) {
+      where = { ...where, role: params.role }
+    }
+    const allUsers = await this.ormRepository.find({ where })
     return allUsers
   }
 }

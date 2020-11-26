@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import api from '../../services/api'
+import api from '../../../services/api'
 
 import { Box, Heading, List, ListIcon, ListItem } from '@chakra-ui/react'
 
@@ -9,7 +9,13 @@ interface RecommendationDashboardParams {
   projectId: string
 }
 
-const RecommendationDashboard: React.FC = () => {
+interface RecommendationsBoxProps {
+  projectId: string
+}
+
+const RecommendationsBox: React.FC<RecommendationsBoxProps> = ({
+  projectId: string
+}: RecommendationsBoxProps) => {
   // const [recommendation, setRecommendation] = useState([])
 
   // useEffect(() => {
@@ -44,4 +50,4 @@ const RecommendationDashboard: React.FC = () => {
   )
 }
 
-export default RecommendationDashboard
+export default RecommendationsBox

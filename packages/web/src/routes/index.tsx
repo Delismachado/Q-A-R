@@ -12,7 +12,7 @@ import AnswerQuestion from '../pages/AnswerQuestion'
 import UserAnswers from '../pages/UserAnswers'
 import QuestionAnswers from '../pages/QuestionAnswers'
 import ProjectDashboard from '../pages/ProjectDashboard'
-import RecommendationDashboard from '../pages/RecommendationDashboard'
+import RecommendationDashboard from '../pages/ProjectDashboard/RecommendationsBox'
 import UserParticipation from '../pages/UserParticipation'
 
 const Routes: React.FC = () => (
