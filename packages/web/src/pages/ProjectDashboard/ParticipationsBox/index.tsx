@@ -68,7 +68,6 @@ const ParticipationsBox: React.FC<ParticipationsBoxProps> = ({
       api
         .post('/participations', participation)
         .then((ret: AxiosResponse<ParticipationData>) => {
-          console.log({ participations }, { ret })
           setParticipations([...participations, ret.data])
         })
         .catch(() => alert('Error while saving the participation'))

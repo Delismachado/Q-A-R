@@ -15,9 +15,7 @@ interface IRequest {
 class CreateRecommendationService {
   constructor(
     @inject('RecommendationsRepository')
-    private recommendationsRepository: IRecommendationsRepository,
-    @inject('ProjectsRepository')
-    private ProjectsRepository: IProjectsRepository
+    private recommendationsRepository: IRecommendationsRepository
   ) {}
 
   public async execute({
@@ -25,12 +23,6 @@ class CreateRecommendationService {
     description,
     projectId
   }: IRequest): Promise<Recommendation> {
-    const project = await this.ProjectsRepository.findById(projectId)
-
-    if (!project) {
-      throw new AppError('Recommendation not found!')
-    }
-
     const recommendation = await this.recommendationsRepository.create({
       name,
       description,

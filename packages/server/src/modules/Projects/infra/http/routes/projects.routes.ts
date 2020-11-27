@@ -6,6 +6,7 @@ import ProjectsQuestionsController from '../controller/ProjectsQuestionsControll
 import ProjectsFactsController from '../controller/ProjectsFactsController'
 import ProjectsRulesController from '../controller/ProjectsRulesController'
 import ProjectsParticipationsController from '../controller/ProjectsParticipationsController'
+import ProjectsRecommendationsController from '../controller/ProjectsRecommendationsController'
 
 const projectsController = new ProjectsController()
 const projectsRouter = Router()
@@ -35,5 +36,10 @@ const projectParticipationsController = new ProjectsParticipationsController()
 const projectsParticipationsRouter = Router({ mergeParams: true })
 projectsRouter.use('/:projectId/participations', projectsParticipationsRouter)
 projectsParticipationsRouter.get('/', projectParticipationsController.index)
+
+const projectRecommendationsController = new ProjectsRecommendationsController()
+const projectsRecommendationsRouter = Router({ mergeParams: true })
+projectsRouter.use('/:projectId/recommendations', projectsRecommendationsRouter)
+projectsRecommendationsRouter.get('/', projectRecommendationsController.index)
 
 export default projectsRouter

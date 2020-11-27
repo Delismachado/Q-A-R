@@ -20,9 +20,6 @@ class Recommendation {
   description: string
 
   @Column()
-  type: string
-
-  @Column()
   projectId: string
 
   @ManyToOne(() => Project, project => project.recommendations, {

@@ -1,51 +1,140 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import api from '../../../services/api'
 
-import { Box, Heading, List, ListIcon, ListItem } from '@chakra-ui/react'
+import {
+  Box,
+  ButtonGroup,
+  Heading,
+  List,
+  ListIcon,
+  ListItem,
+  SimpleGrid,
+  Button,
+  Text,
+  IconButton,
+  Flex,
+  BoxProps,
+  Stack
+} from '@chakra-ui/react'
+import { useAuth } from '../../../hooks/auth'
+import { FormHandles } from '@unform/core'
+import { AxiosResponse } from 'axios'
+import LabeledInput from '../../../components/LabeledInput'
+import { Form } from '@unform/web'
+import { DeleteIcon } from '@chakra-ui/icons'
+import Textarea from '../../../components/Textarea'
 
-interface RecommendationDashboardParams {
+interface RecommendationData {
+  id: string
   name: string
   description: string
   projectId: string
 }
 
-interface RecommendationsBoxProps {
+interface RecommendationsBoxProps extends BoxProps {
   projectId: string
 }
 
 const RecommendationsBox: React.FC<RecommendationsBoxProps> = ({
-  projectId: string
+  projectId,
+  ...rest
 }: RecommendationsBoxProps) => {
-  // const [recommendation, setRecommendation] = useState([])
+  const { user } = useAuth()
+  const [recommendations, setRecommendations] = useState<RecommendationData[]>(
+    []
+  )
 
-  // useEffect(() => {
-  //   api.get('/recommendation').then(response => {
-  //     setRecommendation(response.data)
-  //   })
-  // }, [])
+  useEffect(() => {
+    api.get(`/projects/${projectId}/recommendations`).then(response => {
+      setRecommendations(response.data)
+    })
+  }, [user, projectId])
+
+  const formRef = useRef<FormHandles>(null)
+
+  const handleSaveRecommendation = useCallback(
+    (recommendation: RecommendationData) => {
+      recommendation.projectId = projectId
+      api
+        .post('/recommendations', recommendation)
+        .then((ret: AxiosResponse<RecommendationData>) => {
+          setRecommendations([...recommendations, ret.data])
+        })
+        .catch(() => alert('Error while saving the recommendation'))
+      formRef.current.reset()
+    },
+    [projectId, recommendations]
+  )
+
+  const handleRemoveRecommendation = useCallback(
+    (recommendation: RecommendationData) => {
+      api.delete(`/recommendations/${recommendation.id}`).then(res => {
+        setRecommendations(recommendations.filter(p => p.id !== res.data.id))
+      })
+    },
+    [recommendations]
+  )
 
   return (
-    <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
-      <Heading as="h2" size="lg" paddingBottom="1rem">
-        Your next steps | Recommendations
-      </Heading>
-      <List spacing={5} borderRadius="lg">
-        <ListItem borderRadius="lg">
-          <ListIcon icon="check-circle" color="green.500" />
-          Lorem ipsum netus curae nostra magna commodo sed, sem etiam
-          sollicitudin imperdiet suspendisse nibh risus bibendum.
-        </ListItem>
-        <ListItem borderRadius="lg">
-          <ListIcon icon="check-circle" color="green.500" />
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit sollicitudin
-          imperdiet suspendisse nibh risus bibendum.
-        </ListItem>
-        <ListItem borderRadius="lg">
-          <ListIcon icon="check-circle" color="green.500" />
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit sollicitudin
-          imperdiet suspendisse nibh risus bibendum.
-        </ListItem>
-      </List>
+    <Box maxWidth="6xl" margin="auto" {...rest}>
+      <SimpleGrid columns={[1, 1, 1, 2]}>
+        <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
+          <Heading as="h3" size="lg">
+            Create new fact
+          </Heading>
+          <Form onSubmit={handleSaveRecommendation} ref={formRef}>
+            <LabeledInput
+              placeholder="Recommendation name/title"
+              label="Name"
+              name="name"
+            />
+            <Textarea
+              placeholder="Recommendation name/title"
+              label="Description"
+              name="description"
+            />
+            <ButtonGroup mt="1rem">
+              <Button className="button" type="reset">
+                Reset
+              </Button>
+              <Button className="button" type="submit" colorScheme="teal">
+                Save recommendation
+              </Button>
+            </ButtonGroup>
+          </Form>
+        </Box>
+        <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
+          <Heading as="h3" size="lg">
+            Recommendations
+          </Heading>
+          {recommendations.map(recommendation => (
+            <Flex
+              key={recommendation.id}
+              border="1px"
+              borderColor="gray.500"
+              borderRadius="lg"
+              padding=".5rem"
+              marginY=".5rem"
+              verticalAlign="middle"
+            >
+              <Stack>
+                <Heading size="sm">
+                  <strong>{recommendation.name}</strong>
+                </Heading>
+                <Text as="p">{recommendation.description}</Text>
+              </Stack>
+              <ButtonGroup marginLeft="auto">
+                <IconButton
+                  aria-label="Remove recommendation"
+                  title="Remove recommendation"
+                  icon={<DeleteIcon />}
+                  onClick={() => handleRemoveRecommendation(recommendation)}
+                />
+              </ButtonGroup>
+            </Flex>
+          ))}
+        </Box>
+      </SimpleGrid>
     </Box>
   )
 }

@@ -8,7 +8,7 @@ import Recommendation from '../infra/typeorm/entities/Recommendation'
 @injectable()
 class DeleteRecommendationService {
   constructor(
-    @inject('FRecommendationsRepository')
+    @inject('RecommendationsRepository')
     private recommendationsRepository: IRecommendationsRepository
   ) {}
 

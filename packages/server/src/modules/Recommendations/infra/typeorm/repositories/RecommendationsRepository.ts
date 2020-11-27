@@ -26,12 +26,11 @@ class RecommendationsRepository implements IRecommendationsRepository {
   }
 
   public async findByProject(project: Project): Promise<Recommendation[]> {
-    const recommendations = await this.ormRepository
-      .createQueryBuilder('recommendations')
-      .innerJoinAndSelect('recommendations.question', 'question')
-      .innerJoinAndSelect('question.project', 'project')
-      .where('project.id = :projectId', { projectId: project.id })
-      .getMany()
+    const recommendations = await this.ormRepository.find({
+      where: {
+        projectId: project.id
+      }
+    })
     return recommendations
   }
 
