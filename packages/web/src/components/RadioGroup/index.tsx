@@ -24,26 +24,28 @@ const RadioGroup: React.FC<IRadioProps> = ({
 }: IRadioProps) => {
   const inputRef = useRef(null)
   const { fieldName, defaultValue, error, registerField } = useField(name)
-  const [selected, setSelected] = useState(null)
 
   useEffect(() => {
     registerField({
       name: fieldName,
-      ref: inputRef.current,
-      getValue: function (field) {
-        return selected
+      ref: inputRef,
+      getValue(ref) {
+        console.log(ref)
+        return ref.current
       }
     })
-  }, [fieldName, registerField, selected])
+  }, [fieldName, registerField, inputRef])
 
   return (
-    <ChakraRadioGroup {...rest}>
+    <ChakraRadioGroup name={fieldName} defaultValue={defaultValue} {...rest}>
       {options.map(op => (
         <Radio
           key={op.value}
           value={op.value}
-          name={fieldName}
-          onInput={e => setSelected(op.value)}
+          onChange={e => {
+            console.log(e)
+            inputRef.current = op.value
+          }}
         >
           {op.label}
         </Radio>

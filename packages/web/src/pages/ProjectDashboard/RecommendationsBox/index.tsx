@@ -23,13 +23,22 @@ import LabeledInput from '../../../components/LabeledInput'
 import { Form } from '@unform/web'
 import { DeleteIcon } from '@chakra-ui/icons'
 import Textarea from '../../../components/Textarea'
+import LabeledSelect from '../../../components/LabeledSelect'
+
+interface RulesData {
+  id: string
+  label: string
+}
 
 interface RecommendationData {
   id: string
   name: string
   description: string
   projectId: string
+  ruleId: string
+  rule: RulesData
 }
+
 
 interface RecommendationsBoxProps extends BoxProps {
   projectId: string
@@ -43,10 +52,17 @@ const RecommendationsBox: React.FC<RecommendationsBoxProps> = ({
   const [recommendations, setRecommendations] = useState<RecommendationData[]>(
     []
   )
+  const [rules, setRules] = useState<RulesData[]>([])
 
   useEffect(() => {
     api.get(`/projects/${projectId}/recommendations`).then(response => {
       setRecommendations(response.data)
+    })
+  }, [user, projectId])
+
+  useEffect(() => {
+    api.get(`/projects/${projectId}/rules`).then(response => {
+      setRules(response.data)
     })
   }, [user, projectId])
 
@@ -89,9 +105,14 @@ const RecommendationsBox: React.FC<RecommendationsBoxProps> = ({
               name="name"
             />
             <Textarea
-              placeholder="Recommendation name/title"
+              placeholder="Recommendation description"
               label="Description"
               name="description"
+            />
+            <LabeledSelect
+              label="Rule"
+              name="ruleId"
+              options={rules.map(r => ({ label: r.label, value: r.id }))}
             />
             <ButtonGroup mt="1rem">
               <Button className="button" type="reset">
@@ -121,7 +142,8 @@ const RecommendationsBox: React.FC<RecommendationsBoxProps> = ({
                 <Heading size="sm">
                   <strong>{recommendation.name}</strong>
                 </Heading>
-                <Text as="p">{recommendation.description}</Text>
+                <Text>{recommendation.description}</Text>
+                <Text>{recommendation.rule.label}</Text>
               </Stack>
               <ButtonGroup marginLeft="auto">
                 <IconButton

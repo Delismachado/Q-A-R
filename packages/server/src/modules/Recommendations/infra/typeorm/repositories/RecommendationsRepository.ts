@@ -37,9 +37,15 @@ class RecommendationsRepository implements IRecommendationsRepository {
   public async create({
     name,
     description,
-    projectId
+    projectId,
+    ruleId
   }: IRecommendationsRepositoryDTO): Promise<Recommendation> {
-    return await this.ormRepository.save({ name, description, projectId })
+    return await this.ormRepository.save({
+      name,
+      description,
+      projectId,
+      ruleId
+    })
   }
 
   public async delete(recommendation: Recommendation): Promise<void> {

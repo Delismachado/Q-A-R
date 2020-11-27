@@ -6,10 +6,12 @@ import {
   Tree,
   TreeChildren,
   TreeParent,
-  TableInheritance
+  TableInheritance,
+  OneToOne,
+  JoinColumn
 } from 'typeorm'
 import Project from '@modules/Projects/infra/typeorm/entities/Project'
-import { Expose } from 'class-transformer'
+import Recommendation from '@modules/Recommendations/infra/typeorm/entities/Recommendation'
 
 @Entity('rules')
 @Tree('nested-set')
@@ -37,6 +39,17 @@ abstract class Rule {
   parent: Rule
 
   label: string
+
+  @Column({
+    nullable: true
+  })
+  recommendationId?: string
+
+  @OneToOne(() => Recommendation, {
+    nullable: true
+  })
+  @JoinColumn()
+  recommendation?: Recommendation
 
   abstract async stringExpression(): Promise<string>
 }

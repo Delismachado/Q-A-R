@@ -9,12 +9,13 @@ import UpdateRecommendationService from '@modules/Recommendations/services/Updat
 
 export default class RecommendationsController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, description, projectId } = request.body
+    const { name, description, projectId, ruleId } = request.body
     const createRecommendation = container.resolve(CreateRecommendationService)
     const recommendation = await createRecommendation.execute({
       name,
       description,
-      projectId
+      projectId,
+      ruleId
     })
     return response.status(201).json(recommendation)
   }

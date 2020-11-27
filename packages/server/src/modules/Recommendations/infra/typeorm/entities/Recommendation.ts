@@ -4,9 +4,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
-  ManyToOne
+  ManyToOne,
+  OneToOne,
+  JoinColumn
 } from 'typeorm'
 import Project from '@modules/Projects/infra/typeorm/entities/Project'
+import Rule from '@modules/Rules/infra/typeorm/entities/Rule'
 
 @Entity('recommendations')
 class Recommendation {
@@ -27,6 +30,15 @@ class Recommendation {
     onDelete: 'CASCADE'
   })
   project: Project
+
+  @Column()
+  ruleId: string
+
+  @OneToOne(() => Rule, rule => rule.recommendation, {
+    eager: true
+  })
+  @JoinColumn()
+  rule: Rule
 
   @CreateDateColumn()
   createdAt: Date

@@ -103,7 +103,8 @@ const RuleFields: React.FC<RuleFieldsProps> = ({
             options={ruleTypes}
             name={baseName + '.type'}
             onChange={e => {
-              setSelectedType(e)
+              console.log(e)
+              setSelectedType(e.toString())
               setNoOperands(e === 'FactRule' ? 0 : Math.max(1, noOperands))
             }}
           />
@@ -169,6 +170,7 @@ const RulesBox: React.FC<RulesBoxProps> = ({
   }, [projectId])
 
   const validateFacts = function (rule: RuleData) {
+    console.log(rule)
     if (['AndRule', 'NotRule', 'OrRule'].includes(rule.type)) {
       return rule.operands.every(validateFacts)
     } else {

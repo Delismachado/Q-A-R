@@ -9,6 +9,7 @@ interface IRequest {
   name: string
   description: string
   projectId: string
+  ruleId: string
 }
 
 @injectable()
@@ -21,13 +22,21 @@ class CreateRecommendationService {
   public async execute({
     name,
     description,
-    projectId
+    projectId,
+    ruleId
   }: IRequest): Promise<Recommendation> {
     const recommendation = await this.recommendationsRepository.create({
       name,
       description,
-      projectId
+      projectId,
+      ruleId
     })
+    const saved = await this.recommendationsRepository.findById(
+      recommendation.id
+    )
+    if (saved) {
+      return saved
+    }
     return recommendation
   }
 }
