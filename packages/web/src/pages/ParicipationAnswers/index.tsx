@@ -4,7 +4,14 @@ import { Link, useParams } from 'react-router-dom'
 import api from '../../services/api'
 
 import { Form } from '@unform/web'
-import { Box, Heading, Text, Button, ButtonGroup } from '@chakra-ui/react'
+import {
+  Box,
+  Heading,
+  Text,
+  Button,
+  ButtonGroup,
+  Stack
+} from '@chakra-ui/react'
 
 import RadioGroup, { RadioGroupOptions } from '../../components/RadioGroup'
 import CheckboxGroup, {
@@ -105,12 +112,33 @@ const AnswerField: React.FC<AnswerFieldProps> = ({
   }
 }
 
+interface RecommendationData {
+  id: string
+  name: string
+  description: string
+}
+
 interface QuestionData {
   id: string
   name: string
   description: string
   type: string
   options: any
+}
+
+interface ShowRecommendationProps {
+  recommendation: RecommendationData
+}
+
+const ShowRecommendation: React.FC<ShowRecommendationProps> = ({
+  recommendation
+}: ShowRecommendationProps) => {
+  return (
+    <Stack>
+      <Heading>{recommendation.name}</Heading>
+      <Text>{recommendation.description}</Text>
+    </Stack>
+  )
 }
 
 interface ParamsData {
@@ -128,6 +156,7 @@ const ParticipationAnswers: React.FC = () => {
     options: {}
   })
   const [loadingQuestion, setLoadingQuestion] = useState<boolean>(true)
+  const [recommendation, setRecommendation] = useState<RecommendationData>(null)
 
   const handleNextQuestion = useCallback(() => {
     setLoadingQuestion(true)
@@ -139,7 +168,7 @@ const ParticipationAnswers: React.FC = () => {
           setQuestion(response.data.question as QuestionData)
           setLoadingQuestion(false)
         } else if (response.data.type === 'Recommendation') {
-          console.log(response.data.recommendation)
+          setRecommendation(response.data.recommendation)
         }
       })
   }, [participationId])
@@ -149,16 +178,19 @@ const ParticipationAnswers: React.FC = () => {
   const handleSubmit = useCallback(
     data => {
       data.questionId = question.id
+      data.participationId = participationId
       api
-        .post(`/users/${participationId}/answers`, data)
+        .post('/answers', data)
+        .catch(() => alert('Error saving your answer.'))
         .then(handleNextQuestion)
     },
     [participationId, question]
   )
 
-  return (
-    <Box maxWidth="3xl" margin="auto">
-      <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
+  let content = null
+  if (recommendation === null) {
+    content = (
+      <>
         <Heading size="lg" textAlign="center" paddingBottom="2rem">
           {question.name}
         </Heading>
@@ -181,6 +213,16 @@ const ParticipationAnswers: React.FC = () => {
             </Button>
           </ButtonGroup>
         </Form>
+      </>
+    )
+  } else {
+    content = <ShowRecommendation recommendation={recommendation} />
+  }
+
+  return (
+    <Box maxWidth="3xl" margin="auto">
+      <Box m="1rem" p="1rem" borderRadius="lg" border="1px">
+        {content}
       </Box>
     </Box>
   )

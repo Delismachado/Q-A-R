@@ -12,6 +12,7 @@ import {
 } from 'typeorm'
 import Project from '@modules/Projects/infra/typeorm/entities/Project'
 import Recommendation from '@modules/Recommendations/infra/typeorm/entities/Recommendation'
+import Answer from '@modules/Answers/infra/typeorm/entities/Answer'
 
 @Entity('rules')
 @Tree('nested-set')
@@ -52,6 +53,7 @@ abstract class Rule {
   recommendation?: Recommendation
 
   abstract async stringExpression(): Promise<string>
+  abstract async compute(answers: Answer[]): Promise<boolean>
 }
 
 export default Rule

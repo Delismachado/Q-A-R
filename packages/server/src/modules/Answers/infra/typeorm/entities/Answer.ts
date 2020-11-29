@@ -5,19 +5,24 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  JoinColumn,
   Column
 } from 'typeorm'
-import User from '@modules/Users/infra/typeorm/entities/User'
 import Question from '@modules/Questions/infra/typeorm/entities/Question'
+import Participation from '@modules/Participations/infra/typeorm/entities/Participation'
 
 @Entity('answers')
 class Answer {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @ManyToOne(() => User)
-  user: User
+  @Column()
+  participationId: string
+
+  @ManyToOne(() => Participation)
+  participation: Participation
+
+  @Column()
+  questionId: string
 
   @ManyToOne(() => Question)
   question: Question

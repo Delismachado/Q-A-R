@@ -3,22 +3,22 @@ import { inject, injectable } from 'tsyringe'
 
 import AppError from '../../../shared/errors/AppError'
 
-import IUsersRepository from '../repositories/IUsersRepository'
 import IQuestionsRepository from '@modules/Questions/repositories/IQuestionsRepository'
 import IAnswersRepository from '@modules/Answers/repositories/IAnswersRepository'
 import Answer from '@modules/Answers/infra/typeorm/entities/Answer'
+import IParticipationsRepository from '../../Participations/repositories/IParticipationsRepository'
 
 interface IRequest {
-  user_id: string
-  question_id: string
+  participationId: string
+  questionId: string
   values: any
 }
 
 @injectable()
-class CreateUserService {
+class CreateParticipationAnswerService {
   constructor(
-    @inject('UsersRepository')
-    private usersRepository: IUsersRepository,
+    @inject('ParticipationsRepository')
+    private participationsRepository: IParticipationsRepository,
     @inject('QuestionsRepository')
     private questionsRepository: IQuestionsRepository,
     @inject('AnswersRepository')
@@ -26,24 +26,25 @@ class CreateUserService {
   ) {}
 
   public async execute({
-    user_id,
-    question_id,
+    participationId,
+    questionId,
     values
   }: IRequest): Promise<Answer> {
-    const user = await this.usersRepository.findById(user_id)
-    if (!user) {
-      throw new AppError('User not found', 401)
+    const participation = await this.participationsRepository.findById(
+      participationId
+    )
+    if (!participation) {
+      throw new AppError('User participation not found', 401)
     }
 
-    const question = await this.questionsRepository.findById(question_id)
+    const question = await this.questionsRepository.findById(questionId)
     if (!question) {
       throw new AppError('Question not found', 401)
     }
 
-
     const answer = this.answersRepository.create({
       question,
-      user,
+      participation,
       values
     })
 
@@ -51,4 +52,4 @@ class CreateUserService {
   }
 }
 
-export default CreateUserService
+export default CreateParticipationAnswerService
