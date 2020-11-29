@@ -7,14 +7,15 @@ import { classToClass } from 'class-transformer'
 
 export default class UsersAnswersController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { question_id, values } = request.body
-    const createUserAnswer = container.resolve(CreateUserAnswerService)
-    const answer = await createUserAnswer.execute({
-      user_id: request.user.id,
-      question_id,
-      values
-    })
-    return response.status(201).json(answer)
+    // const { question_id, values } = request.body
+    // const createUserAnswer = container.resolve(CreateUserAnswerService)
+    // const answer = await createUserAnswer.execute({
+    //  user_id: request.user.id,
+    //  question_id,
+    //  values
+    // })
+    // return response.status(201).json(answer)
+    return response.status(201).json(null)
   }
 
   public async index(request: Request, response: Response): Promise<Response> {
