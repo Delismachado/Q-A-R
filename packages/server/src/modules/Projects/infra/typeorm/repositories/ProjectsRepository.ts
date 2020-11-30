@@ -23,8 +23,8 @@ class ProjectsRepository implements IProjectsRepository {
   }
 
   public async findById(projectId: string): Promise<Project | undefined> {
-    const questionSet = await this.ormRepository.findOne(projectId)
-    return questionSet
+    const project = await this.ormRepository.findOne(projectId)
+    return project
   }
 
   public async all(): Promise<Project[]> {

@@ -8,10 +8,11 @@ import {
   TableInheritance
 } from 'typeorm'
 import Question from '@modules/Questions/infra/typeorm/entities/Question'
+import Answer from '@modules/Answers/infra/typeorm/entities/Answer'
 
 @Entity('facts')
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
-class Fact {
+abstract class Fact {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -35,6 +36,8 @@ class Fact {
 
   @UpdateDateColumn()
   updatedAt: Date
+
+  abstract verify(answer: Answer): boolean
 }
 
 export default Fact

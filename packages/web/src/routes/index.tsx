@@ -14,6 +14,7 @@ import QuestionAnswers from '../pages/QuestionAnswers'
 import ProjectDashboard from '../pages/ProjectDashboard'
 import RecommendationDashboard from '../pages/ProjectDashboard/RecommendationsBox'
 import UserParticipation from '../pages/UserParticipation'
+import ParticipationAnswers from '../pages/ParicipationAnswers'
 
 const Routes: React.FC = () => (
   <Switch>
@@ -38,6 +39,11 @@ const Routes: React.FC = () => (
     <Route
       path="/my-projects/:participationId"
       component={UserParticipation}
+      isPrivate
+    />
+    <Route
+      path="/participations/:participationId/answers"
+      component={ParticipationAnswers}
       isPrivate
     />
   </Switch>

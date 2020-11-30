@@ -5,7 +5,7 @@ import IAnswersRepository from '@modules/Answers/repositories/IAnswersRepository
 import Answer from '../entities/Answer'
 import ICreateAnswerDTO from '@modules/Answers/dtos/ICreateAnswerDTO'
 import Question from '@modules/Questions/infra/typeorm/entities/Question'
-import User from '@modules/Users/infra/typeorm/entities/User'
+import Participation from '@modules/Participations/infra/typeorm/entities/Participation'
 
 @injectable()
 class AnswersRepository implements IAnswersRepository {
@@ -16,12 +16,12 @@ class AnswersRepository implements IAnswersRepository {
   }
 
   public async create({
-    user,
+    participation,
     question,
     values
   }: ICreateAnswerDTO): Promise<Answer> {
     const answer = this.ormRepository.create({
-      user,
+      participation,
       question,
       values
     })
@@ -37,14 +37,16 @@ class AnswersRepository implements IAnswersRepository {
   public async findByQuestion(question: Question): Promise<Answer[]> {
     const answers = await this.ormRepository.find({
       where: { question },
-      relations: ['user']
+      relations: ['participation']
     })
     return answers
   }
 
-  public async findByUser(user: User): Promise<Answer[]> {
+  public async findByParticipation(
+    participation: Participation
+  ): Promise<Answer[]> {
     const answers = await this.ormRepository.find({
-      where: { user },
+      where: { participation },
       relations: ['question']
     })
     return answers

@@ -9,7 +9,8 @@ import {
   Button,
   Text,
   List,
-  ListItem
+  ListItem,
+  IconButton
 } from '@chakra-ui/react'
 import { PlusSquareIcon } from '@chakra-ui/icons'
 
@@ -57,6 +58,11 @@ const UserParticipation: React.FC = () => {
         <Heading as="h2" size="lg" paddingBottom="1rem">
           Questions list
         </Heading>
+        <Link to={`/participations/${participationId}/answers`}>
+          <Button size="lg" aria-label="Start answering" colorScheme="teal">
+            Start answering
+          </Button>
+        </Link>
         <List>
           {questions.map((question, idx) => (
             <ListItem

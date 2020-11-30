@@ -7,6 +7,7 @@ import projectsRouter from '@modules/Projects/infra/http/routes/projects.routes'
 import recommendationsRouter from '@modules/Recommendations/infra/http/routes/recommendations.routes'
 import participationsRouter from '@modules/Participations/infra/http/routes/participations.routes'
 import factsRouter from '@modules/Facts/infra/http/routes/facts.routes'
+import answersRouter from '@modules/Answers/infra/http/routes/answers.routes'
 
 const routes = express.Router()
 
@@ -18,5 +19,6 @@ routes.use('/projects', projectsRouter)
 routes.use('/recommendations', recommendationsRouter)
 routes.use('/participations', participationsRouter)
 routes.use('/facts', factsRouter)
+routes.use('/answers', answersRouter)
 
 export default routes
