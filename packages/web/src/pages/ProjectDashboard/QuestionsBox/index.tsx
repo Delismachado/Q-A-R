@@ -188,6 +188,8 @@ const QuestionsBox: React.FC<QuestionsBoxProps> = ({
   const { user } = useAuth()
   const [questions, setQuestions] = useState([])
   const [editingQuestion, setEditingQuestion] = useState(null)
+  const [savingQuestion, setSavingQuestion] = useState(false)
+
   useEffect(() => {
     api.get(`/projects/${projectId}/questions`).then(response => {
       setQuestions(response.data)
@@ -199,6 +201,7 @@ const QuestionsBox: React.FC<QuestionsBoxProps> = ({
 
   const handleSaveQuestion = useCallback(
     (data: CreateQuestionData) => {
+      setSavingQuestion(true)
       data.projectId = projectId
       if (!editingQuestion) {
         api
@@ -208,6 +211,7 @@ const QuestionsBox: React.FC<QuestionsBoxProps> = ({
             console.log(err)
             alert('Error creating the new question.')
           })
+          .finally(() => setSavingQuestion(false))
         formRef.current.reset()
       } else {
         api
@@ -222,9 +226,10 @@ const QuestionsBox: React.FC<QuestionsBoxProps> = ({
             console.log(err)
             alert('Error creating the new question.')
           })
+          .finally(() => setSavingQuestion(false))
       }
     },
-    [formRef, projectId, editingQuestion]
+    [formRef, projectId, editingQuestion, questions]
   )
 
   const handleRemoveQuestion = useCallback(
@@ -289,7 +294,12 @@ const QuestionsBox: React.FC<QuestionsBoxProps> = ({
               >
                 Reset
               </Button>
-              <Button className="button" type="submit" colorScheme="teal">
+              <Button
+                className="button"
+                type="submit"
+                colorScheme="teal"
+                disabled={savingQuestion}
+              >
                 Save
               </Button>
             </ButtonGroup>

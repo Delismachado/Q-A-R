@@ -21,7 +21,7 @@ class NumericQuestionsRepository implements INumericQuestionsRepository {
     options,
     project
   }: ICreateNumericQuestionDTO): Promise<Question> {
-    const question = this.ormRepository.save({
+    const question = await this.ormRepository.save({
       name,
       description,
       type,

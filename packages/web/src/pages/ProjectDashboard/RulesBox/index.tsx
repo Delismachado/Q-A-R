@@ -90,11 +90,11 @@ const RuleFields: React.FC<RuleFieldsProps> = ({
   return (
     <Box
       margin="auto"
-      pl="1rem"
-      borderStyle="solid"
-      border="1px"
-      borderRadius="lg"
+      ml="1rem"
+      p="1rem"
       {...rest}
+      borderLeft="1px"
+      borderLeftStyle="solid"
     >
       <Box>
         <FormControl>

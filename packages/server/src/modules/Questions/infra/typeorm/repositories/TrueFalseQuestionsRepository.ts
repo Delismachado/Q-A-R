@@ -21,7 +21,7 @@ class TrueFalseQuestionsRepository implements ITrueFalseQuestionsRepository {
     options,
     project
   }: ICreateTrueFalseQuestionDTO): Promise<Question> {
-    const question = this.ormRepository.save({
+    const question = await this.ormRepository.save({
       name,
       description,
       type,

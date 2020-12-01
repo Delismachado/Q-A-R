@@ -22,7 +22,7 @@ class MultipleChoicesQuestionsRepository implements IMultipleChoicesQuestionsRep
     options,
     project
   }: ICreateMultipleChoicesQuestionDTO): Promise<Question> {
-    const question = this.ormRepository.save({
+    const question = await this.ormRepository.save({
       name,
       description,
       type,

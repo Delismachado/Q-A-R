@@ -21,7 +21,7 @@ class ChoicesQuestionsRepository implements IChoicesQuestionsRepository {
     options,
     project
   }: ICreateChoicesQuestionDTO): Promise<Question> {
-    const question = this.ormRepository.save({
+    const question = await this.ormRepository.save({
       name,
       description,
       type,

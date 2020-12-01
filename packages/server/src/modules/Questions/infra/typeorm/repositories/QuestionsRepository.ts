@@ -21,7 +21,7 @@ class QuestionsRepository implements IQuestionsRepository {
     options,
     project
   }: ICreateQuestionDTO): Promise<Question> {
-    const question = this.ormRepository.create({
+    const question = await this.ormRepository.create({
       name,
       description,
       type,
