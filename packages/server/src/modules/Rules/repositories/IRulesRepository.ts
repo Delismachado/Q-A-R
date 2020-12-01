@@ -5,6 +5,7 @@ interface IRulesRepository {
   all(): Promise<Rule[]>
   findById(rule_id: string): Promise<Rule | undefined>
   findByProject(project: Project): Promise<Rule[]>
+  delete(rule: Rule): Promise<Rule>
 }
 
 export default IRulesRepository

@@ -199,6 +199,19 @@ const RulesBox: React.FC<RulesBoxProps> = ({
     [projectId, rules]
   )
 
+  const handleRemove = useCallback(
+    rule => {
+      api
+        .delete(`/rules/${rule.id}`)
+        .catch(res => {
+          console.log(res)
+          alert('Error removing the rule')
+        })
+        .then(() => setRules(rules.filter(r => r.id !== rule.id)))
+    },
+    [rules]
+  )
+
   return (
     <Box maxWidth="6xl" margin="auto" {...rest}>
       <SimpleGrid columns={[1, 1, 1, 2]}>
@@ -239,7 +252,7 @@ const RulesBox: React.FC<RulesBoxProps> = ({
               </Text>
               <ButtonGroup marginLeft="auto">
                 <IconButton
-                  isDisabled={true}
+                  onClick={() => handleRemove(rule)}
                   aria-label="Remove rule"
                   title="Remove rule"
                   icon={<DeleteIcon />}

@@ -10,6 +10,7 @@ import ICreateRuleDTO from '../../../dtos/ICreateRuleDTO'
 import { injectable } from 'tsyringe'
 import Rule from '../entities/Rule'
 import Project from '@modules/Projects/infra/typeorm/entities/Project'
+import { threadId } from 'worker_threads'
 
 interface ICreateRuleDTORecursive extends ICreateRuleDTO {
   nextRule: Rule
@@ -49,6 +50,12 @@ class RulesRepository implements IRulesRepository {
       await this.treeRepository.findDescendantsTree(pr)
     }
     return parentRules
+  }
+
+  public async delete(rule: Rule): Promise<Rule> {
+    await Promise.all(rule.operands.map(r => this.delete(r)))
+    await this.treeRepository.remove(rule)
+    return rule
   }
 }
 

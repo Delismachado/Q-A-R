@@ -33,7 +33,9 @@ abstract class Rule {
   })
   project: Project
 
-  @TreeChildren()
+  @TreeChildren({
+    cascade: true
+  })
   operands: Rule[]
 
   @TreeParent()

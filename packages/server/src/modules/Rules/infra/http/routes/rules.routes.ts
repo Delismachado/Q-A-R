@@ -11,5 +11,6 @@ const rulesController = new RulesController()
 rulesRouter.post('/', rulesController.create)
 rulesRouter.get('/', rulesController.index)
 rulesRouter.get('/:rule_id', rulesController.get)
+rulesRouter.delete('/:rule_id', rulesController.delete)
 
 export default rulesRouter
